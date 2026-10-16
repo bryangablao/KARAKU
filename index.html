@@ -155,6 +155,7 @@ img{
 }
 
 .desktop-nav{
+  position:relative;
   display:flex;
   align-items:center;
   gap:8px;
@@ -180,14 +181,26 @@ img{
 }
 
 .nav-btn.active::after{
-  content:"";
+  display:none;
+}
+
+.nav-indicator{
   position:absolute;
-  left:12px;
-  right:12px;
+  z-index:3;
+  left:0;
   bottom:3px;
+  width:0;
   height:2px;
   border-radius:999px;
   background:var(--gradient);
+  opacity:0;
+  pointer-events:none;
+  transform:translate3d(0,0,0);
+  transition:
+    transform .38s cubic-bezier(.22,1,.36,1),
+    width .38s cubic-bezier(.22,1,.36,1),
+    opacity .18s ease;
+  will-change:transform,width;
 }
 
 .header-spacer{
@@ -468,17 +481,70 @@ main{
   font-size:.78rem;
 }
 
+.rail-shell{
+  position:relative;
+}
+
 .card-rail{
   display:flex;
   gap:15px;
   overflow-x:auto;
   padding:15px var(--page-pad) 24px;
-  scroll-snap-type:x proximity;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-x;
   scrollbar-width:none;
 }
 
 .card-rail::-webkit-scrollbar{
   display:none;
+}
+
+.rail-nav{
+  position:absolute;
+  z-index:6;
+  top:50%;
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:50%;
+  background:rgba(7,8,13,.78);
+  color:#fff;
+  box-shadow:0 10px 30px rgba(0,0,0,.28);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  transform:translateY(-50%);
+  transition:opacity .18s ease,transform .18s ease,background .18s ease;
+}
+
+.rail-nav:hover{
+  background:rgba(17,21,32,.94);
+  transform:translateY(-50%) scale(1.05);
+}
+
+.rail-nav.prev{
+  left:max(8px,calc(var(--page-pad) - 22px));
+}
+
+.rail-nav.next{
+  right:max(8px,calc(var(--page-pad) - 22px));
+}
+
+.rail-nav[disabled]{
+  opacity:0;
+  pointer-events:none;
+}
+
+.rail-nav svg{
+  width:20px;
+  height:20px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2.2;
 }
 
 .media-card{
@@ -708,18 +774,39 @@ main{
 .modal-visual{
   position:relative;
   min-height:clamp(300px,48vw,500px);
+  overflow:hidden;
   background:#090b12;
   background-size:cover;
   background-position:center 24%;
+  background-repeat:no-repeat;
+}
+
+.modal-visual-image{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 24%;
+  filter:none;
+  opacity:1;
 }
 
 .modal-visual::after{
   content:"";
   position:absolute;
+  z-index:1;
   inset:0;
+  pointer-events:none;
   background:
-    linear-gradient(0deg,var(--surface) 0%,rgba(17,21,32,.16) 48%,rgba(0,0,0,.12) 100%),
-    linear-gradient(90deg,rgba(0,0,0,.58),transparent 65%);
+    linear-gradient(0deg,rgba(9,11,18,.92) 0%,rgba(9,11,18,.18) 43%,rgba(0,0,0,.06) 100%),
+    linear-gradient(90deg,rgba(0,0,0,.48),transparent 66%);
+}
+
+html[data-theme="light"] .modal-visual::after{
+  background:
+    linear-gradient(0deg,rgba(9,11,18,.82) 0%,rgba(9,11,18,.12) 42%,rgba(0,0,0,.04) 100%),
+    linear-gradient(90deg,rgba(0,0,0,.42),transparent 66%);
 }
 
 .modal-title-area{
@@ -1119,8 +1206,13 @@ main{
     text-align:left;
   }
 
-  .nav-btn.active::after{
+  .nav-btn.active::after,
+  .nav-indicator{
     display:none;
+  }
+
+  .nav-btn.active{
+    background:var(--surface);
   }
 
   .mobile-menu-btn{
@@ -1213,6 +1305,10 @@ main{
 
   .media-card{
     flex-basis:min(78vw,300px);
+  }
+
+  .rail-nav{
+    display:none;
   }
 
   .grid-page{
@@ -1334,6 +1430,7 @@ main{
     <button class="nav-btn" data-view="drama">AI Drama</button>
     <button class="nav-btn" data-view="anime">Anime</button>
     <button class="nav-btn" data-view="movie">Movies</button>
+    <span class="nav-indicator" id="navIndicator" aria-hidden="true"></span>
   </nav>
 
   <div class="header-spacer"></div>
@@ -1708,7 +1805,7 @@ const catalog = [
     hue:205,
     flags:"n",
     summary:"Follows Yūya Tenjou, a bullied high school student who discovers a portal to a fantasy world named Argena after his grandfather's death. In this world, he gains powerful abilities that enhance his physical and social standing on Earth. The series explores his journey as he navigates both realms, using his newfound skills to defeat powerful enemies and improve his life. It has been adapted into a manga and anime, with a second season set to premiere in January 2027.",
-    poster:"image/anime/Cheat-Skill-in-Another-World.jpg",
+    poster:"./image/anime/Cheat-Skill-in-Another-World.jpg",
     seasons:[
       {
         season:1,
@@ -1963,17 +2060,45 @@ function cssUrl(url){
     .replace(/"/g,'\\"');
 }
 
-function artStyle(item){
-  if(item.poster){
-    return `background-image:url("${cssUrl(item.poster)}")`;
+function artworkUrl(item){
+  if(item?.poster){
+    return item.poster;
   }
 
-  const hue = Number(item.hue || 240);
+  const source = firstEpisode(item)?.source;
 
+  if(source?.thumbnail){
+    return source.thumbnail;
+  }
+
+  if(source?.provider === "youtube"){
+    const id = youtubeId(source.url);
+
+    if(id){
+      return `https://i.ytimg.com/vi/${encodeURIComponent(id)}/hqdefault.jpg`;
+    }
+  }
+
+  return "";
+}
+
+function artStyle(item){
+  const image = artworkUrl(item);
+
+  if(image){
+    return `background-image:url("${cssUrl(image)}")`;
+  }
+
+  /*
+    Facebook share links and TikTok links do not expose a reliable thumbnail
+    URL to plain browser JavaScript. Use item.poster or source.thumbnail for
+    those providers. Until one is supplied, use a neutral fallback instead
+    of the old random-looking color artwork.
+  */
   return `
     background-image:
-      radial-gradient(circle at 72% 24%,hsla(${(hue + 55) % 360},92%,72%,.58),transparent 24%),
-      linear-gradient(135deg,hsl(${hue},68%,43%),hsl(${(hue + 52) % 360},70%,17%) 66%,#07080d)
+      linear-gradient(135deg,rgba(34,211,238,.08),transparent 42%),
+      linear-gradient(145deg,#171c29,#090b12 72%)
   `;
 }
 
@@ -2055,8 +2180,18 @@ function railMarkup(title,items){
         <p>${items.length} title${items.length === 1 ? "" : "s"}</p>
       </div>
 
-      <div class="card-rail">
-        ${items.map(cardMarkup).join("")}
+      <div class="rail-shell">
+        <button class="rail-nav prev" type="button" data-rail-direction="-1" aria-label="Scroll ${esc(title)} left">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+        </button>
+
+        <div class="card-rail" tabindex="0" aria-label="${esc(title)} carousel">
+          ${items.map(cardMarkup).join("")}
+        </div>
+
+        <button class="rail-nav next" type="button" data-rail-direction="1" aria-label="Scroll ${esc(title)} right">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+        </button>
       </div>
     </section>
   `;
@@ -2171,10 +2306,66 @@ function renderGrid(title,subtitle,items,cat=null){
   `;
 }
 
+function syncNavIndicator(){
+  const nav = $("#mainNav");
+  const indicator = $("#navIndicator");
+  const active = $("#mainNav .nav-btn.active");
+
+  if(!nav || !indicator || !active || window.innerWidth <= 1000){
+    if(indicator) indicator.style.opacity = "0";
+    return;
+  }
+
+  const navRect = nav.getBoundingClientRect();
+  const buttonRect = active.getBoundingClientRect();
+  const inset = 12;
+  const targetWidth = Math.max(12,buttonRect.width - inset * 2);
+  const targetX = buttonRect.left - navRect.left + inset;
+
+  if(!indicator.dataset.ready){
+    indicator.style.transition = "none";
+    indicator.style.width = `${targetWidth}px`;
+    indicator.style.transform = `translate3d(${targetX}px,0,0)`;
+    indicator.style.opacity = "1";
+
+    requestAnimationFrame(()=>{
+      indicator.style.transition = "";
+      indicator.dataset.ready = "true";
+    });
+    return;
+  }
+
+  indicator.style.width = `${targetWidth}px`;
+  indicator.style.transform = `translate3d(${targetX}px,0,0)`;
+  indicator.style.opacity = "1";
+}
+
+function updateRailControls(rail){
+  const shell = rail?.closest(".rail-shell");
+  if(!shell) return;
+
+  const previous = $(".rail-nav.prev",shell);
+  const next = $(".rail-nav.next",shell);
+  const maxScroll = Math.max(0,rail.scrollWidth - rail.clientWidth);
+
+  if(previous) previous.disabled = rail.scrollLeft <= 4;
+  if(next) next.disabled = rail.scrollLeft >= maxScroll - 4;
+}
+
+function initRails(){
+  $$(".card-rail").forEach(rail=>{
+    const update = ()=>updateRailControls(rail);
+    rail.addEventListener("scroll",update,{passive:true});
+    requestAnimationFrame(update);
+  });
+}
+
 function renderApp(){
   $$("#mainNav .nav-btn").forEach(button=>{
     button.classList.toggle("active",button.dataset.view === state.view);
   });
+
+  requestAnimationFrame(syncNavIndicator);
 
   const searched = catalog.filter(searchMatches);
   let html = "";
@@ -2229,6 +2420,7 @@ function renderApp(){
   }
 
   $("#app").innerHTML = html;
+  initRails();
 }
 
 /* =========================================================
@@ -2240,6 +2432,7 @@ function detailsMarkup(item){
 
   return `
     <div class="modal-visual" style="${artStyle(item)}">
+      ${artworkUrl(item) ? `<img class="modal-visual-image" src="${esc(artworkUrl(item))}" alt="" aria-hidden="true" onerror="this.hidden=true">` : ""}
       <div class="modal-title-area">
         <span class="eyebrow">${esc(LABEL[item.cat])}</span>
         <h2 id="modalTitle">${esc(item.title)}</h2>
@@ -2289,9 +2482,8 @@ function detailsMarkup(item){
         `).join("")}
 
         <div class="episode-help">
-          Select an episode number to open the video player. The card itself no longer starts a video automatically.
-          For Facebook, use a public embeddable video permalink such as a <strong>/videos/</strong> or
-          <strong>watch/?v=</strong> URL. Facebook <strong>/share/v/</strong> links often cannot be embedded.
+          Select an episode number to open the video player directly. MARAXIS will attempt to load the supplied
+          Facebook URL through Facebook's video plugin. The Facebook post must be public and allow embedding.
         </div>
       </div>
     </div>
@@ -2421,6 +2613,7 @@ function playerMarkup(source,title){
         title="${esc(title)}"
         allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
         allowfullscreen
+        loading="eager"
       ></iframe>
     `;
   }
@@ -2444,6 +2637,7 @@ function playerMarkup(source,title){
         title="${esc(title)}"
         allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
         allowfullscreen
+        loading="eager"
       ></iframe>
     `;
   }
@@ -2457,26 +2651,11 @@ function playerMarkup(source,title){
     }
 
     /*
-      IMPORTANT:
-      facebook.com/share/v/... is a sharing URL, not a reliable embed URL.
-      Instead of loading Facebook's own "Video Unavailable" screen, this
-      template shows a useful explanation and lets the visitor open the
-      original source.
-
-      To embed inside MARAXIS AI, replace the episode URL with a public
-      permalink such as:
-      https://www.facebook.com/USERNAME/videos/VIDEO_ID/
-      or
-      https://www.facebook.com/watch/?v=VIDEO_ID
+      Send the supplied Facebook URL to Facebook's official video plugin.
+      This now attempts playback even when the catalog contains a /share/v/
+      URL instead of blocking it in MARAXIS first. Facebook still decides
+      whether that public post is embeddable.
     */
-    if(isFacebookShareUrl(source.url)){
-      return playerErrorMarkup(
-        title,
-        "This episode currently uses a Facebook /share/v/ link. Facebook normally does not allow that share URL to be used as an embedded video. Replace it with the video's public /videos/ permalink or watch/?v= URL and this player will embed it here.",
-        source.url
-      );
-    }
-
     const src =
       `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(source.url)}` +
       `&show_text=false&autoplay=true&width=1280`;
@@ -2491,6 +2670,7 @@ function playerMarkup(source,title){
         frameborder="0"
         allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share; fullscreen"
         allowfullscreen
+        loading="eager"
       ></iframe>
     `;
   }
@@ -2613,6 +2793,20 @@ document.addEventListener("click",event=>{
     return;
   }
 
+  const railButton = event.target.closest("[data-rail-direction]");
+
+  if(railButton){
+    const rail = $(".card-rail",railButton.closest(".rail-shell"));
+
+    if(rail){
+      const direction = Number(railButton.dataset.railDirection) || 1;
+      const amount = Math.max(260,rail.clientWidth * .86);
+      rail.scrollBy({left:direction * amount,behavior:"smooth"});
+    }
+
+    return;
+  }
+
   const genreButton = event.target.closest("[data-genre]");
 
   if(genreButton){
@@ -2671,7 +2865,13 @@ document.addEventListener("keydown",event=>{
   }
 });
 
+window.addEventListener("resize",()=>{
+  syncNavIndicator();
+  $$(".card-rail").forEach(updateRailControls);
+});
+
 renderApp();
+requestAnimationFrame(syncNavIndicator);
 </script>
 </body>
 </html>
