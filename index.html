@@ -327,9 +327,17 @@ img{
   position:absolute;
   inset:0;
   z-index:-3;
+  overflow:hidden;
   background-size:cover;
   background-position:center 26%;
   transform:scale(1.015);
+}
+
+.hero-art img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 26%;
 }
 
 .hero-art::after{
@@ -571,9 +579,17 @@ main{
 .card-art{
   position:absolute;
   inset:0;
+  overflow:hidden;
   background-size:cover;
   background-position:center;
   transition:transform .35s ease;
+}
+
+.card-art img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
 }
 
 .media-card:hover .card-art{
@@ -1805,7 +1821,7 @@ const catalog = [
     hue:205,
     flags:"n",
     summary:"Follows Yūya Tenjou, a bullied high school student who discovers a portal to a fantasy world named Argena after his grandfather's death. In this world, he gains powerful abilities that enhance his physical and social standing on Earth. The series explores his journey as he navigates both realms, using his newfound skills to defeat powerful enemies and improve his life. It has been adapted into a manga and anime, with a second season set to premiere in January 2027.",
-    poster:"./image/anime/Cheat-Skill-in-Another-World.jpg",
+    poster:"image/anime/Cheat-Skill-in-Another-World.jpg",
     seasons:[
       {
         season:1,
@@ -2102,6 +2118,22 @@ function artStyle(item){
   `;
 }
 
+function heroArtMarkup(item){
+  const image = artworkUrl(item);
+
+  return image
+    ? `<div class="hero-art"><img src="${esc(image)}" alt="${esc(item.title)} poster"></div>`
+    : `<div class="hero-art" style="${artStyle(item)}"></div>`;
+}
+
+function cardArtMarkup(item){
+  const image = artworkUrl(item);
+
+  return image
+    ? `<div class="card-art"><img src="${esc(image)}" alt="${esc(item.title)} poster" loading="lazy"></div>`
+    : `<div class="card-art" style="${artStyle(item)}"></div>`;
+}
+
 function currentItem(){
   return catalog.find(item=>item.id === state.currentId) || null;
 }
@@ -2154,7 +2186,7 @@ function cardMarkup(item){
       aria-label="View details for ${esc(item.title)}"
       data-card-id="${esc(item.id)}"
     >
-      <div class="card-art" style="${artStyle(item)}"></div>
+      ${cardArtMarkup(item)}
 
       <div class="card-top">
         ${item.flags?.includes("n") ? '<span class="badge accent">New</span>' : ""}
@@ -2214,7 +2246,7 @@ function heroMarkup(){
       </div>
 
       <section class="hero">
-        <div class="hero-art" style="${artStyle(item)}"></div>
+        ${heroArtMarkup(item)}
         <div class="hero-glow"></div>
 
         <div class="hero-copy">
