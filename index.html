@@ -273,44 +273,6 @@ img{
   border-bottom:1px solid var(--line-strong);
 }
 
-.featured-label-row{
-  min-height:46px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:0 var(--page-pad);
-  border-bottom:1px solid var(--line);
-  background:var(--bg-soft);
-}
-
-.featured-label{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  color:var(--muted);
-  font-size:.72rem;
-  font-weight:700;
-  letter-spacing:.13em;
-  text-transform:uppercase;
-}
-
-.featured-label::before{
-  content:"";
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--accent-2);
-  box-shadow:0 0 18px rgba(34,211,238,.7);
-}
-
-.featured-title-mini{
-  color:var(--text);
-  font-size:.82rem;
-  font-weight:600;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
 
 .hero{
   position:relative;
@@ -321,6 +283,68 @@ img{
   align-items:flex-end;
   padding:clamp(72px,9vw,130px) var(--page-pad) clamp(54px,7vw,88px);
   background:#090b12;
+}
+
+.featured-controls{
+  position:absolute;
+  z-index:8;
+  top:22px;
+  right:var(--page-pad);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.featured-arrow{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:50%;
+  background:rgba(0,0,0,.48);
+  color:#fff;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  transition:transform .18s ease,background .18s ease;
+}
+
+.featured-arrow:hover{
+  transform:scale(1.05);
+  background:rgba(17,21,32,.88);
+}
+
+.featured-arrow svg{
+  width:18px;
+  height:18px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2.2;
+}
+
+.featured-dots{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 10px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:999px;
+  background:rgba(0,0,0,.38);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+.featured-dot{
+  width:8px;
+  height:8px;
+  border-radius:999px;
+  background:rgba(255,255,255,.38);
+  transition:width .22s ease,background .22s ease;
+}
+
+.featured-dot.active{
+  width:24px;
+  background:#fff;
 }
 
 .hero-art{
@@ -1280,16 +1304,20 @@ html[data-theme="light"] .modal-visual::after{
     height:37px;
   }
 
-  .featured-label-row{
-    min-height:42px;
+  .featured-controls{
+    top:14px;
+    right:16px;
+    gap:7px;
   }
 
-  .featured-label{
-    font-size:.64rem;
+  .featured-arrow{
+    width:36px;
+    height:36px;
   }
 
-  .featured-title-mini{
-    font-size:.75rem;
+  .featured-dots{
+    gap:6px;
+    padding:7px 9px;
   }
 
   .hero{
@@ -1732,85 +1760,6 @@ const catalog = [
   },
 
   {
-    id:"a1",
-    title:"Villainess Reset",
-    cat:"anime",
-    genres:["Isekai","Romance"],
-    year:2026,
-    duration:"23 min",
-    hue:320,
-    flags:"nt",
-    summary:"A gamer trapped in her favorite otome game uses knowledge of every route to survive the villainess role.",
-    poster:"",
-    seasons:makeSeasons([24],"youtube",YT_DEMO,"landscape")
-  },
-  {
-    id:"a2",
-    title:"Iron Lullaby",
-    cat:"anime",
-    genres:["Mecha","Action"],
-    year:2026,
-    duration:"16 min",
-    hue:215,
-    flags:"t",
-    summary:"A battle-worn pilot hums an old lullaby to keep her unstable mech calm through a final siege.",
-    poster:"",
-    seasons:makeSeasons([12],"facebook",FB_SAMPLE,"landscape")
-  },
-  {
-    id:"a3",
-    title:"Paper Moon Café",
-    cat:"anime",
-    genres:["Slice of Life","Romance"],
-    year:2025,
-    duration:"11 min",
-    hue:340,
-    flags:"",
-    summary:"Every midnight a tiny café appears on the moon, and two lonely strangers keep choosing the same table.",
-    poster:"",
-    seasons:makeSeasons([12],"tiktok",TT_DEMO,"portrait")
-  },
-  {
-    id:"a4",
-    title:"Dragons of Glass",
-    cat:"anime",
-    genres:["Fantasy","Action"],
-    year:2026,
-    duration:"9 min",
-    hue:195,
-    flags:"nt",
-    summary:"Crystal dragons migrate across a shattered sky, each wingbeat ringing like a cathedral bell.",
-    poster:"",
-    seasons:makeSeasons([12],"youtube",YT_DEMO,"landscape")
-  },
-  {
-    id:"a5",
-    title:"Crimson Hallway",
-    cat:"anime",
-    genres:["Horror","Isekai"],
-    year:2025,
-    duration:"21 min",
-    hue:8,
-    flags:"t",
-    summary:"A school corridor opens into a different world every night, and none of those worlds want students to leave.",
-    poster:"",
-    seasons:makeSeasons([10],"youtube",YT_DEMO,"landscape")
-  },
-  {
-    id:"a6",
-    title:"Star Cafe Chronicles",
-    cat:"anime",
-    genres:["Comedy","Sci-Fi"],
-    year:2026,
-    duration:"12 min",
-    hue:50,
-    flags:"n",
-    summary:"The galaxy's strangest customers argue, flirt, and plot over coffee at a station diner.",
-    poster:"",
-    seasons:makeSeasons([12],"tiktok",TT_DEMO,"portrait")
-  },
-
-  {
     id:"a7",
     title:"I Got a Cheat Skill in Another World and Became Unrivaled in the Real World",
     cat:"anime",
@@ -1948,6 +1897,40 @@ const catalog = [
     ]
   },
 
+
+
+  {
+    id:"a8",
+    title:"Wise Man's Grandchild",
+    cat:"anime",
+    genres:["Action","Comedy","Fantasy","Romance","Isekai"],
+    year:"",
+    duration:"23 min",
+    hue:42,
+    flags:"n",
+    summary:"In the kingdom of Earlshide, Merlin Wolford was once regarded as a national hero, hailed for both his power and achievements. Preferring a quiet life however, he secludes himself deep in the rural woods, dedicating his time to raising an orphan that he saved. This orphan is Shin, a normal salaryman in modern-day Japan who was reincarnated into Merlin's world while still retaining his past memories. As the years pass, Shin displays unparalleled talent in both magic casting and martial arts, much to Merlin's constant amazement. On his 15th birthday, however, it becomes apparent that Shin only developed his combat skills and nothing else, leaving him with blatant social awkwardness, a lack of common sense, and a middling sense of responsibility. As a result, Shin enrolls in the kingdom's Magic Academy to hone his skills and mature among other teenagers. However, living a normal life is impossible, as he is established as a local celebrity almost as soon as he arrives.",
+    poster:"image/anime/Wise-Mans-Grandchild.jpg",
+    seasons:[
+      {
+        season:1,
+        episodes:[
+          { episode:1, title:"Episode 1", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/1379882522568720", orientation:"landscape" } },
+          { episode:2, title:"Episode 2", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/103845136129904", orientation:"landscape" } },
+          { episode:3, title:"Episode 3", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/627528682486183", orientation:"landscape" } },
+          { episode:4, title:"Episode 4", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/1485615252263973", orientation:"landscape" } },
+          { episode:5, title:"Episode 5", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/1720419851734781", orientation:"landscape" } },
+          { episode:6, title:"Episode 6", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/807796557599275", orientation:"landscape" } },
+          { episode:7, title:"Episode 7", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/3620268934963499", orientation:"landscape" } },
+          { episode:8, title:"Episode 8", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/1923994607971084", orientation:"landscape" } },
+          { episode:9, title:"Episode 9", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/578082937824555", orientation:"landscape" } },
+          { episode:10, title:"Episode 10", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/819462799464448", orientation:"landscape" } },
+          { episode:11, title:"Episode 11", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/1792047927875825/", orientation:"landscape" } },
+          { episode:12, title:"Episode 12", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/1346495742744491", orientation:"landscape" } }
+        ]
+      }
+    ]
+  },
+
   {
     id:"m1",
     title:"Afterlight",
@@ -2047,6 +2030,7 @@ const catalog = [
 
 const state = {
   view:"home",
+  featuredIndex:0,
   genre:"All",
   query:"",
   currentId:null,
@@ -2118,12 +2102,33 @@ function artStyle(item){
   `;
 }
 
+function heroArtworkUrl(item){
+  if(item?.poster){
+    return item.poster;
+  }
+
+  const source = firstEpisode(item)?.source;
+  return source?.thumbnail || "";
+}
+
+function heroFallbackStyle(item){
+  const hue = Number.isFinite(Number(item?.hue)) ? Number(item.hue) : 250;
+  const hue2 = (hue + 55) % 360;
+
+  return `
+    background-image:
+      radial-gradient(circle at 72% 22%,hsla(${hue},82%,58%,.34),transparent 30%),
+      radial-gradient(circle at 28% 65%,hsla(${hue2},72%,52%,.18),transparent 34%),
+      linear-gradient(135deg,hsl(${hue},34%,18%),#090b12 72%)
+  `;
+}
+
 function heroArtMarkup(item){
-  const image = artworkUrl(item);
+  const image = heroArtworkUrl(item);
 
   return image
     ? `<div class="hero-art"><img src="${esc(image)}" alt="${esc(item.title)} poster"></div>`
-    : `<div class="hero-art" style="${artStyle(item)}"></div>`;
+    : `<div class="hero-art" style="${heroFallbackStyle(item)}"></div>`;
 }
 
 function cardArtMarkup(item){
@@ -2229,61 +2234,141 @@ function railMarkup(title,items){
   `;
 }
 
+const FEATURED_IDS = ["a7","a8","d1","m1","m4"];
+let featuredTimer = null;
+
+function featuredItems(){
+  return FEATURED_IDS
+    .map(id=>catalog.find(item=>item.id === id))
+    .filter(Boolean)
+    .slice(0,5);
+}
+
 function featuredItem(){
-  return catalog.find(item=>item.id === "a7")
-    || catalog.find(item=>item.flags?.includes("t"))
-    || catalog[0];
+  const items = featuredItems();
+
+  if(!items.length){
+    return catalog.find(item=>item.flags?.includes("t")) || catalog[0];
+  }
+
+  state.featuredIndex = ((state.featuredIndex % items.length) + items.length) % items.length;
+  return items[state.featuredIndex];
+}
+
+function featuredControlsMarkup(items){
+  if(items.length <= 1) return "";
+
+  return `
+    <div class="featured-controls" aria-label="Featured titles controls">
+      <button class="featured-arrow" type="button" data-feature-step="-1" aria-label="Previous featured title">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+      </button>
+
+      <div class="featured-dots" aria-label="Choose featured title">
+        ${items.map((entry,index)=>`
+          <button
+            class="featured-dot ${index === state.featuredIndex ? "active" : ""}"
+            type="button"
+            data-feature-index="${index}"
+            aria-label="Show featured title ${index + 1}: ${esc(entry.title)}"
+            aria-pressed="${index === state.featuredIndex ? "true" : "false"}"
+          ></button>
+        `).join("")}
+      </div>
+
+      <button class="featured-arrow" type="button" data-feature-step="1" aria-label="Next featured title">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+      </button>
+    </div>
+  `;
+}
+
+function heroContentMarkup(item,items){
+  return `
+    ${heroArtMarkup(item)}
+    <div class="hero-glow"></div>
+    ${featuredControlsMarkup(items)}
+
+    <div class="hero-copy">
+      <span class="eyebrow">${esc(LABEL[item.cat])} · Featured</span>
+
+      <h1>${esc(item.title)}</h1>
+
+      <div class="meta-row">
+        ${item.year ? `<span>${esc(item.year)}</span><span class="meta-dot"></span>` : ""}
+        <span>${esc(item.duration)}</span>
+        <span class="meta-dot"></span>
+        <span>${esc(item.genres.join(" / "))}</span>
+        ${item.rating ? `<span class="meta-dot"></span><span>${esc(item.rating)}</span>` : ""}
+      </div>
+
+      <p class="hero-summary">${esc(item.summary)}</p>
+
+      <div class="hero-actions">
+        <button class="action-btn primary" type="button" data-details-id="${esc(item.id)}">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 5v14l11-7z"></path>
+          </svg>
+          Browse Episodes
+        </button>
+
+        <button class="action-btn secondary" type="button" data-details-id="${esc(item.id)}">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 10v6M12 7h.01"></path>
+          </svg>
+          More Info
+        </button>
+      </div>
+    </div>
+  `;
 }
 
 function heroMarkup(){
+  const items = featuredItems();
   const item = featuredItem();
+
+  if(!item) return "";
 
   return `
     <section class="featured-wrap">
-      <div class="featured-label-row">
-        <span class="featured-label">Featured trailer</span>
-        <span class="featured-title-mini">${esc(item.title)}</span>
-      </div>
-
-      <section class="hero">
-        ${heroArtMarkup(item)}
-        <div class="hero-glow"></div>
-
-        <div class="hero-copy">
-          <span class="eyebrow">${esc(LABEL[item.cat])} · Featured</span>
-
-          <h1>${esc(item.title)}</h1>
-
-          <div class="meta-row">
-            ${item.year ? `<span>${esc(item.year)}</span><span class="meta-dot"></span>` : ""}
-            <span>${esc(item.duration)}</span>
-            <span class="meta-dot"></span>
-            <span>${esc(item.genres.join(" / "))}</span>
-            ${item.rating ? `<span class="meta-dot"></span><span>${esc(item.rating)}</span>` : ""}
-          </div>
-
-          <p class="hero-summary">${esc(item.summary)}</p>
-
-          <div class="hero-actions">
-            <button class="action-btn primary" type="button" data-details-id="${esc(item.id)}">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M8 5v14l11-7z"></path>
-              </svg>
-              Browse Episodes
-            </button>
-
-            <button class="action-btn secondary" type="button" data-details-id="${esc(item.id)}">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="12" r="9"></circle>
-                <path d="M12 10v6M12 7h.01"></path>
-              </svg>
-              More Info
-            </button>
-          </div>
-        </div>
+      <section class="hero" id="featuredHero">
+        ${heroContentMarkup(item,items)}
       </section>
     </section>
   `;
+}
+
+function setFeaturedIndex(index){
+  const items = featuredItems();
+  if(!items.length) return;
+
+  state.featuredIndex = ((index % items.length) + items.length) % items.length;
+
+  const hero = $("#featuredHero");
+  if(hero){
+    hero.innerHTML = heroContentMarkup(items[state.featuredIndex],items);
+  }
+}
+
+function stepFeatured(direction=1){
+  setFeaturedIndex(state.featuredIndex + direction);
+}
+
+function restartFeaturedRotation(){
+  if(featuredTimer){
+    clearInterval(featuredTimer);
+    featuredTimer = null;
+  }
+
+  if(state.view !== "home" || state.query.trim()) return;
+
+  featuredTimer = setInterval(()=>{
+    if(document.hidden) return;
+    if($("#detailsModal")?.classList.contains("open")) return;
+    if($("#playerOverlay")?.classList.contains("open")) return;
+    stepFeatured(1);
+  },8000);
 }
 
 function renderHome(){
@@ -2453,6 +2538,7 @@ function renderApp(){
 
   $("#app").innerHTML = html;
   initRails();
+  restartFeaturedRotation();
 }
 
 /* =========================================================
@@ -2822,6 +2908,22 @@ document.addEventListener("click",event=>{
 
     renderApp();
     window.scrollTo({top:0,behavior:"smooth"});
+    return;
+  }
+
+  const featureStepButton = event.target.closest("[data-feature-step]");
+
+  if(featureStepButton){
+    stepFeatured(Number(featureStepButton.dataset.featureStep) || 1);
+    restartFeaturedRotation();
+    return;
+  }
+
+  const featureDotButton = event.target.closest("[data-feature-index]");
+
+  if(featureDotButton){
+    setFeaturedIndex(Number(featureDotButton.dataset.featureIndex) || 0);
+    restartFeaturedRotation();
     return;
   }
 
