@@ -757,6 +757,98 @@ main{
   color:var(--muted);
 }
 
+
+/* Movie collection episode/film selector */
+.collection-film-title{
+  display:none;
+}
+
+.coming-soon-label{
+  display:none;
+}
+
+.episode-btn.coming-soon{
+  opacity:.72;
+  cursor:not-allowed;
+  border-style:dashed;
+}
+
+.new-release-empty{
+  min-height:150px;
+  display:grid;
+  place-items:center;
+  margin:15px var(--page-pad) 24px;
+  padding:28px 18px;
+  border:1px dashed var(--line-strong);
+  border-radius:var(--radius);
+  background:var(--surface);
+}
+
+@media (min-width:701px){
+  .details-modal .episode-grid:has(.collection-film-title){
+    grid-template-columns:1fr;
+  }
+
+  .details-modal .episode-grid:has(.collection-film-title) .episode-btn{
+    min-height:54px;
+    display:grid;
+    grid-template-columns:38px 1fr auto;
+    align-items:center;
+    justify-items:start;
+    gap:12px;
+    padding:9px 14px;
+    text-align:left;
+  }
+
+  .collection-film-title,
+  .coming-soon-label{
+    display:block;
+  }
+
+  .collection-film-title{
+    font-size:.82rem;
+    font-weight:600;
+  }
+
+  .coming-soon-label{
+    color:var(--muted);
+    font-size:.72rem;
+    font-weight:700;
+  }
+}
+
+@media (max-width:700px){
+  .details-modal .episode-grid:has(.collection-film-title){
+    grid-template-columns:1fr;
+  }
+
+  .details-modal .episode-grid:has(.collection-film-title) .episode-btn{
+    min-height:52px;
+    display:grid;
+    grid-template-columns:34px minmax(0,1fr);
+    gap:10px;
+    align-items:center;
+    justify-items:start;
+    padding:8px 12px;
+    text-align:left;
+  }
+
+  .collection-film-title{
+    display:block;
+    min-width:0;
+    font-size:.78rem;
+    line-height:1.35;
+  }
+
+  .coming-soon-label{
+    display:block;
+    grid-column:2;
+    margin-top:-5px;
+    color:var(--muted);
+    font-size:.68rem;
+  }
+}
+
 /* =========================================================
    DETAILS MODAL
    Card click opens this first. No video autoplay here.
@@ -2211,6 +2303,8 @@ const catalog = [
     rating:"PG-13 - Teens 13 or older",
     hue:205,
     flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
     summary:"Follows Yūya Tenjou, a bullied high school student who discovers a portal to a fantasy world named Argena after his grandfather's death. In this world, he gains powerful abilities that enhance his physical and social standing on Earth. The series explores his journey as he navigates both realms, using his newfound skills to defeat powerful enemies and improve his life. It has been adapted into a manga and anime, with a second season set to premiere in January 2027.",
     poster:"image/anime/Cheat-Skill-in-Another-World.jpg",
     seasons:[
@@ -2350,6 +2444,8 @@ const catalog = [
     duration:"23 min",
     hue:42,
     flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
     summary:"In the kingdom of Earlshide, Merlin Wolford was once regarded as a national hero, hailed for both his power and achievements. Preferring a quiet life however, he secludes himself deep in the rural woods, dedicating his time to raising an orphan that he saved. This orphan is Shin, a normal salaryman in modern-day Japan who was reincarnated into Merlin's world while still retaining his past memories. As the years pass, Shin displays unparalleled talent in both magic casting and martial arts, much to Merlin's constant amazement. On his 15th birthday, however, it becomes apparent that Shin only developed his combat skills and nothing else, leaving him with blatant social awkwardness, a lack of common sense, and a middling sense of responsibility. As a result, Shin enrolls in the kingdom's Magic Academy to hone his skills and mature among other teenagers. However, living a normal life is impossible, as he is established as a local celebrity almost as soon as he arrives.",
     poster:"image/anime/Wise-Mans-Grandchild.jpg",
     seasons:[
@@ -2374,95 +2470,33 @@ const catalog = [
   },
 
   {
-    id:"m1",
-    title:"Afterlight",
+    id:"m8",
+    title:"Ice Age",
     cat:"movie",
-    genres:["Action","Sci-Fi"],
-    year:2026,
-    duration:"1h 46m",
-    hue:260,
-    flags:"nt",
-    summary:"A rescue pilot races across a collapsing orbital city before its artificial sun goes dark forever.",
-    poster:"",
-    seasons:makeSeasons([1],"youtube",YT_DEMO,"landscape")
-  },
-  {
-    id:"m2",
-    title:"The Last Map",
-    cat:"movie",
-    genres:["Adventure","Mystery"],
-    year:2026,
-    duration:"1h 58m",
-    hue:35,
+    genres:["Adventure","Comedy","Animation","Family"],
+    year:"2002–2027",
+    duration:"81 min",
+    hue:202,
     flags:"n",
-    summary:"A cartographer finds a map that redraws itself every midnight and points toward a city erased from history.",
-    poster:"",
-    seasons:makeSeasons([1],"facebook",FB_SAMPLE,"landscape")
-  },
-  {
-    id:"m3",
-    title:"Midnight Check-In",
-    cat:"movie",
-    genres:["Comedy","Drama"],
-    year:2025,
-    duration:"1h 34m",
-    hue:315,
-    flags:"t",
-    summary:"A burned-out hotel clerk and a runaway celebrity spend one impossible night solving everyone else's problems.",
-    poster:"",
-    seasons:makeSeasons([1],"youtube",YT_DEMO,"landscape")
-  },
-  {
-    id:"m4",
-    title:"Kingdom of Embers",
-    cat:"movie",
-    genres:["Fantasy","Adventure"],
-    year:2026,
-    duration:"2h 08m",
-    hue:18,
-    flags:"nt",
-    summary:"An exiled heir returns to a kingdom powered by living fire and discovers the throne has chosen someone else.",
-    poster:"",
-    seasons:makeSeasons([1],"youtube",YT_DEMO,"landscape")
-  },
-  {
-    id:"m5",
-    title:"Room 404",
-    cat:"movie",
-    genres:["Horror","Mystery"],
-    year:2026,
-    duration:"1h 41m",
-    hue:355,
-    flags:"n",
-    summary:"A hotel room missing from every floor plan appears only to guests carrying the same forgotten memory.",
-    poster:"",
-    seasons:makeSeasons([1],"tiktok",TT_DEMO,"portrait")
-  },
-  {
-    id:"m6",
-    title:"Letters in Winter",
-    cat:"movie",
-    genres:["Romance","Drama"],
-    year:2025,
-    duration:"1h 49m",
-    hue:335,
-    flags:"",
-    summary:"Two strangers begin exchanging letters through a library book even though they live five years apart.",
-    poster:"",
-    seasons:makeSeasons([1],"youtube",YT_DEMO,"landscape")
-  },
-  {
-    id:"m7",
-    title:"Blackout Mile",
-    cat:"movie",
-    genres:["Thriller","Action"],
-    year:2026,
-    duration:"1h 37m",
-    hue:210,
-    flags:"t",
-    summary:"During a citywide blackout, a paramedic has one hour to cross a locked-down district with evidence everyone wants.",
-    poster:"",
-    seasons:makeSeasons([1],"facebook",FB_SAMPLE,"landscape")
+    releaseMonth:10,
+    releaseYear:2026,
+    collection:true,
+    summary:"The Ice Age franchise follows Manny the mammoth, Sid the sloth, Diego the saber-toothed tiger, and their friends as they return a human baby to its family, escape melting ice, explore a hidden dinosaur world, fight pirates, prevent a cosmic disaster, and face dangerous adventures while building a strong friendship and family.",
+    poster:"image/movie/Ice-Age.jpg",
+    seasons:[
+      {
+        season:1,
+        episodes:[
+          { episode:1, title:"Ice Age (2002)", source:{ provider:"youtube", url:"https://youtu.be/tlmt0L5hFDc?si=xI0MTYpwIQlK0PIt", orientation:"landscape" } },
+          { episode:2, title:"Ice Age: The Meltdown (2006)", source:{ provider:"youtube", url:"https://youtu.be/j3DuBxuwvw0?si=t1x6HRFD60Nyq7n4", orientation:"landscape" } },
+          { episode:3, title:"Ice Age: Dawn of the Dinosaurs (2009)", source:{ provider:"youtube", url:"https://youtu.be/WaO1ZJNSXRQ?si=VxfAsJ-Rgs1qUDCQ", orientation:"landscape" } },
+          { episode:4, title:"Ice Age: Continental Drift (2012)", source:{ provider:"youtube", url:"https://youtu.be/UUdD5rdRYvQ?si=t9JHO1ecQABm9owF", orientation:"landscape" } },
+          { episode:5, title:"Ice Age: Collision Course (2016)", source:{ provider:"youtube", url:"https://youtu.be/L8s-pSt75Jo?si=Wv2TNar1CLitB-hc", orientation:"landscape" } },
+          { episode:6, title:"The Ice Age Adventures of Buck Wild (2022)", source:{ provider:"youtube", url:"https://youtu.be/7UdO-fG-18o?si=c9w2krHdAjv0S4Ds", orientation:"landscape" } },
+          { episode:7, title:"Ice Age: Boiling Point (2027)", comingSoon:true, source:null }
+        ]
+      }
+    ]
   }
 ];
 
@@ -2676,7 +2710,7 @@ function railMarkup(title,items){
   `;
 }
 
-const FEATURED_IDS = ["a7","a8","d1","m1","m4"];
+const FEATURED_IDS = ["a7","a8","m8","d1"];
 let featuredTimer = null;
 
 function featuredItems(){
@@ -2838,13 +2872,42 @@ function restartFeaturedRotation(){
   },8000);
 }
 
+function currentMonthlyReleases(items){
+  const now = new Date();
+  const currentMonth = now.getMonth() + 1;
+  const currentYear = now.getFullYear();
+
+  return items.filter(item=>
+    Number(item.releaseMonth) === currentMonth &&
+    Number(item.releaseYear) === currentYear
+  );
+}
+
+function newReleasesMarkup(items){
+  const releases = currentMonthlyReleases(items);
+
+  if(releases.length){
+    return railMarkup("New Releases",releases);
+  }
+
+  return `
+    <section class="content-section">
+      <div class="section-heading">
+        <h2>New Releases</h2>
+        <p>0 titles</p>
+      </div>
+      <div class="empty-state new-release-empty">No new releases within this month.</div>
+    </section>
+  `;
+}
+
 function renderHome(){
   const items = catalog.filter(searchMatches);
 
   return `
     ${heroMarkup()}
     ${railMarkup("Trending Now",items.filter(item=>item.flags?.includes("t")))}
-    ${railMarkup("New Releases",items.filter(item=>item.flags?.includes("n")))}
+    ${newReleasesMarkup(items)}
     ${railMarkup("AI Drama",items.filter(item=>item.cat === "drama"))}
     ${railMarkup("Anime",items.filter(item=>item.cat === "anime"))}
     ${railMarkup("Movies",items.filter(item=>item.cat === "movie"))}
@@ -3041,8 +3104,8 @@ function detailsMarkup(item){
         ${seasons.map(season=>`
           <section class="season-block">
             <div class="season-title-row">
-              <h3>${item.cat === "movie" ? "Movie" : `Season ${season.season}`}</h3>
-              <span>${season.episodes.length} episode${season.episodes.length === 1 ? "" : "s"}</span>
+              <h3>${item.collection ? "Movies" : (item.cat === "movie" ? "Movie" : `Season ${season.season}`)}</h3>
+              <span>${season.episodes.length} ${item.collection ? `film${season.episodes.length === 1 ? "" : "s"}` : `episode${season.episodes.length === 1 ? "" : "s"}`}</span>
             </div>
 
             <div class="episode-grid">
@@ -3052,14 +3115,15 @@ function detailsMarkup(item){
                     state.season === season.season && state.episode === episode.episode
                       ? "active"
                       : ""
-                  }"
+                  } ${episode.comingSoon ? "coming-soon" : ""}"
                   type="button"
                   data-season="${season.season}"
                   data-episode="${episode.episode}"
                   title="${esc(episode.title)}"
-                  aria-label="${esc(episode.title)}"
+                  aria-label="${esc(episode.title)}${episode.comingSoon ? " - Coming Soon" : ""}"
+                  ${episode.comingSoon ? "disabled" : ""}
                 >
-                  ${episode.episode}
+                  ${item.collection ? `<span class="collection-film-number">${episode.episode}</span><span class="collection-film-title">${esc(episode.title)}</span>${episode.comingSoon ? '<span class="coming-soon-label">Coming Soon..</span>' : ''}` : episode.episode}
                 </button>
               `).join("")}
             </div>
@@ -3295,9 +3359,11 @@ function openPlayer(){
 
   $("#playerTitle").textContent = item.title;
   $("#playerEpisodeLabel").textContent =
-    item.cat === "movie"
-      ? "Movie"
-      : `Season ${state.season} · Episode ${state.episode}`;
+    item.collection
+      ? episode.title
+      : item.cat === "movie"
+        ? "Movie"
+        : `Season ${state.season} · Episode ${state.episode}`;
 
   $("#playerShell").innerHTML = playerMarkup(episode.source,item.title);
 
