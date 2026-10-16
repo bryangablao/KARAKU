@@ -1457,6 +1457,448 @@ html[data-theme="light"] .modal-visual::after{
     transition:none !important;
   }
 }
+
+
+/* =========================================================
+   RESPONSIVE + THEME-AWARE FEATURED EXPERIENCE
+========================================================= */
+html[data-theme="dark"]{
+  --hero-text:#ffffff;
+  --hero-muted:#d5d9e2;
+  --hero-meta:#c9ced9;
+  --hero-control-bg:rgba(7,8,13,.62);
+  --hero-control-bg-hover:rgba(20,24,34,.92);
+  --hero-control-border:rgba(255,255,255,.20);
+  --hero-control-text:#ffffff;
+  --hero-dot:rgba(255,255,255,.42);
+  --hero-dot-active:#ffffff;
+  --hero-chip-bg:rgba(7,8,13,.56);
+  --hero-chip-border:rgba(255,255,255,.17);
+  --hero-secondary-bg:rgba(255,255,255,.11);
+  --hero-secondary-border:rgba(255,255,255,.18);
+  --hero-secondary-text:#ffffff;
+}
+
+html[data-theme="light"]{
+  --hero-text:#101828;
+  --hero-muted:#344054;
+  --hero-meta:#344054;
+  --hero-control-bg:rgba(255,255,255,.80);
+  --hero-control-bg-hover:rgba(255,255,255,.96);
+  --hero-control-border:rgba(16,24,40,.16);
+  --hero-control-text:#101828;
+  --hero-dot:rgba(16,24,40,.30);
+  --hero-dot-active:#101828;
+  --hero-chip-bg:rgba(255,255,255,.72);
+  --hero-chip-border:rgba(16,24,40,.14);
+  --hero-secondary-bg:rgba(255,255,255,.78);
+  --hero-secondary-border:rgba(16,24,40,.15);
+  --hero-secondary-text:#101828;
+}
+
+.hero{
+  min-height:clamp(520px,70vh,720px);
+}
+
+.hero-art,
+.hero-copy,
+.featured-controls{
+  transition:
+    opacity .46s cubic-bezier(.22,1,.36,1),
+    transform .58s cubic-bezier(.22,1,.36,1),
+    filter .46s ease;
+}
+
+.hero.featured-leaving .hero-art{
+  opacity:0;
+  transform:translateX(-3.5%) scale(1.035);
+  filter:blur(2px);
+}
+
+.hero.featured-leaving .hero-copy{
+  opacity:0;
+  transform:translateX(-28px);
+}
+
+.hero.featured-leaving .featured-controls{
+  opacity:.45;
+}
+
+.hero.featured-entering .hero-art{
+  opacity:0;
+  transform:translateX(3.5%) scale(1.035);
+  filter:blur(2px);
+}
+
+.hero.featured-entering .hero-copy{
+  opacity:0;
+  transform:translateX(28px);
+}
+
+.hero h1{
+  color:var(--hero-text);
+  text-shadow:0 2px 24px rgba(0,0,0,.12);
+}
+
+.meta-row{
+  color:var(--hero-meta);
+}
+
+.hero-summary{
+  color:var(--hero-muted);
+}
+
+.eyebrow{
+  color:var(--hero-text);
+  background:var(--hero-chip-bg);
+  border-color:var(--hero-chip-border);
+}
+
+.action-btn.secondary{
+  color:var(--hero-secondary-text);
+  background:var(--hero-secondary-bg);
+  border-color:var(--hero-secondary-border);
+}
+
+.featured-controls{
+  gap:9px;
+  padding:5px;
+  border:1px solid var(--hero-control-border);
+  border-radius:999px;
+  background:var(--hero-control-bg);
+  box-shadow:0 12px 34px rgba(0,0,0,.16);
+  backdrop-filter:blur(16px) saturate(140%);
+  -webkit-backdrop-filter:blur(16px) saturate(140%);
+}
+
+.featured-arrow{
+  width:38px;
+  height:38px;
+  border:0;
+  background:transparent;
+  color:var(--hero-control-text);
+  box-shadow:none;
+}
+
+.featured-arrow:hover{
+  background:var(--hero-control-bg-hover);
+  transform:scale(1.06);
+}
+
+.featured-dots{
+  gap:6px;
+  padding:0 3px;
+  border:0;
+  background:transparent;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+}
+
+.featured-dot{
+  position:relative;
+  width:10px;
+  height:10px;
+  border:1px solid transparent;
+  background:var(--hero-dot);
+  opacity:.82;
+  transform:scale(.88);
+  transition:
+    width .35s cubic-bezier(.22,1,.36,1),
+    transform .25s ease,
+    opacity .25s ease,
+    background .25s ease,
+    box-shadow .25s ease;
+}
+
+.featured-dot:hover{
+  opacity:1;
+  transform:scale(1.06);
+}
+
+.featured-dot.active{
+  width:30px;
+  background:var(--hero-dot-active);
+  opacity:1;
+  transform:scale(1);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--hero-dot-active) 12%,transparent);
+}
+
+html[data-theme="light"] .hero-art::after{
+  background:
+    linear-gradient(90deg,rgba(245,247,251,.97) 0%,rgba(245,247,251,.82) 36%,rgba(245,247,251,.22) 68%,rgba(245,247,251,.34) 100%),
+    linear-gradient(0deg,var(--bg) 0%,rgba(245,247,251,.22) 46%,rgba(245,247,251,.06) 100%);
+}
+
+html[data-theme="dark"] .hero-art::after{
+  background:
+    linear-gradient(90deg,rgba(6,7,12,.96) 0%,rgba(6,7,12,.73) 37%,rgba(6,7,12,.23) 68%,rgba(6,7,12,.45) 100%),
+    linear-gradient(0deg,var(--bg) 0%,rgba(7,8,13,.25) 44%,rgba(7,8,13,.10) 100%);
+}
+
+@media (max-width:1000px){
+  .site-header{
+    padding-left:clamp(14px,3vw,28px);
+    padding-right:clamp(14px,3vw,28px);
+  }
+
+  .hero{
+    min-height:clamp(500px,72svh,670px);
+    padding-left:clamp(20px,5vw,46px);
+    padding-right:clamp(20px,5vw,46px);
+  }
+
+  .featured-controls{
+    right:clamp(16px,3vw,28px);
+  }
+
+  .footer-inner{
+    padding-left:clamp(20px,4vw,38px);
+    padding-right:clamp(20px,4vw,38px);
+  }
+}
+
+@media (max-width:700px){
+  body{
+    font-size:15px;
+  }
+
+  .site-header{
+    min-width:0;
+    padding:0 12px;
+  }
+
+  .brand{
+    min-width:0;
+  }
+
+  .brand span{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .header-spacer{
+    min-width:4px;
+  }
+
+  .hero{
+    min-height:calc(100svh - var(--header-h));
+    align-items:flex-end;
+    padding:104px 18px 42px;
+  }
+
+  .hero-art,
+  .hero-art img{
+    background-position:center 18%;
+    object-position:center 18%;
+  }
+
+  html[data-theme="dark"] .hero-art::after{
+    background:
+      linear-gradient(0deg,var(--bg) 0%,rgba(7,8,13,.76) 40%,rgba(7,8,13,.26) 72%,rgba(7,8,13,.12) 100%),
+      linear-gradient(90deg,rgba(7,8,13,.55),rgba(7,8,13,.10));
+  }
+
+  html[data-theme="light"] .hero-art::after{
+    background:
+      linear-gradient(0deg,var(--bg) 0%,rgba(245,247,251,.88) 38%,rgba(245,247,251,.44) 72%,rgba(245,247,251,.14) 100%),
+      linear-gradient(90deg,rgba(245,247,251,.44),rgba(245,247,251,.06));
+  }
+
+  .featured-controls{
+    top:14px;
+    left:50%;
+    right:auto;
+    transform:translateX(-50%);
+    gap:4px;
+    max-width:calc(100% - 24px);
+  }
+
+  .hero.featured-leaving .featured-controls,
+  .hero.featured-entering .featured-controls{
+    transform:translateX(-50%);
+  }
+
+  .featured-arrow{
+    width:34px;
+    height:34px;
+  }
+
+  .featured-arrow svg{
+    width:16px;
+    height:16px;
+  }
+
+  .featured-dot{
+    width:8px;
+    height:8px;
+  }
+
+  .featured-dot.active{
+    width:24px;
+  }
+
+  .hero-copy{
+    width:100%;
+  }
+
+  .hero h1{
+    max-width:100%;
+    margin-top:12px;
+    font-size:clamp(2rem,10.5vw,3.25rem);
+    line-height:1.04;
+  }
+
+  .meta-row{
+    gap:7px 9px;
+    font-size:.76rem;
+  }
+
+  .hero-summary{
+    margin:13px 0 18px;
+    font-size:.89rem;
+    line-height:1.58;
+    -webkit-line-clamp:4;
+  }
+
+  .hero-actions{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .action-btn{
+    min-width:0;
+    padding:0 12px;
+    font-size:.82rem;
+  }
+
+  .content-section{
+    margin:28px 0;
+  }
+
+  .section-heading{
+    align-items:flex-start;
+    padding:0 16px;
+  }
+
+  .card-rail{
+    gap:11px;
+    padding:13px 16px 21px;
+  }
+
+  .media-card{
+    flex-basis:min(78vw,286px);
+  }
+
+  .grid-page{
+    padding-left:16px;
+    padding-right:16px;
+  }
+
+  .cards-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .cards-grid .media-card{
+    min-width:0;
+  }
+
+  .card-info{
+    padding:30px 10px 10px;
+  }
+
+  .card-info h3{
+    font-size:.79rem;
+  }
+
+  .card-top{
+    top:7px;
+    left:7px;
+    right:7px;
+  }
+
+  .badge{
+    min-height:22px;
+    padding:0 7px;
+    font-size:.55rem;
+  }
+
+  .modal-body{
+    padding-left:16px;
+    padding-right:16px;
+  }
+
+  .footer-inner{
+    grid-template-columns:1fr 1fr;
+    padding:34px 18px 24px;
+  }
+
+  .footer-brand{
+    grid-column:1 / -1;
+  }
+
+  .footer-bottom{
+    margin:0 18px;
+  }
+}
+
+@media (max-width:480px){
+  .brand span{
+    max-width:125px;
+  }
+
+  .hero{
+    padding-left:14px;
+    padding-right:14px;
+    padding-bottom:30px;
+  }
+
+  .hero-actions{
+    grid-template-columns:1fr;
+  }
+
+  .action-btn{
+    width:100%;
+  }
+
+  .cards-grid{
+    grid-template-columns:1fr;
+  }
+
+  .cards-grid .media-card{
+    aspect-ratio:16/10;
+  }
+
+  .footer-inner{
+    grid-template-columns:1fr;
+  }
+
+  .footer-brand{
+    grid-column:auto;
+  }
+}
+
+@media (max-width:360px){
+  .brand span{
+    display:none;
+  }
+
+  .featured-controls{
+    padding:4px;
+  }
+
+  .featured-arrow{
+    width:31px;
+    height:31px;
+  }
+
+  .featured-dot.active{
+    width:19px;
+  }
+}
+
 </style>
 </head>
 
@@ -2339,16 +2781,41 @@ function heroMarkup(){
   `;
 }
 
+let featuredTransitionTimer = null;
+let featuredTransitioning = false;
+
 function setFeaturedIndex(index){
   const items = featuredItems();
   if(!items.length) return;
 
-  state.featuredIndex = ((index % items.length) + items.length) % items.length;
-
+  const nextIndex = ((index % items.length) + items.length) % items.length;
   const hero = $("#featuredHero");
-  if(hero){
-    hero.innerHTML = heroContentMarkup(items[state.featuredIndex],items);
+
+  if(!hero){
+    state.featuredIndex = nextIndex;
+    return;
   }
+
+  if(featuredTransitioning || nextIndex === state.featuredIndex) return;
+  featuredTransitioning = true;
+  hero.classList.remove("featured-entering");
+  hero.classList.add("featured-leaving");
+
+  if(featuredTransitionTimer) clearTimeout(featuredTransitionTimer);
+
+  featuredTransitionTimer = setTimeout(()=>{
+    state.featuredIndex = nextIndex;
+    hero.innerHTML = heroContentMarkup(items[state.featuredIndex],items);
+    hero.classList.remove("featured-leaving");
+    hero.classList.add("featured-entering");
+
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        hero.classList.remove("featured-entering");
+        featuredTransitioning = false;
+      });
+    });
+  },360);
 }
 
 function stepFeatured(direction=1){
@@ -2599,10 +3066,6 @@ function detailsMarkup(item){
           </section>
         `).join("")}
 
-        <div class="episode-help">
-          Select an episode number to open the video player directly. MARAXIS will attempt to load the supplied
-          Facebook URL through Facebook's video plugin. The Facebook post must be public and allow embedding.
-        </div>
       </div>
     </div>
   `;
