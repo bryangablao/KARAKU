@@ -45,7 +45,6 @@ svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke
 .cnt{position:absolute;top:2px;right:0;background:var(--ac3);color:#fff;font-size:.62rem;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:grid;place-items:center;padding:0 4px}
 .pill-btn{border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:.82rem;font-weight:600;background:var(--bg2);white-space:nowrap;display:flex;align-items:center;gap:6px}
 .pill-btn:hover{border-color:var(--ac)}
-.pill-btn.up{background:var(--grad);color:#fff;border-color:transparent}
 .avatar{width:34px;height:34px;border-radius:50%;object-fit:cover;background:var(--ac);color:#fff;display:grid;place-items:center;font-weight:700}
 .tg .sun{display:none}
 [data-theme=light] .tg .sun{display:block}
@@ -142,11 +141,6 @@ svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke
 .gbtn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:42px;padding:0 14px;margin:18px 0 10px;background:#fff;color:#3c4043;border:1px solid #dadce0;border-radius:4px;font:500 14px/1 'Roboto',Arial,sans-serif;letter-spacing:.25px;transition:box-shadow .2s,background .2s}
 .gbtn:hover{background:#f8f9fa;box-shadow:0 1px 3px rgba(60,64,67,.3)}
 .gbtn svg{width:18px;height:18px}
-.form{display:grid;gap:12px;margin-top:14px}
-.form label{font-size:.82rem;color:var(--muted);display:grid;gap:5px}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;display:none}
-.bar i{display:block;height:100%;width:0;background:var(--grad)}
 
 /* sign-in modal */
 .auth{display:grid;grid-template-columns:1fr 1.15fr;width:min(800px,100%);padding:0}
@@ -196,7 +190,6 @@ svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke
  .mb2{grid-template-columns:1fr}
  .fg{grid-template-columns:1fr 1fr}
  .dots{left:0;right:0;justify-content:center;bottom:22px}
- .pill-btn.up span{display:none}
 }
 @media(max-width:600px){
  :root{--hh:58px}
@@ -215,7 +208,6 @@ svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke
  .mb2{padding:16px}.more{padding:0 16px 16px}
  .mg{grid-template-columns:repeat(2,minmax(0,1fr))}
  .fg{grid-template-columns:1fr}
- .two{grid-template-columns:1fr}
 }
 @media(hover:none){.card:hover{transform:none}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -238,7 +230,6 @@ svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke
     <input type="search" id="q" placeholder="Titles, genres, tags…" aria-label="Search videos" autocomplete="off">
   </div>
   <button class="ib" id="listBtn" aria-label="My List"><svg class="i" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span class="cnt" id="cnt" hidden>0</span></button>
-  <button class="pill-btn up" id="uploadBtn" hidden aria-label="Upload a video"><svg class="i" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg><span>Upload</span></button>
   <button class="pill-btn" id="authBtn">Sign in</button>
   <button class="ib tg" id="theme" aria-label="Toggle dark / light mode"><svg class="i moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg><svg class="i sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
   <button class="ib mb" id="menu" aria-label="Menu"><svg class="i" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
@@ -277,10 +268,9 @@ svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke
     <aside class="a-side">
       <img src="image/maraxislogo.png" alt="" onerror="this.style.display='none'">
       <h3>Stream the synthetic imagination</h3>
-      <p>Your home for AI dramas and anime.</p>
+      <p>Your home for streaming AI dramas and anime.</p>
       <ul>
         <li><i>✓</i><span>Save titles to My List and see them on every device</span></li>
-        <li><i>✓</i><span>Upload your own dramas and anime, any time</span></li>
         <li><i>✓</i><span>Your list stays private to your account</span></li>
       </ul>
     </aside>
@@ -295,31 +285,6 @@ svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke
       </button>
       <p class="note" id="aStatus" role="status"></p>
       <p class="a-fine">We only use your name, email and profile photo to sign you in.</p>
-    </div>
-  </div>
-</div>
-
-<!-- upload modal -->
-<div class="modal" id="upM" role="dialog" aria-modal="true" aria-labelledby="ut">
-  <div class="mbox md">
-    <button class="x" data-close aria-label="Close">✕</button>
-    <h2 id="ut" style="font-family:var(--fd)">Upload a video</h2>
-    <p class="note">Share your video with the MARAXIS AI community. You confirm you own the rights and followed our <a href="terms.html" target="_blank" rel="noopener" style="color:var(--ac2)">Terms of Service</a>.</p>
-    <div class="form">
-      <label>Title<input id="uTitle" maxlength="80" placeholder="Name your video"></label>
-      <label>Description<textarea id="uDesc" rows="3" maxlength="400" placeholder="What is it about?"></textarea></label>
-      <div class="two">
-        <label>Category<select id="uCat"><option value="drama">AI Drama</option><option value="anime">Anime</option></select></label>
-        <label>Genre<select id="uGenre"></select></label>
-      </div>
-      <div class="two">
-        <label id="uToolWrap">AI tool used (if any)<input id="uTool" maxlength="40" placeholder="e.g. Sora, Kling, Runway"></label>
-        <label>Duration<input id="uDur" maxlength="12" placeholder="e.g. 8 min"></label>
-      </div>
-      <label>Video file (MP4 / WebM)<input type="file" id="uFile" accept="video/mp4,video/webm"></label>
-      <div class="bar" id="uBar"><i></i></div>
-      <button class="btn p" id="uSubmit" type="button" style="justify-content:center">Publish video</button>
-      <p class="note" id="uStatus" role="status"></p>
     </div>
   </div>
 </div>
@@ -484,7 +449,7 @@ function openVideo(id,auto){
   $("#vt").textContent=v.title;
   $("#vmeta").innerHTML=`<span style="color:#4ade80;font-weight:600">${match(v)}% Match</span><span>${v.year}</span><span class="pill">${esc(v.duration)}</span>`;
   $("#vdesc").textContent=v.desc;
-  $("#vside").innerHTML=`<div><b>Category:</b> ${LABEL[v.cat]}</div><div><b>Genres:</b> ${esc(v.genres.join(", "))}</div>${v.cat==="drama"&&v.tool?`<div><b>Created with:</b> ${esc(v.tool)}</div>`:""}${v.by?`<div><b>Uploaded by:</b> ${esc(v.by)}</div>`:""}<div><b>Status:</b> ${v.src?"Available to stream":"Coming soon"}</div>`;
+  $("#vside").innerHTML=`<div><b>Category:</b> ${LABEL[v.cat]}</div><div><b>Genres:</b> ${esc(v.genres.join(", "))}</div>${v.cat==="drama"&&v.tool?`<div><b>Created with:</b> ${esc(v.tool)}</div>`:""}<div><b>Status:</b> ${v.src?"Available to stream":"Coming soon"}</div>`;
   updVList();
   const pl=$("#player");
   if(v.src){
@@ -516,36 +481,6 @@ async function toggleList(id){
 }
 function badge(){const b=$("#cnt");b.textContent=S.list.length;b.hidden=!S.list.length}
 
-/* ===== Upload (any signed-in user) ===== */
-function fillGenres(){
-  const c=$("#uCat").value;
-  $("#uGenre").innerHTML=GENRES[c].map(g=>`<option>${g}</option>`).join("");
-  /* the AI-tool field only applies to AI Drama, not anime */
-  $("#uToolWrap").hidden=c!=="drama";
-  if(c!=="drama")$("#uTool").value="";
-}
-$("#uCat").onchange=fillGenres;fillGenres();
-function openUpload(){if(!S.user){openM("authM");return}$("#uStatus").textContent="";openM("upM")}
-$("#uSubmit").onclick=async()=>{
-  const st=$("#uStatus"),title=$("#uTitle").value.trim(),file=$("#uFile").files[0];
-  if(!title)return st.textContent="Add a title.";
-  if(!file)return st.textContent="Choose a video file.";
-  if(file.size>500*1024*1024)return st.textContent="Video must be under 500 MB.";
-  if(!fbReady)return st.textContent="Uploads aren't available right now. Please try again later.";
-  const btn=$("#uSubmit"),bar=$("#uBar");btn.disabled=true;bar.style.display="block";st.textContent="Uploading…";
-  try{
-    const cat=$("#uCat").value;
-    const item={title,desc:$("#uDesc").value.trim()||"No description.",cat,genres:[$("#uGenre").value],tool:cat==="drama"?$("#uTool").value.trim():"",duration:$("#uDur").value.trim()||"—",by:S.user.displayName||"Member"};
-    const added=await fb.upload(item,file,p=>{$("i",bar).style.width=p+"%"});
-    CATALOG.unshift(added);
-    st.textContent="";closeM($("#upM"));toast("Video published!");
-    ["uTitle","uDesc","uTool","uDur","uFile"].forEach(k=>$("#"+k).value="");
-    go(item.cat);
-  }catch(e){console.error(e);st.textContent="Upload failed. Please try again."}
-  btn.disabled=false;bar.style.display="none";$("i",bar).style.width="0";
-};
-
-
 /* ===== global events ===== */
 document.addEventListener("click",e=>{
   const t=e.target;
@@ -566,7 +501,6 @@ document.addEventListener("keydown",e=>{
 });
 $("#menu").onclick=()=>$("#nav").classList.toggle("open");
 $("#listBtn").onclick=()=>go("mylist");
-$("#uploadBtn").onclick=openUpload;
 $("#srchBtn").onclick=()=>{const s=$("#srch");s.classList.toggle("open");if(s.classList.contains("open"))$("#q").focus();else if(!$("#q").value){S.q="";render()}};
 let sd;$("#q").addEventListener("input",e=>{clearTimeout(sd);sd=setTimeout(()=>{S.q=e.target.value;render()},180)});
 
@@ -581,9 +515,8 @@ document.addEventListener("wheel",e=>{if(!e.target.closest(".hero")||Math.abs(e.
 
 /* =====================================================================
    FIREBASE — paste your Web App config from the Firebase console.
-   Needed: Authentication (Google), Firestore, Storage.
+   Needed: Authentication (Google) and Firestore.
    Suggested Firestore rules: users/{uid} read/write only by that uid;
-   videos/{id} read for all, create only when signed in.
    ===================================================================== */
 const firebaseConfig={apiKey:"YOUR_FIREBASE_API_KEY",authDomain:"YOUR_PROJECT_ID.firebaseapp.com",projectId:"YOUR_PROJECT_ID",storageBucket:"YOUR_PROJECT_ID.appspot.com",appId:"YOUR_FIREBASE_APP_ID"};
 const fbReady=!Object.values(firebaseConfig).some(x=>x.startsWith("YOUR_"));
@@ -593,7 +526,6 @@ function setUser(u){
   const b=$("#authBtn");
   b.innerHTML=u?(u.photoURL?`<img class="avatar" style="width:24px;height:24px" src="${esc(u.photoURL)}" alt="" referrerpolicy="no-referrer"><span>${esc((u.displayName||"Account").split(" ")[0])}</span>`:esc((u.displayName||"Account").split(" ")[0])):"Sign in";
   b.title=u?"Sign out ("+(u.email||"Google")+")":"Sign in with Google";
-  $("#uploadBtn").hidden=!u;
   badge();render();
 }
 $("#authBtn").onclick=async()=>{
@@ -620,21 +552,10 @@ async function initFirebase(){
   if(!fbReady)return;
   try{
     const V="11.10.0",B=`https://www.gstatic.com/firebasejs/${V}/`;
-    const [A,Au,F,St]=await Promise.all([import(B+"firebase-app.js"),import(B+"firebase-auth.js"),import(B+"firebase-firestore.js"),import(B+"firebase-storage.js")]);
-    const app=A.initializeApp(firebaseConfig),auth=Au.getAuth(app),db=F.getFirestore(app),storage=St.getStorage(app),prov=new Au.GoogleAuthProvider();
+    const [A,Au,F]=await Promise.all([import(B+"firebase-app.js"),import(B+"firebase-auth.js"),import(B+"firebase-firestore.js")]);
+    const app=A.initializeApp(firebaseConfig),auth=Au.getAuth(app),db=F.getFirestore(app),prov=new Au.GoogleAuthProvider();
     fb.signIn=()=>Au.signInWithPopup(auth,prov);fb.redirect=()=>Au.signInWithRedirect(auth,prov);fb.signOut=()=>Au.signOut(auth);
     fb.save=()=>F.setDoc(F.doc(db,"users",auth.currentUser.uid),{myList:S.list},{merge:true});
-    const toVideo=(id,d)=>({id:"u_"+id,title:d.title,cat:d.cat==="anime"?"anime":"drama",genres:d.genres||[],year:new Date(d.createdAt||Date.now()).getFullYear(),duration:d.duration||"—",hue:(d.title.length*37)%360,glyph:"🎬",isNew:true,trending:false,desc:d.desc,src:d.src,poster:"",tool:d.cat==="anime"?"":d.tool,tags:[],by:d.by});
-    fb.upload=(item,file,onP)=>new Promise((res,rej)=>{
-      const path=`videos/${auth.currentUser.uid}/${Date.now()}_${file.name.replace(/[^\w.-]/g,"_")}`;
-      const task=St.uploadBytesResumable(St.ref(storage,path),file);
-      task.on("state_changed",s=>onP(Math.round(s.bytesTransferred/s.totalBytes*100)),rej,async()=>{
-        try{const src=await St.getDownloadURL(task.snapshot.ref);
-          const data={...item,src,uid:auth.currentUser.uid,createdAt:Date.now()};
-          const d=await F.addDoc(F.collection(db,"videos"),data);res(toVideo(d.id,data))}catch(e){rej(e)}});
-    });
-    try{const snap=await F.getDocs(F.query(F.collection(db,"videos"),F.orderBy("createdAt","desc"),F.limit(60)));
-      snap.forEach(d=>CATALOG.unshift(toVideo(d.id,d.data())));render()}catch(e){console.error(e)}
     Au.onAuthStateChanged(auth,async u=>{
       setUser(u);
       if(u){try{const s=await F.getDoc(F.doc(db,"users",u.uid));if(auth.currentUser?.uid!==u.uid)return;
