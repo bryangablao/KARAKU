@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MARAXIS AI — Stream the Synthetic Imagination</title>
 <link rel="icon" type="image/png" href="image/maraxislogo.png">
-<meta name="description" content="MARAXIS AI is a streaming platform for AI dramas and anime.">
+<meta name="description" content="MARAXIS AI is a streaming platform for AI-generated dramas and anime.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=Roboto:wght@500&display=swap" rel="stylesheet">
@@ -27,13 +27,14 @@ svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke
 /* header */
 .hdr{position:fixed;inset:0 0 auto 0;height:var(--hh);z-index:50;display:flex;align-items:center;gap:18px;padding:0 var(--pad);background:var(--hbg);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .logo{font-family:var(--fd);font-weight:700;font-size:1.3rem;letter-spacing:.1em;display:flex;align-items:center;gap:9px;flex-shrink:0;white-space:nowrap}
-.logo img{width:32px;height:32px;object-fit:contain;border-radius:8px}
+.logo span{line-height:1}
+.logo img{height:1.5em;width:auto;max-width:3em;object-fit:contain;display:block;border-radius:0}
 .logo b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .nav{display:flex;gap:20px;font-size:.92rem;color:var(--muted)}
 .nav a{padding:6px 0;position:relative;white-space:nowrap}
 .nav a:hover,.nav a.on{color:var(--text)}
 .nav{position:relative}
-.nav-ind{position:absolute;bottom:-2px;left:0;height:2px;width:0;background:var(--grad);border-radius:2px;opacity:0;pointer-events:none;transition:transform .5s cubic-bezier(.4,0,.2,1),width .5s cubic-bezier(.4,0,.2,1),opacity .3s}
+.nav-ind{position:absolute;bottom:-2px;left:0;height:2px;width:0;background:var(--grad);border-radius:2px;opacity:0;pointer-events:none;will-change:transform,width;transition:transform .55s cubic-bezier(.4,0,.2,1),width .55s cubic-bezier(.4,0,.2,1),opacity .3s}
 .nav-ind.show{opacity:1}
 .sp{flex:1}
 .ib{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;position:relative;flex-shrink:0}
@@ -201,7 +202,6 @@ svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke
  :root{--hh:58px}
  .hdr{gap:4px}
  .logo{font-size:1rem;letter-spacing:.03em;gap:6px}
- .logo img{width:26px;height:26px}
  .ib{width:36px;height:36px}
  .pill-btn{padding:7px 10px;font-size:.74rem}
  .harrow{display:none}
@@ -313,7 +313,7 @@ svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke
         <label>Genre<select id="uGenre"></select></label>
       </div>
       <div class="two">
-        <label>AI tool used (if any)<input id="uTool" maxlength="40" placeholder="e.g. Sora, Kling, Runway"></label>
+        <label id="uToolWrap">AI tool used (if any)<input id="uTool" maxlength="40" placeholder="e.g. Sora, Kling, Runway"></label>
         <label>Duration<input id="uDur" maxlength="12" placeholder="e.g. 8 min"></label>
       </div>
       <label>Video file (MP4 / WebM)<input type="file" id="uFile" accept="video/mp4,video/webm"></label>
@@ -328,10 +328,23 @@ svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke
 
 <script>
 /* =====================================================================
-   CATALOG — add your own videos here. Set src:"videos/file.mp4" (and
-   optionally poster:"posters/file.jpg"). Empty src = "Coming Soon".
+   CATALOG — add your own videos here.
+   Video folders:  AI Drama -> video/aidrama/   Anime -> video/anime/
+   To make a title playable, add its file name to FILES below using the
+   title id, e.g.  1:"reborn-empress.mp4"  ->  video/aidrama/reborn-empress.mp4
+   (anime ids 9-16 are looked up in video/anime/). Optional posters go in
+   POSTERS the same way (posters/file.jpg). No file = "Coming Soon".
    cat: "drama" (AI Drama) or "anime". flags: n = new, t = trending.
+   Only AI Drama is AI-generated; Anime titles are not marked as AI.
    ===================================================================== */
+const VIDEO_DIR = {drama:"video/aidrama/", anime:"video/anime/"};
+const FILES = {
+  // 1:"your-file-name.mp4",
+  // 9:"your-anime-file.mp4",
+};
+const POSTERS = {
+  // 1:"posters/your-poster.jpg",
+};
 const GENRES = {
   drama:["Reincarnation","Horror","Sci-Fi","Romance","Cyberpunk","Fantasy","Thriller","Comedy","Mystery"],
   anime:["Isekai","Action","Romance","Fantasy","Slice of Life","Mecha","Horror","Sci-Fi","Comedy"]
@@ -354,9 +367,11 @@ const raw = [
  [13,"Crimson Hallway","anime",["Horror","Isekai"],2025,"21 min",8,"🚪","t","A school corridor leads to a different world every night, and none of them want students to leave."],
  [14,"Star Cafe Chronicles","anime",["Comedy","Sci-Fi"],2026,"12 min",50,"☕","n","The galaxy's strangest customers argue, flirt and plot over coffee at a station diner."],
  [15,"Sword Saint, Reborn","anime",["Isekai","Action"],2026,"22 min",25,"⚔️","n","A retired sword saint is reborn as a village baker's son and tries, badly, to live quietly."],
- [16,"Tidal Memory","anime",["Slice of Life","Fantasy"],2025,"17 min",170,"🌊","","An old fisherman relives his life through the tides, each wave a memory painted in watercolor light."]
+ [16,"Tidal Memory","anime",["Slice of Life","Fantasy"],2025,"17 min",170,"🌊","","An old fisherman relives his life through the tides, each wave a memory told in watercolor light."]
 ];
-let CATALOG = raw.map(r=>({id:String(r[0]),title:r[1],cat:r[2],genres:r[3],year:r[4],duration:r[5],hue:r[6],glyph:r[7],isNew:r[8].includes("n"),trending:r[8].includes("t"),desc:r[9],src:"",poster:"",tool:r[2]==="drama"?"Maraxis Gen-4":"",tags:[]}));
+let CATALOG = raw.map(r=>({id:String(r[0]),title:r[1],cat:r[2],genres:r[3],year:r[4],duration:r[5],hue:r[6],glyph:r[7],isNew:r[8].includes("n"),trending:r[8].includes("t"),desc:r[9],
+  src:FILES[r[0]]?VIDEO_DIR[r[2]]+FILES[r[0]]:"",poster:POSTERS[r[0]]||"",
+  tool:r[2]==="drama"?"Maraxis Gen-4":"",tags:[]}));
 
 /* ===== helpers & state ===== */
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -418,7 +433,8 @@ function renderGridPage(title,sub,items){app.innerHTML=`<div class="ph"><h1>${ti
 function render(){
   stopHero();
   const q=S.q.trim().toLowerCase();
-  $$("#nav a").forEach(a=>a.classList.toggle("on",!q&&a.dataset.go===S.view));moveInd();
+  $$("#nav a").forEach(a=>a.classList.toggle("on",!q&&a.dataset.go===S.view));
+  requestAnimationFrame(moveInd);
   if(q){
     const r=CATALOG.filter(v=>(v.title+" "+v.genres.join(" ")+" "+v.tags.join(" ")+" "+v.desc+" "+LABEL[v.cat]).toLowerCase().includes(q));
     renderGridPage(`Results for “${esc(S.q)}”`,`${r.length} found`,r);return;
@@ -435,17 +451,22 @@ function go(view,genre="All"){
 }
 function keepScroll(){const y=scrollY;render();scrollTo({top:y})}
 
-/* nav underline: one indicator that slides to the active category */
+/* nav underline: one indicator that slides from the old category to the clicked one */
 let indInit=false;
 function moveInd(){
   const a=$("#nav a.on"),i=$("#navInd");
   if(!a||innerWidth<=900){i.classList.remove("show");return}
-  if(!indInit){i.style.transition="none";i.style.width=a.offsetWidth+"px";i.style.transform=`translateX(${a.offsetLeft}px)`;void i.offsetWidth;i.style.transition="";indInit=true}
-  else{i.style.width=a.offsetWidth+"px";i.style.transform=`translateX(${a.offsetLeft}px)`}
+  const w=a.offsetWidth+"px",t=`translateX(${a.offsetLeft}px)`;
+  if(!indInit){
+    i.style.transition="none";i.style.width=w;i.style.transform=t;void i.offsetWidth;i.style.transition="";indInit=true;
+  }else{
+    void i.offsetWidth; /* commit the current position first so the move animates */
+    i.style.width=w;i.style.transform=t;
+  }
   i.classList.add("show");
 }
-addEventListener("resize",moveInd);
-if(document.fonts&&document.fonts.ready)document.fonts.ready.then(moveInd);
+addEventListener("resize",()=>{const i=$("#navInd");i.style.transition="none";indInit=false;moveInd();void i.offsetWidth;i.style.transition=""});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{const i=$("#navInd");i.style.transition="none";indInit=false;moveInd();void i.offsetWidth;i.style.transition=""});
 
 /* hero rotation */
 function startHero(){stopHero();if(!$("#hbg")||matchMedia("(prefers-reduced-motion: reduce)").matches)return;S.heroT=setInterval(()=>setHero(S.hero+1),7000)}
@@ -463,7 +484,7 @@ function openVideo(id,auto){
   $("#vt").textContent=v.title;
   $("#vmeta").innerHTML=`<span style="color:#4ade80;font-weight:600">${match(v)}% Match</span><span>${v.year}</span><span class="pill">${esc(v.duration)}</span>`;
   $("#vdesc").textContent=v.desc;
-  $("#vside").innerHTML=`<div><b>Category:</b> ${LABEL[v.cat]}</div><div><b>Genres:</b> ${esc(v.genres.join(", "))}</div>${v.tool?`<div><b>Created with:</b> ${esc(v.tool)}</div>`:""}${v.by?`<div><b>Uploaded by:</b> ${esc(v.by)}</div>`:""}<div><b>Status:</b> ${v.src?"Available to stream":"Coming soon"}</div>`;
+  $("#vside").innerHTML=`<div><b>Category:</b> ${LABEL[v.cat]}</div><div><b>Genres:</b> ${esc(v.genres.join(", "))}</div>${v.cat==="drama"&&v.tool?`<div><b>Created with:</b> ${esc(v.tool)}</div>`:""}${v.by?`<div><b>Uploaded by:</b> ${esc(v.by)}</div>`:""}<div><b>Status:</b> ${v.src?"Available to stream":"Coming soon"}</div>`;
   updVList();
   const pl=$("#player");
   if(v.src){
@@ -496,7 +517,13 @@ async function toggleList(id){
 function badge(){const b=$("#cnt");b.textContent=S.list.length;b.hidden=!S.list.length}
 
 /* ===== Upload (any signed-in user) ===== */
-function fillGenres(){$("#uGenre").innerHTML=GENRES[$("#uCat").value].map(g=>`<option>${g}</option>`).join("")}
+function fillGenres(){
+  const c=$("#uCat").value;
+  $("#uGenre").innerHTML=GENRES[c].map(g=>`<option>${g}</option>`).join("");
+  /* the AI-tool field only applies to AI Drama, not anime */
+  $("#uToolWrap").hidden=c!=="drama";
+  if(c!=="drama")$("#uTool").value="";
+}
 $("#uCat").onchange=fillGenres;fillGenres();
 function openUpload(){if(!S.user){openM("authM");return}$("#uStatus").textContent="";openM("upM")}
 $("#uSubmit").onclick=async()=>{
@@ -507,7 +534,8 @@ $("#uSubmit").onclick=async()=>{
   if(!fbReady)return st.textContent="Uploads aren't available right now. Please try again later.";
   const btn=$("#uSubmit"),bar=$("#uBar");btn.disabled=true;bar.style.display="block";st.textContent="Uploading…";
   try{
-    const item={title,desc:$("#uDesc").value.trim()||"No description.",cat:$("#uCat").value,genres:[$("#uGenre").value],tool:$("#uTool").value.trim()||"",duration:$("#uDur").value.trim()||"—",by:S.user.displayName||"Member"};
+    const cat=$("#uCat").value;
+    const item={title,desc:$("#uDesc").value.trim()||"No description.",cat,genres:[$("#uGenre").value],tool:cat==="drama"?$("#uTool").value.trim():"",duration:$("#uDur").value.trim()||"—",by:S.user.displayName||"Member"};
     const added=await fb.upload(item,file,p=>{$("i",bar).style.width=p+"%"});
     CATALOG.unshift(added);
     st.textContent="";closeM($("#upM"));toast("Video published!");
@@ -596,7 +624,7 @@ async function initFirebase(){
     const app=A.initializeApp(firebaseConfig),auth=Au.getAuth(app),db=F.getFirestore(app),storage=St.getStorage(app),prov=new Au.GoogleAuthProvider();
     fb.signIn=()=>Au.signInWithPopup(auth,prov);fb.redirect=()=>Au.signInWithRedirect(auth,prov);fb.signOut=()=>Au.signOut(auth);
     fb.save=()=>F.setDoc(F.doc(db,"users",auth.currentUser.uid),{myList:S.list},{merge:true});
-    const toVideo=(id,d)=>({id:"u_"+id,title:d.title,cat:d.cat==="anime"?"anime":"drama",genres:d.genres||[],year:new Date(d.createdAt||Date.now()).getFullYear(),duration:d.duration||"—",hue:(d.title.length*37)%360,glyph:"🎬",isNew:true,trending:false,desc:d.desc,src:d.src,poster:"",tool:d.tool,tags:[],by:d.by});
+    const toVideo=(id,d)=>({id:"u_"+id,title:d.title,cat:d.cat==="anime"?"anime":"drama",genres:d.genres||[],year:new Date(d.createdAt||Date.now()).getFullYear(),duration:d.duration||"—",hue:(d.title.length*37)%360,glyph:"🎬",isNew:true,trending:false,desc:d.desc,src:d.src,poster:"",tool:d.cat==="anime"?"":d.tool,tags:[],by:d.by});
     fb.upload=(item,file,onP)=>new Promise((res,rej)=>{
       const path=`videos/${auth.currentUser.uid}/${Date.now()}_${file.name.replace(/[^\w.-]/g,"_")}`;
       const task=St.uploadBytesResumable(St.ref(storage,path),file);
