@@ -136,7 +136,7 @@ main{padding-bottom:50px}.section{margin:24px 0}.section-head{display:flex;gap:1
 
 const GENRES = {
   drama:["Reincarnation","Horror","Sci-Fi","Romance","Cyberpunk","Fantasy","Thriller","Comedy","Mystery"],
-  anime:["Isekai","Action","Romance","Fantasy","Slice of Life","Mecha","Horror","Sci-Fi","Comedy"],
+  anime:["Isekai","Action","Adventure","Romance","Fantasy","Slice of Life","Mecha","Horror","Sci-Fi","Comedy"],
   movie:["Action","Adventure","Comedy","Drama","Fantasy","Horror","Mystery","Romance","Sci-Fi","Thriller"]
 };
 const LABEL = {drama:"AI Drama",anime:"Anime",movie:"Movie"};
@@ -172,6 +172,37 @@ const catalog = [
   {id:"a4",title:"Dragons of Glass",cat:"anime",genres:["Fantasy","Action"],year:2026,duration:"9 min",hue:195,flags:"nt",summary:"Crystal dragons migrate across a shattered sky, each wingbeat ringing like a cathedral bell.",poster:"",seasons:makeSeasons([12],"youtube",YT_DEMO,"landscape")},
   {id:"a5",title:"Crimson Hallway",cat:"anime",genres:["Horror","Isekai"],year:2025,duration:"21 min",hue:8,flags:"t",summary:"A school corridor opens into a different world every night, and none of those worlds want students to leave.",poster:"",seasons:makeSeasons([10],"youtube",YT_DEMO,"landscape")},
   {id:"a6",title:"Star Cafe Chronicles",cat:"anime",genres:["Comedy","Sci-Fi"],year:2026,duration:"12 min",hue:50,flags:"n",summary:"The galaxy's strangest customers argue, flirt, and plot over coffee at a station diner.",poster:"",seasons:makeSeasons([12],"tiktok",TT_DEMO,"portrait")},
+  {
+    id:"a7",
+    title:"I Got a Cheat Skill in Another World and Became Unrivaled in the Real World",
+    cat:"anime",
+    genres:["Action","Adventure","Fantasy"],
+    year:"",
+    duration:"24 min. per ep.",
+    rating:"PG-13 - Teens 13 or older",
+    hue:205,
+    flags:"",
+    summary:"Follows Yūya Tenjou, a bullied high school student who discovers a portal to a fantasy world named Argena after his grandfather's death. In this world, he gains powerful abilities that enhance his physical and social standing on Earth. The series explores his journey as he navigates both realms, using his newfound skills to defeat powerful enemies and improve his life. It has been adapted into a manga and anime, with a second season set to premiere in January 2027.",
+    poster:"image/anime/Cheat-Skill-in-Another-World.jpg",
+    seasons:[{
+      season:1,
+      episodes:[
+        {episode:1,title:"Episode 1",source:{provider:"facebook",url:"https://www.facebook.com/share/v/14HjfRBYbCh/",orientation:"landscape"}},
+        {episode:2,title:"Episode 2",source:{provider:"facebook",url:"https://www.facebook.com/share/v/1CQCdhao2s/",orientation:"landscape"}},
+        {episode:3,title:"Episode 3",source:{provider:"facebook",url:"https://www.facebook.com/share/v/17GuXJx8mX/",orientation:"landscape"}},
+        {episode:4,title:"Episode 4",source:{provider:"facebook",url:"https://www.facebook.com/share/v/16kV1cB3U9/",orientation:"landscape"}},
+        {episode:5,title:"Episode 5",source:{provider:"facebook",url:"https://www.facebook.com/share/v/19bxGaZ74j/",orientation:"landscape"}},
+        {episode:6,title:"Episode 6",source:{provider:"facebook",url:"https://www.facebook.com/share/v/1CTxFSKcSs/",orientation:"landscape"}},
+        {episode:7,title:"Episode 7",source:{provider:"facebook",url:"https://www.facebook.com/share/v/1B4fVjtAks/",orientation:"landscape"}},
+        {episode:8,title:"Episode 8",source:{provider:"facebook",url:"https://www.facebook.com/share/v/1FJicKuUL3/",orientation:"landscape"}},
+        {episode:9,title:"Episode 9",source:{provider:"facebook",url:"https://www.facebook.com/share/v/1HJDRqbe5z/",orientation:"landscape"}},
+        {episode:10,title:"Episode 10",source:{provider:"facebook",url:"https://www.facebook.com/share/v/16qxF3qV3G/",orientation:"landscape"}},
+        {episode:11,title:"Episode 11",source:{provider:"facebook",url:"https://www.facebook.com/share/v/172SJuLtXf/",orientation:"landscape"}},
+        {episode:12,title:"Episode 12",source:{provider:"facebook",url:"https://www.facebook.com/share/v/1B3YqRRTTj/",orientation:"landscape"}},
+        {episode:13,title:"Episode 13",source:{provider:"facebook",url:"https://www.facebook.com/share/v/1ApXXtqbAg/",orientation:"landscape"}}
+      ]
+    }]
+  },
 
   {id:"m1",title:"Afterlight",cat:"movie",genres:["Action","Sci-Fi"],year:2026,duration:"1h 46m",hue:260,flags:"nt",summary:"A rescue pilot races across a collapsing orbital city before its artificial sun goes dark forever.",poster:"",seasons:makeSeasons([1],"youtube",YT_DEMO,"landscape")},
   {id:"m2",title:"The Last Map",cat:"movie",genres:["Adventure","Mystery"],year:2026,duration:"1h 58m",hue:35,flags:"n",summary:"A cartographer finds a map that redraws itself every midnight and points toward a city erased from history.",poster:"",seasons:makeSeasons([1],"facebook",FB_SAMPLE,"landscape")},
@@ -212,7 +243,7 @@ function card(v){
   const s=firstSource(v);return `<article class="card" tabindex="0" data-id="${esc(v.id)}"><div class="poster" style="${art(v)}"></div><div class="badges">${v.flags.includes("n")?'<span class="tag">NEW</span>':v.flags.includes("t")?'<span class="tag">HOT</span>':""}<span class="tag alt">${LABEL[v.cat]}</span><span class="tag alt provider">${providerLabel(s?.provider)}</span></div><div class="card-info"><h3>${esc(v.title)}</h3><small>${esc(v.genres.join(" / "))} · ${esc(v.duration)}</small></div></article>`;
 }
 function rail(title,items){return items.length?`<section class="section"><div class="section-head"><h2>${esc(title)}</h2><p>${items.length} titles</p></div><div class="rail">${items.map(card).join("")}</div></section>`:""}
-function hero(){const v=catalog.find(x=>x.flags.includes("t"))||catalog[0];return `<section class="hero" style="--hero-hue:${v.hue}"><div class="hero-bg"></div><div class="hero-copy"><span class="tag">FEATURED · ${LABEL[v.cat]}</span><h1>${esc(v.title)}</h1><div class="meta"><span>${v.year}</span><span>${esc(v.duration)}</span><span>${esc(v.genres.join(" / "))}</span></div><p>${esc(v.summary)}</p><div class="btns"><button class="btn primary" data-play="${v.id}">▶ Play</button><button class="btn ghost" data-info="${v.id}">More info</button></div></div></section>`}
+function hero(){const v=catalog.find(x=>x.flags.includes("t"))||catalog[0];return `<section class="hero" style="--hero-hue:${v.hue}"><div class="hero-bg"></div><div class="hero-copy"><span class="tag">FEATURED · ${LABEL[v.cat]}</span><h1>${esc(v.title)}</h1><div class="meta">${v.year?`<span>${esc(v.year)}</span>`:""}<span>${esc(v.duration)}</span><span>${esc(v.genres.join(" / "))}</span>${v.rating?`<span>${esc(v.rating)}</span>`:""}</div><p>${esc(v.summary)}</p><div class="btns"><button class="btn primary" data-play="${v.id}">▶ Play</button><button class="btn ghost" data-info="${v.id}">More info</button></div></div></section>`}
 
 function matches(v){const q=state.query.trim().toLowerCase();if(!q)return true;return `${v.title} ${v.genres.join(" ")} ${v.summary} ${LABEL[v.cat]}`.toLowerCase().includes(q)}
 function renderHome(){const items=catalog.filter(matches);return `${hero()}${rail("Trending Now",items.filter(v=>v.flags.includes("t")))}${rail("New Releases",items.filter(v=>v.flags.includes("n")))}${rail("AI Drama",items.filter(v=>v.cat==="drama"))}${rail("Anime",items.filter(v=>v.cat==="anime"))}${rail("Movies",items.filter(v=>v.cat==="movie"))}`}
@@ -257,7 +288,7 @@ function missingSource(title,provider,url,msg="Add a valid public video URL or I
 
 function currentEpisode(v){const s=v.seasons.find(x=>x.season===state.season)||v.seasons[0];return s?.episodes.find(e=>e.episode===state.episode)||s?.episodes[0]}
 function viewerDetails(v){
-  return `<div class="detail-grid"><div class="detail-poster" style="${art(v)}"></div><div class="detail-copy"><span class="tag">${LABEL[v.cat]}</span><h1>${esc(v.title)}</h1><div class="detail-meta"><span>${v.year}</span><span>${esc(v.duration)}</span><span>${esc(v.genres.join(" / "))}</span></div><p class="summary">${esc(v.summary)}</p>${v.seasons.map(s=>`<section class="season-block"><h2 class="season-title">${v.cat==="movie"?"Movie":"Season "+s.season}</h2><div class="episodes">${s.episodes.map(e=>`<button class="ep ${state.season===s.season&&state.episode===e.episode?"on":""}" data-season="${s.season}" data-episode="${e.episode}" title="${esc(e.title)}">${e.episode}</button>`).join("")}</div></section>`).join("")}<div class="source-note">Videos are embedded from their original provider. Playback controls and seeking are ultimately governed by YouTube, Facebook, TikTok, or the direct video host.</div></div></div>`;
+  return `<div class="detail-grid"><div class="detail-poster" style="${art(v)}"></div><div class="detail-copy"><span class="tag">${LABEL[v.cat]}</span><h1>${esc(v.title)}</h1><div class="detail-meta">${v.year?`<span>${esc(v.year)}</span>`:""}<span>${esc(v.duration)}</span><span>${esc(v.genres.join(" / "))}</span>${v.rating?`<span>${esc(v.rating)}</span>`:""}</div><p class="summary">${esc(v.summary)}</p>${v.seasons.map(s=>`<section class="season-block"><h2 class="season-title">${v.cat==="movie"?"Movie":"Season "+s.season}</h2><div class="episodes">${s.episodes.map(e=>`<button class="ep ${state.season===s.season&&state.episode===e.episode?"on":""}" data-season="${s.season}" data-episode="${e.episode}" title="${esc(e.title)}">${e.episode}</button>`).join("")}</div></section>`).join("")}<div class="source-note">Videos are embedded from their original provider. Playback controls and seeking are ultimately governed by YouTube, Facebook, TikTok, or the direct video host.</div></div></div>`;
 }
 function openViewer(id,autoplay=true){
   const v=catalog.find(x=>x.id===id);if(!v)return;state.current=v.id;state.season=v.seasons[0]?.season||1;state.episode=v.seasons[0]?.episodes[0]?.episode||1;
