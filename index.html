@@ -6,172 +6,1697 @@
 <title>MARAXIS AI — Stream the Synthetic Imagination</title>
 <link rel="icon" type="image/png" href="image/maraxislogo.png">
 <meta name="description" content="MARAXIS AI is a streaming-style website for AI dramas, anime, movies, and embedded social video.">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
-  --fd:'Space Grotesk',system-ui,sans-serif;
-  --fb:'Inter',system-ui,sans-serif;
-  --ac:#8b5cf6;--ac2:#22d3ee;--ac3:#f472b6;
-  --grad:linear-gradient(120deg,var(--ac),var(--ac2));
-  --r:16px;--hh:64px;--pad:clamp(14px,4vw,56px);
+  --font-display:"Space Grotesk",system-ui,sans-serif;
+  --font-body:"Inter",system-ui,sans-serif;
+
+  --accent:#8b5cf6;
+  --accent-2:#22d3ee;
+  --accent-3:#f472b6;
+  --gradient:linear-gradient(135deg,var(--accent),var(--accent-2));
+
+  --header-h:72px;
+  --page-pad:clamp(16px,4vw,64px);
+  --radius:18px;
+  --radius-sm:12px;
 }
-html[data-theme=dark]{--bg:#07070d;--bg2:#0e0e18;--bg3:#151522;--text:#f3f3f8;--muted:#9a9ab0;--line:rgba(255,255,255,.1);--glass:rgba(7,7,13,.9);--shadow:0 24px 70px rgba(0,0,0,.5)}
-html[data-theme=light]{--bg:#f5f4fb;--bg2:#fff;--bg3:#eceaf6;--text:#171426;--muted:#66617a;--line:rgba(20,18,42,.13);--glass:rgba(255,255,255,.92);--shadow:0 24px 60px rgba(49,36,88,.18)}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .25s,color .25s}
-button,input{font:inherit}button{border:0;background:none;color:inherit;cursor:pointer}a{color:inherit;text-decoration:none}
-:focus-visible{outline:2px solid var(--ac2);outline-offset:2px}
-[hidden]{display:none!important}
 
-/* header */
-.hdr{position:fixed;z-index:50;inset:0 0 auto;height:var(--hh);display:flex;align-items:center;gap:14px;padding:0 var(--pad);background:var(--glass);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-.logo{display:flex;align-items:center;gap:8px;font-family:var(--fd);font-weight:700;letter-spacing:.08em;white-space:nowrap}.logo img{height:26px;max-width:42px;object-fit:contain}.logo b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.nav{display:flex;align-items:center;gap:18px;color:var(--muted);font-size:.9rem}.nav button{padding:8px 0;white-space:nowrap}.nav button.on,.nav button:hover{color:var(--text)}
-.sp{flex:1}.search{width:min(300px,28vw);position:relative}.search input{width:100%;height:38px;border:1px solid var(--line);border-radius:999px;background:var(--bg2);color:var(--text);padding:0 38px 0 14px}.search svg{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;color:var(--muted)}
-.icon-btn{width:38px;height:38px;border-radius:50%;display:grid;place-items:center}.icon-btn:hover{background:var(--line)}.icon-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2}
-.menu{display:none}
-
-/* hero */
-.hero{min-height:min(78vh,680px);padding:calc(var(--hh) + 72px) var(--pad) 70px;display:flex;align-items:flex-end;position:relative;overflow:hidden;isolation:isolate}
-.hero-bg{position:absolute;inset:0;z-index:-2;background:radial-gradient(circle at 75% 28%,hsla(var(--hero-hue),88%,62%,.55),transparent 30%),linear-gradient(135deg,hsl(var(--hero-hue),65%,24%),#080811 58%)}
-.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,var(--bg),transparent 58%),linear-gradient(to right,var(--bg) 2%,transparent 68%)}
-.hero-copy{max-width:640px}.tag{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:999px;background:var(--ac);color:#fff;font-size:.67rem;font-weight:700;letter-spacing:.04em}.tag.alt{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.25)}
-.hero h1{font-family:var(--fd);font-size:clamp(2.2rem,6vw,4.7rem);line-height:1.02;margin:14px 0 12px}.hero p{max-width:560px;color:#d9d9e5;line-height:1.65;margin:14px 0 22px}.meta{display:flex;flex-wrap:wrap;gap:10px;color:var(--muted);font-size:.86rem}.hero .meta{color:#d3d3df}.btns{display:flex;flex-wrap:wrap;gap:10px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:10px;font-weight:700}.btn.primary{background:var(--grad);color:#fff}.btn.ghost{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16)}
-
-/* content */
-main{padding-bottom:50px}.section{margin:24px 0}.section-head{display:flex;gap:14px;align-items:end;padding:0 var(--pad)}.section-head h2{font-family:var(--fd);font-size:1.25rem}.section-head p{font-size:.82rem;color:var(--muted)}
-.rail{display:flex;gap:14px;overflow:auto;scroll-snap-type:x proximity;padding:14px var(--pad) 24px;scrollbar-width:none}.rail::-webkit-scrollbar{display:none}
-.card{flex:0 0 clamp(210px,20vw,290px);aspect-ratio:16/10;border-radius:var(--r);overflow:hidden;position:relative;background:var(--bg2);border:1px solid var(--line);scroll-snap-align:start;cursor:pointer;transition:transform .22s,box-shadow .22s}.card:hover{transform:translateY(-4px) scale(1.03);box-shadow:var(--shadow);z-index:2}.poster{position:absolute;inset:0;background-size:cover;background-position:center}.poster::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9),transparent 62%)}
-.card-info{position:absolute;inset:auto 0 0;padding:30px 12px 11px;color:#fff}.card-info h3{font-family:var(--fd);font-size:.98rem;margin-bottom:4px}.card-info small{font-size:.73rem;opacity:.82}.badges{position:absolute;top:8px;left:8px;right:8px;display:flex;gap:6px;flex-wrap:wrap}.provider{margin-left:auto;background:rgba(0,0,0,.62)}
-.grid-page{padding:calc(var(--hh) + 28px) var(--pad) 50px}.page-title{font-family:var(--fd);font-size:clamp(1.7rem,4vw,2.5rem)}.page-sub{color:var(--muted);margin-top:6px}.chips{display:flex;gap:8px;overflow:auto;padding:18px 0 16px;scrollbar-width:none}.chip{white-space:nowrap;padding:8px 14px;border-radius:999px;background:var(--bg2);border:1px solid var(--line);color:var(--muted)}.chip.on{background:var(--grad);color:#fff;border-color:transparent}.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}.cards-grid .card{width:100%;flex:none}
-.empty{padding:80px 20px;text-align:center;color:var(--muted)}
-
-/* full viewport viewer */
-.viewer{position:fixed;inset:0;z-index:100;background:#000;display:none;overflow-y:auto;overscroll-behavior:contain}.viewer.open{display:block}.viewer-close{position:fixed;right:max(14px,env(safe-area-inset-right));top:max(14px,env(safe-area-inset-top));z-index:130;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.64);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:1.35rem;backdrop-filter:blur(8px)}
-.stage{height:100dvh;min-height:100svh;display:grid;place-items:center;position:relative;background:#000;padding:max(0px,env(safe-area-inset-top)) max(0px,env(safe-area-inset-right)) max(0px,env(safe-area-inset-bottom)) max(0px,env(safe-area-inset-left));overflow:hidden}
-.player-shell{position:relative;display:grid;place-items:center;width:100%;height:100%}.player-frame{border:0;background:#000;display:block}.player-frame.landscape{width:100%;height:auto;aspect-ratio:16/9;max-height:100dvh}.player-frame.portrait{height:100%;width:auto;aspect-ratio:9/16;max-width:100vw}.native-video{width:100%;height:100%;object-fit:contain;background:#000}
-.player-message{padding:30px;text-align:center;color:#fff;max-width:560px;line-height:1.6}.player-message h2{font-family:var(--fd);margin-bottom:8px}.player-message code{display:block;margin-top:12px;padding:10px;border-radius:8px;background:#151515;color:#d7d7d7;word-break:break-all}
-.player-tools{position:absolute;left:50%;bottom:max(18px,calc(env(safe-area-inset-bottom) + 14px));transform:translateX(-50%);z-index:4;display:flex;align-items:center;gap:8px;padding:8px;border-radius:999px;background:rgba(0,0,0,.55);backdrop-filter:blur(9px);border:1px solid rgba(255,255,255,.14)}.player-tools button{min-width:42px;height:38px;padding:0 10px;border-radius:999px;color:#fff;background:rgba(255,255,255,.1);font-weight:700}.player-tools button:hover{background:rgba(255,255,255,.2)}.player-tools .tip{font-size:.72rem;color:#d6d6d6;padding:0 6px;white-space:nowrap}
-.viewer-info{background:var(--bg);color:var(--text);min-height:100dvh;padding:34px var(--pad) 80px}.detail-grid{display:grid;grid-template-columns:minmax(240px,360px) minmax(0,1fr);gap:28px;align-items:start}.detail-poster{aspect-ratio:16/10;border-radius:18px;background-size:cover;background-position:center;border:1px solid var(--line);box-shadow:var(--shadow)}.detail-copy h1{font-family:var(--fd);font-size:clamp(1.7rem,4vw,2.8rem)}.detail-copy .summary{line-height:1.72;color:var(--muted);margin:14px 0 18px}.detail-meta{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:12px}.season-block{margin-top:28px}.season-title{font-family:var(--fd);font-size:1.15rem;margin-bottom:12px}.episodes{display:flex;gap:8px;flex-wrap:wrap}.ep{min-width:42px;height:42px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);font-weight:700}.ep:hover{border-color:var(--ac)}.ep.on{background:var(--grad);color:#fff;border-color:transparent}.ep.na{opacity:.45;cursor:not-allowed}.source-note{margin-top:24px;padding:12px 14px;border-radius:12px;background:var(--bg2);border:1px solid var(--line);color:var(--muted);font-size:.82rem;line-height:1.55}
-
-/* footer */
-.ftr{border-top:1px solid var(--line);background:var(--bg2);padding:34px var(--pad) 24px}.ftr-grid{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:24px}.ftr h4{font-family:var(--fd);margin-bottom:10px}.ftr a,.ftr p{font-size:.84rem;color:var(--muted);line-height:1.6;display:block;margin-bottom:6px}.copy{text-align:center;color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);padding-top:18px;margin-top:20px}
-
-@media(max-width:900px){
-  .nav{position:fixed;left:0;right:0;top:var(--hh);background:var(--glass);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:10px var(--pad) 16px;display:none;flex-direction:column;align-items:stretch}.nav.open{display:flex}.nav button{text-align:left;padding:10px 0}.menu{display:grid}.search{width:min(250px,40vw)}
-  .detail-grid{grid-template-columns:1fr}.detail-poster{width:min(620px,100%)}.ftr-grid{grid-template-columns:1fr 1fr}
+html[data-theme="dark"]{
+  --bg:#07080d;
+  --bg-soft:#0d1018;
+  --surface:#111520;
+  --surface-2:#171c29;
+  --text:#f7f8fb;
+  --muted:#a5adbd;
+  --line:rgba(255,255,255,.10);
+  --line-strong:rgba(255,255,255,.16);
+  --glass:rgba(7,8,13,.86);
+  --shadow:0 24px 70px rgba(0,0,0,.48);
 }
-@media(max-width:640px){
-  :root{--hh:58px}.hdr{gap:7px}.logo{font-size:.95rem;letter-spacing:.03em}.logo img{height:22px}.search{display:none}.icon-btn{width:36px;height:36px}
-  .hero{min-height:72svh;padding-bottom:48px}.hero h1{font-size:clamp(2rem,12vw,3.1rem)}.card{flex-basis:min(76vw,290px)}.cards-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.cards-grid .card{aspect-ratio:4/3}.card-info h3{font-size:.86rem}.card-info small{font-size:.68rem}.tag{font-size:.58rem;padding:3px 7px}
-  .viewer-close{width:40px;height:40px}.player-frame.landscape{width:100%;height:auto}.player-frame.portrait{width:min(100vw,56.25vh);height:auto;max-height:100dvh}.player-tools{bottom:max(10px,calc(env(safe-area-inset-bottom) + 8px));gap:5px;padding:6px}.player-tools button{min-width:36px;height:34px;font-size:.78rem}.player-tools .tip{display:none}
-  .viewer-info{padding:24px 16px 60px}.detail-grid{gap:18px}.detail-poster{border-radius:14px}.episodes{gap:7px}.ep{min-width:38px;height:38px;padding:0 10px}.ftr-grid{grid-template-columns:1fr}.btn{padding:10px 14px;font-size:.85rem}
+
+html[data-theme="light"]{
+  --bg:#f5f7fb;
+  --bg-soft:#eef1f7;
+  --surface:#ffffff;
+  --surface-2:#e8ecf4;
+  --text:#131722;
+  --muted:#667085;
+  --line:rgba(20,25,40,.11);
+  --line-strong:rgba(20,25,40,.18);
+  --glass:rgba(255,255,255,.90);
+  --shadow:0 24px 60px rgba(31,41,55,.15);
 }
-@media(hover:none){.card:hover{transform:none}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  overflow-x:hidden;
+  font-family:var(--font-body);
+  color:var(--text);
+  background:
+    radial-gradient(circle at 14% 0%,rgba(139,92,246,.08),transparent 28%),
+    radial-gradient(circle at 92% 24%,rgba(34,211,238,.05),transparent 22%),
+    var(--bg);
+  transition:background .25s ease,color .25s ease;
+}
+
+body.modal-open{
+  overflow:hidden;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+button{
+  border:0;
+  color:inherit;
+  background:none;
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+img{
+  max-width:100%;
+  display:block;
+}
+
+[hidden]{
+  display:none !important;
+}
+
+:focus-visible{
+  outline:2px solid var(--accent-2);
+  outline-offset:3px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+.site-header{
+  position:fixed;
+  z-index:60;
+  top:0;
+  left:0;
+  right:0;
+  height:var(--header-h);
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:0 var(--page-pad);
+  background:var(--glass);
+  border-bottom:1px solid var(--line-strong);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+
+.brand{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  flex-shrink:0;
+  font-family:var(--font-display);
+  font-weight:700;
+  letter-spacing:.08em;
+}
+
+.brand img{
+  width:34px;
+  height:34px;
+  object-fit:contain;
+}
+
+.brand b{
+  font-weight:700;
+  background:var(--gradient);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.desktop-nav{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.nav-btn{
+  position:relative;
+  padding:10px 11px;
+  border-radius:9px;
+  color:var(--muted);
+  font-size:.88rem;
+  font-weight:600;
+  transition:color .2s ease,background .2s ease;
+}
+
+.nav-btn:hover{
+  color:var(--text);
+  background:var(--surface);
+}
+
+.nav-btn.active{
+  color:var(--text);
+}
+
+.nav-btn.active::after{
+  content:"";
+  position:absolute;
+  left:12px;
+  right:12px;
+  bottom:3px;
+  height:2px;
+  border-radius:999px;
+  background:var(--gradient);
+}
+
+.header-spacer{
+  flex:1;
+}
+
+.search-box{
+  position:relative;
+  width:min(310px,26vw);
+}
+
+.search-box input{
+  width:100%;
+  height:40px;
+  padding:0 42px 0 15px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--surface);
+  color:var(--text);
+}
+
+.search-box input::placeholder{
+  color:var(--muted);
+}
+
+.search-box svg{
+  position:absolute;
+  right:13px;
+  top:50%;
+  width:18px;
+  height:18px;
+  transform:translateY(-50%);
+  fill:none;
+  stroke:var(--muted);
+  stroke-width:2;
+}
+
+.header-icon{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  border:1px solid transparent;
+  transition:background .2s ease,border-color .2s ease;
+}
+
+.header-icon:hover{
+  background:var(--surface);
+  border-color:var(--line);
+}
+
+.header-icon svg{
+  width:20px;
+  height:20px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+}
+
+.mobile-menu-btn{
+  display:none;
+}
+
+/* =========================================================
+   FEATURED / TRAILER AREA
+========================================================= */
+.featured-wrap{
+  padding-top:var(--header-h);
+  border-bottom:1px solid var(--line-strong);
+}
+
+.featured-label-row{
+  min-height:46px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 var(--page-pad);
+  border-bottom:1px solid var(--line);
+  background:var(--bg-soft);
+}
+
+.featured-label{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--muted);
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+
+.featured-label::before{
+  content:"";
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--accent-2);
+  box-shadow:0 0 18px rgba(34,211,238,.7);
+}
+
+.featured-title-mini{
+  color:var(--text);
+  font-size:.82rem;
+  font-weight:600;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.hero{
+  position:relative;
+  min-height:min(70vh,690px);
+  overflow:hidden;
+  isolation:isolate;
+  display:flex;
+  align-items:flex-end;
+  padding:clamp(72px,9vw,130px) var(--page-pad) clamp(54px,7vw,88px);
+  background:#090b12;
+}
+
+.hero-art{
+  position:absolute;
+  inset:0;
+  z-index:-3;
+  background-size:cover;
+  background-position:center 26%;
+  transform:scale(1.015);
+}
+
+.hero-art::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg,rgba(6,7,12,.96) 0%,rgba(6,7,12,.73) 37%,rgba(6,7,12,.23) 68%,rgba(6,7,12,.45) 100%),
+    linear-gradient(0deg,var(--bg) 0%,rgba(7,8,13,.25) 44%,rgba(7,8,13,.10) 100%);
+}
+
+.hero-glow{
+  position:absolute;
+  z-index:-2;
+  inset:auto auto -120px -100px;
+  width:520px;
+  height:520px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(139,92,246,.20),transparent 68%);
+  filter:blur(8px);
+}
+
+.hero-copy{
+  width:min(690px,100%);
+}
+
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:999px;
+  background:rgba(0,0,0,.32);
+  color:#fff;
+  font-size:.68rem;
+  font-weight:700;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  backdrop-filter:blur(10px);
+}
+
+.hero h1{
+  margin:15px 0 12px;
+  max-width:760px;
+  font-family:var(--font-display);
+  font-size:clamp(2.3rem,5.8vw,5rem);
+  line-height:1.02;
+  letter-spacing:-.04em;
+  color:#fff;
+  text-wrap:balance;
+}
+
+.meta-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:9px 13px;
+  color:#c9ced9;
+  font-size:.84rem;
+}
+
+.meta-dot{
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:#737b8b;
+}
+
+.hero-summary{
+  max-width:620px;
+  margin:16px 0 23px;
+  color:#d5d9e2;
+  line-height:1.68;
+  font-size:clamp(.92rem,1.4vw,1rem);
+}
+
+.hero-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.action-btn{
+  min-height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  padding:0 18px;
+  border-radius:11px;
+  font-weight:700;
+  transition:transform .18s ease,filter .18s ease,background .18s ease;
+}
+
+.action-btn:hover{
+  transform:translateY(-1px);
+}
+
+.action-btn.primary{
+  color:#fff;
+  background:var(--gradient);
+  box-shadow:0 10px 34px rgba(139,92,246,.26);
+}
+
+.action-btn.secondary{
+  color:#fff;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.16);
+  backdrop-filter:blur(10px);
+}
+
+.action-btn svg{
+  width:18px;
+  height:18px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+}
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+main{
+  min-height:50vh;
+  padding-bottom:64px;
+}
+
+.content-section{
+  margin:34px 0;
+}
+
+.section-heading{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:16px;
+  padding:0 var(--page-pad);
+}
+
+.section-heading h2{
+  font-family:var(--font-display);
+  font-size:clamp(1.08rem,2vw,1.32rem);
+  letter-spacing:-.02em;
+}
+
+.section-heading p{
+  color:var(--muted);
+  font-size:.78rem;
+}
+
+.card-rail{
+  display:flex;
+  gap:15px;
+  overflow-x:auto;
+  padding:15px var(--page-pad) 24px;
+  scroll-snap-type:x proximity;
+  scrollbar-width:none;
+}
+
+.card-rail::-webkit-scrollbar{
+  display:none;
+}
+
+.media-card{
+  flex:0 0 clamp(225px,21vw,305px);
+  aspect-ratio:16/10;
+  position:relative;
+  overflow:hidden;
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  background:var(--surface);
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+  scroll-snap-align:start;
+  cursor:pointer;
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+}
+
+.media-card:hover{
+  z-index:2;
+  transform:translateY(-5px);
+  border-color:var(--line-strong);
+  box-shadow:var(--shadow);
+}
+
+.card-art{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  transition:transform .35s ease;
+}
+
+.media-card:hover .card-art{
+  transform:scale(1.045);
+}
+
+.card-art::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.04) 25%,rgba(0,0,0,.85) 100%);
+}
+
+.card-top{
+  position:absolute;
+  z-index:2;
+  top:10px;
+  left:10px;
+  right:10px;
+  display:flex;
+  gap:7px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  min-height:25px;
+  padding:0 9px;
+  border-radius:999px;
+  background:rgba(7,8,13,.70);
+  border:1px solid rgba(255,255,255,.14);
+  color:#fff;
+  font-size:.62rem;
+  font-weight:700;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  backdrop-filter:blur(8px);
+}
+
+.badge.accent{
+  border:0;
+  background:var(--gradient);
+}
+
+.card-info{
+  position:absolute;
+  z-index:2;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:34px 13px 13px;
+  color:#fff;
+}
+
+.card-info h3{
+  margin-bottom:5px;
+  font-family:var(--font-display);
+  font-size:.96rem;
+  line-height:1.25;
+}
+
+.card-info p{
+  overflow:hidden;
+  color:#d3d8e2;
+  font-size:.72rem;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.grid-page{
+  padding:calc(var(--header-h) + 34px) var(--page-pad) 40px;
+}
+
+.page-kicker{
+  color:var(--accent-2);
+  font-size:.69rem;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.page-title{
+  margin-top:7px;
+  font-family:var(--font-display);
+  font-size:clamp(1.9rem,4vw,3rem);
+  letter-spacing:-.035em;
+}
+
+.page-subtitle{
+  max-width:760px;
+  margin-top:8px;
+  color:var(--muted);
+  line-height:1.65;
+}
+
+.genre-chips{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:22px 0 18px;
+  scrollbar-width:none;
+}
+
+.genre-chips::-webkit-scrollbar{
+  display:none;
+}
+
+.genre-chip{
+  flex:0 0 auto;
+  min-height:36px;
+  padding:0 14px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--surface);
+  color:var(--muted);
+  font-size:.8rem;
+  font-weight:600;
+}
+
+.genre-chip.active{
+  border-color:transparent;
+  color:#fff;
+  background:var(--gradient);
+}
+
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:16px;
+}
+
+.cards-grid .media-card{
+  width:100%;
+  flex:none;
+}
+
+.empty-state{
+  padding:90px 20px;
+  text-align:center;
+  color:var(--muted);
+}
+
+/* =========================================================
+   DETAILS MODAL
+   Card click opens this first. No video autoplay here.
+========================================================= */
+.details-modal{
+  position:fixed;
+  z-index:100;
+  inset:0;
+  display:none;
+  overflow-y:auto;
+  background:rgba(1,3,8,.78);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  overscroll-behavior:contain;
+}
+
+.details-modal.open{
+  display:block;
+}
+
+.details-dialog{
+  width:min(920px,calc(100% - 28px));
+  margin:max(22px,env(safe-area-inset-top)) auto max(28px,env(safe-area-inset-bottom));
+  overflow:hidden;
+  border:1px solid var(--line-strong);
+  border-radius:24px;
+  background:var(--surface);
+  box-shadow:0 40px 120px rgba(0,0,0,.60);
+}
+
+.modal-close{
+  position:fixed;
+  z-index:106;
+  top:max(20px,env(safe-area-inset-top));
+  right:max(20px,env(safe-area-inset-right));
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.17);
+  border-radius:50%;
+  background:rgba(0,0,0,.68);
+  color:#fff;
+  backdrop-filter:blur(8px);
+}
+
+.modal-close svg{
+  width:20px;
+  height:20px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+}
+
+.modal-visual{
+  position:relative;
+  min-height:clamp(300px,48vw,500px);
+  background:#090b12;
+  background-size:cover;
+  background-position:center 24%;
+}
+
+.modal-visual::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(0deg,var(--surface) 0%,rgba(17,21,32,.16) 48%,rgba(0,0,0,.12) 100%),
+    linear-gradient(90deg,rgba(0,0,0,.58),transparent 65%);
+}
+
+.modal-title-area{
+  position:absolute;
+  z-index:2;
+  left:clamp(18px,4vw,44px);
+  right:clamp(18px,4vw,44px);
+  bottom:30px;
+  color:#fff;
+}
+
+.modal-title-area h2{
+  max-width:760px;
+  margin-top:10px;
+  font-family:var(--font-display);
+  font-size:clamp(1.8rem,4vw,3.2rem);
+  line-height:1.05;
+  letter-spacing:-.035em;
+}
+
+.modal-body{
+  padding:8px clamp(18px,4vw,44px) 38px;
+}
+
+.modal-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:20px;
+}
+
+.meta-pill{
+  display:inline-flex;
+  align-items:center;
+  min-height:30px;
+  padding:0 10px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--bg-soft);
+  color:var(--muted);
+  font-size:.74rem;
+  font-weight:600;
+}
+
+.summary-block{
+  padding-bottom:25px;
+  border-bottom:1px solid var(--line);
+}
+
+.summary-label{
+  margin-bottom:8px;
+  color:var(--muted);
+  font-size:.70rem;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.summary-text{
+  max-width:820px;
+  color:var(--text);
+  line-height:1.75;
+  font-size:.95rem;
+}
+
+.seasons-wrap{
+  padding-top:25px;
+}
+
+.season-block + .season-block{
+  margin-top:28px;
+}
+
+.season-title-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:13px;
+}
+
+.season-title-row h3{
+  font-family:var(--font-display);
+  font-size:1.08rem;
+}
+
+.season-title-row span{
+  color:var(--muted);
+  font-size:.76rem;
+}
+
+.episode-grid{
+  display:grid;
+  grid-template-columns:repeat(13,minmax(46px,1fr));
+  gap:8px;
+}
+
+.episode-btn{
+  min-height:46px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--bg-soft);
+  color:var(--text);
+  font-weight:700;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease;
+}
+
+.episode-btn:hover{
+  transform:translateY(-1px);
+  border-color:rgba(139,92,246,.65);
+  background:var(--surface-2);
+}
+
+.episode-btn.active{
+  color:#fff;
+  border-color:transparent;
+  background:var(--gradient);
+}
+
+.episode-help{
+  margin-top:15px;
+  padding:13px 14px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--bg-soft);
+  color:var(--muted);
+  font-size:.78rem;
+  line-height:1.6;
+}
+
+/* =========================================================
+   FULLSCREEN VIDEO OVERLAY
+   Only opens AFTER an episode button is clicked.
+========================================================= */
+.player-overlay{
+  position:fixed;
+  z-index:140;
+  inset:0;
+  display:none;
+  background:#000;
+}
+
+.player-overlay.open{
+  display:block;
+}
+
+.player-topbar{
+  position:absolute;
+  z-index:145;
+  top:0;
+  left:0;
+  right:0;
+  min-height:64px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:
+    max(10px,env(safe-area-inset-top))
+    max(14px,env(safe-area-inset-right))
+    10px
+    max(14px,env(safe-area-inset-left));
+  background:linear-gradient(180deg,rgba(0,0,0,.78),transparent);
+  pointer-events:none;
+}
+
+.player-back{
+  width:42px;
+  height:42px;
+  flex:0 0 auto;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:50%;
+  background:rgba(0,0,0,.58);
+  color:#fff;
+  pointer-events:auto;
+  backdrop-filter:blur(8px);
+}
+
+.player-back svg{
+  width:20px;
+  height:20px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+}
+
+.player-title{
+  min-width:0;
+  color:#fff;
+}
+
+.player-title strong{
+  display:block;
+  overflow:hidden;
+  font-family:var(--font-display);
+  font-size:.92rem;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.player-title span{
+  display:block;
+  margin-top:2px;
+  color:#c8ccd6;
+  font-size:.74rem;
+}
+
+.player-stage{
+  width:100%;
+  height:100dvh;
+  min-height:100svh;
+  display:grid;
+  place-items:center;
+  background:#000;
+  padding:
+    max(0px,env(safe-area-inset-top))
+    max(0px,env(safe-area-inset-right))
+    max(0px,env(safe-area-inset-bottom))
+    max(0px,env(safe-area-inset-left));
+}
+
+.player-shell{
+  width:100%;
+  height:100%;
+  display:grid;
+  place-items:center;
+}
+
+.player-frame{
+  display:block;
+  border:0;
+  background:#000;
+}
+
+.player-frame.landscape{
+  width:100%;
+  height:auto;
+  max-height:100dvh;
+  aspect-ratio:16/9;
+}
+
+.player-frame.portrait{
+  width:auto;
+  height:100%;
+  max-width:100vw;
+  aspect-ratio:9/16;
+}
+
+.native-video{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#000;
+}
+
+.player-error{
+  width:min(680px,calc(100% - 30px));
+  padding:34px;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:18px;
+  background:#0d111b;
+  color:#fff;
+  text-align:center;
+}
+
+.player-error h2{
+  margin-bottom:10px;
+  font-family:var(--font-display);
+  font-size:1.4rem;
+}
+
+.player-error p{
+  color:#bec5d2;
+  line-height:1.65;
+}
+
+.player-error code{
+  display:block;
+  margin:16px 0;
+  padding:12px;
+  overflow-wrap:anywhere;
+  border-radius:10px;
+  background:#07090e;
+  color:#d6dbe5;
+  font-size:.76rem;
+}
+
+.source-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  padding:0 15px;
+  border-radius:10px;
+  background:var(--gradient);
+  color:#fff;
+  font-weight:700;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+.site-footer{
+  border-top:1px solid var(--line-strong);
+  background:linear-gradient(180deg,var(--bg-soft),var(--bg));
+}
+
+.footer-inner{
+  display:grid;
+  grid-template-columns:minmax(260px,1.5fr) repeat(3,minmax(140px,1fr));
+  gap:34px;
+  padding:44px var(--page-pad) 30px;
+}
+
+.footer-brand p{
+  max-width:390px;
+  margin-top:13px;
+  color:var(--muted);
+  font-size:.84rem;
+  line-height:1.7;
+}
+
+.footer-col h4{
+  margin-bottom:12px;
+  font-family:var(--font-display);
+  font-size:.86rem;
+}
+
+.footer-col a,
+.footer-col p{
+  display:block;
+  margin:7px 0;
+  color:var(--muted);
+  font-size:.82rem;
+  line-height:1.55;
+}
+
+.footer-col a:hover{
+  color:var(--text);
+}
+
+.footer-bottom{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin:0 var(--page-pad);
+  padding:20px 0 26px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:.76rem;
+}
+
+.footer-status{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+}
+
+.footer-status::before{
+  content:"";
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#34d399;
+  box-shadow:0 0 12px rgba(52,211,153,.55);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width:1000px){
+  .desktop-nav{
+    position:fixed;
+    z-index:58;
+    top:var(--header-h);
+    left:0;
+    right:0;
+    display:none;
+    flex-direction:column;
+    align-items:stretch;
+    gap:3px;
+    padding:10px var(--page-pad) 15px;
+    border-bottom:1px solid var(--line-strong);
+    background:var(--glass);
+    backdrop-filter:blur(18px);
+  }
+
+  .desktop-nav.open{
+    display:flex;
+  }
+
+  .nav-btn{
+    text-align:left;
+  }
+
+  .nav-btn.active::after{
+    display:none;
+  }
+
+  .mobile-menu-btn{
+    display:grid;
+  }
+
+  .search-box{
+    width:min(280px,36vw);
+  }
+
+  .episode-grid{
+    grid-template-columns:repeat(7,minmax(44px,1fr));
+  }
+
+  .footer-inner{
+    grid-template-columns:1.4fr 1fr 1fr;
+  }
+
+  .footer-brand{
+    grid-row:span 2;
+  }
+}
+
+@media (max-width:700px){
+  :root{
+    --header-h:62px;
+  }
+
+  .site-header{
+    gap:9px;
+  }
+
+  .brand{
+    font-size:.91rem;
+    letter-spacing:.04em;
+  }
+
+  .brand img{
+    width:29px;
+    height:29px;
+  }
+
+  .search-box{
+    display:none;
+  }
+
+  .header-icon{
+    width:37px;
+    height:37px;
+  }
+
+  .featured-label-row{
+    min-height:42px;
+  }
+
+  .featured-label{
+    font-size:.64rem;
+  }
+
+  .featured-title-mini{
+    font-size:.75rem;
+  }
+
+  .hero{
+    min-height:68svh;
+    padding-top:78px;
+    padding-bottom:48px;
+  }
+
+  .hero-art{
+    background-position:center top;
+  }
+
+  .hero-art::after{
+    background:
+      linear-gradient(0deg,var(--bg) 0%,rgba(7,8,13,.56) 45%,rgba(7,8,13,.16) 100%),
+      linear-gradient(90deg,rgba(7,8,13,.78),rgba(7,8,13,.18));
+  }
+
+  .hero h1{
+    font-size:clamp(2rem,11vw,3.5rem);
+  }
+
+  .hero-summary{
+    display:-webkit-box;
+    overflow:hidden;
+    -webkit-line-clamp:4;
+    -webkit-box-orient:vertical;
+  }
+
+  .media-card{
+    flex-basis:min(78vw,300px);
+  }
+
+  .grid-page{
+    padding-top:calc(var(--header-h) + 26px);
+  }
+
+  .cards-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .cards-grid .media-card{
+    aspect-ratio:4/3;
+  }
+
+  .card-info h3{
+    font-size:.83rem;
+  }
+
+  .card-info p{
+    font-size:.66rem;
+  }
+
+  .details-dialog{
+    width:min(100% - 16px,920px);
+    margin:8px auto 16px;
+    border-radius:18px;
+  }
+
+  .modal-close{
+    top:max(13px,env(safe-area-inset-top));
+    right:max(13px,env(safe-area-inset-right));
+    width:40px;
+    height:40px;
+  }
+
+  .modal-visual{
+    min-height:310px;
+  }
+
+  .modal-title-area{
+    bottom:23px;
+  }
+
+  .episode-grid{
+    grid-template-columns:repeat(5,minmax(42px,1fr));
+  }
+
+  .player-error{
+    padding:25px 18px;
+  }
+
+  .footer-inner{
+    grid-template-columns:1fr 1fr;
+    gap:28px 22px;
+  }
+
+  .footer-brand{
+    grid-column:1 / -1;
+    grid-row:auto;
+  }
+
+  .footer-bottom{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+
+@media (max-width:440px){
+  .cards-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .episode-grid{
+    grid-template-columns:repeat(4,minmax(40px,1fr));
+  }
+
+  .footer-inner{
+    grid-template-columns:1fr;
+  }
+
+  .footer-brand{
+    grid-column:auto;
+  }
+}
+
+@media (hover:none){
+  .media-card:hover{
+    transform:none;
+  }
+
+  .media-card:hover .card-art{
+    transform:none;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,
+  *::before,
+  *::after{
+    scroll-behavior:auto !important;
+    transition:none !important;
+  }
+}
 </style>
 </head>
+
 <body>
-<header class="hdr">
-  <a class="logo" href="#" data-view="home"><img src="image/maraxislogo.png" alt=""><span>MARAXIS <b>AI</b></span></a>
-  <nav class="nav" id="nav">
-    <button class="on" data-view="home">Home</button>
-    <button data-view="new">New &amp; Popular</button>
-    <button data-view="drama">AI Drama</button>
-    <button data-view="anime">Anime</button>
-    <button data-view="movie">Movies</button>
+
+<header class="site-header">
+  <a class="brand" href="#" data-view="home" aria-label="MARAXIS AI home">
+    <img src="image/maraxislogo.png" alt="MARAXIS AI logo">
+    <span>MARAXIS <b>AI</b></span>
+  </a>
+
+  <nav class="desktop-nav" id="mainNav" aria-label="Primary navigation">
+    <button class="nav-btn active" data-view="home">Home</button>
+    <button class="nav-btn" data-view="new">New &amp; Popular</button>
+    <button class="nav-btn" data-view="drama">AI Drama</button>
+    <button class="nav-btn" data-view="anime">Anime</button>
+    <button class="nav-btn" data-view="movie">Movies</button>
   </nav>
-  <div class="sp"></div>
-  <label class="search" aria-label="Search titles"><input id="search" type="search" placeholder="Search titles, genres..."><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg></label>
-  <button class="icon-btn" id="themeBtn" aria-label="Toggle theme"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"></path></svg></button>
-  <button class="icon-btn menu" id="menuBtn" aria-label="Open menu"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"></path></svg></button>
+
+  <div class="header-spacer"></div>
+
+  <label class="search-box" aria-label="Search titles">
+    <input id="searchInput" type="search" placeholder="Search titles, genres..." autocomplete="off">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"></circle>
+      <path d="M21 21l-4.3-4.3"></path>
+    </svg>
+  </label>
+
+  <button class="header-icon" id="themeBtn" type="button" aria-label="Toggle color theme">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"></path>
+    </svg>
+  </button>
+
+  <button class="header-icon mobile-menu-btn" id="menuBtn" type="button" aria-label="Open navigation">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18"></path>
+    </svg>
+  </button>
 </header>
 
 <div id="app"></div>
 
-<footer class="ftr">
-  <div class="ftr-grid">
-    <div><a class="logo" href="#" data-view="home"><img src="image/maraxislogo.png" alt=""><span>MARAXIS <b>AI</b></span></a><p style="margin-top:10px">A streaming-style home for AI dramas, anime, movies, and embeddable social video.</p></div>
-    <div><h4>Browse</h4><a href="#" data-view="drama">AI Drama</a><a href="#" data-view="anime">Anime</a><a href="#" data-view="movie">Movies</a></div>
-    <div><h4>Social video</h4><p>YouTube</p><p>Facebook</p><p>TikTok</p></div>
-    <div><h4>Legal</h4><a href="privacypolicy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a></div>
-  </div>
-  <div class="copy">© 2026 Accxs Creations. All rights reserved.</div>
-</footer>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a class="brand" href="#" data-view="home">
+        <img src="image/maraxislogo.png" alt="MARAXIS AI logo">
+        <span>MARAXIS <b>AI</b></span>
+      </a>
+      <p>
+        A cinematic streaming-style home for AI dramas, anime, movies,
+        and video experiences from supported providers.
+      </p>
+    </div>
 
-<section class="viewer" id="viewer" aria-hidden="true">
-  <button class="viewer-close" id="viewerClose" aria-label="Close video">×</button>
-  <div class="stage" id="stage">
-    <div class="player-shell" id="playerShell"></div>
-    <div class="player-tools" id="playerTools" hidden>
-      <button id="back10" type="button">−10s</button>
-      <button id="togglePlay" type="button">Play</button>
-      <button id="forward10" type="button">+10s</button>
-      <span class="tip">The provider's own timeline can also be dragged to seek.</span>
+    <div class="footer-col">
+      <h4>Browse</h4>
+      <a href="#" data-view="home">Home</a>
+      <a href="#" data-view="new">New &amp; Popular</a>
+      <a href="#" data-view="anime">Anime</a>
+      <a href="#" data-view="movie">Movies</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Categories</h4>
+      <a href="#" data-view="drama">AI Drama</a>
+      <a href="#" data-view="anime">Anime Series</a>
+      <a href="#" data-view="movie">Feature Movies</a>
+      <p>More categories coming soon.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="privacypolicy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <p>Embedded videos remain subject to their original provider.</p>
     </div>
   </div>
-  <div class="viewer-info" id="viewerInfo"></div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Accxs Creations. All rights reserved.</span>
+    <span class="footer-status">MARAXIS AI streaming interface</span>
+  </div>
+</footer>
+
+<!-- =======================================================
+     DETAILS MODAL
+     A card opens this modal first.
+     No episode is played automatically.
+======================================================== -->
+<section class="details-modal" id="detailsModal" aria-hidden="true">
+  <button class="modal-close" id="detailsClose" type="button" aria-label="Close details">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18"></path>
+    </svg>
+  </button>
+
+  <div class="details-dialog" id="detailsDialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div id="detailsContent"></div>
+  </div>
+</section>
+
+<!-- =======================================================
+     FULL SCREEN PLAYER
+     Opens only after the user chooses an episode.
+======================================================== -->
+<section class="player-overlay" id="playerOverlay" aria-hidden="true">
+  <div class="player-topbar">
+    <button class="player-back" id="playerClose" type="button" aria-label="Back to episode list">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M15 18l-6-6 6-6"></path>
+      </svg>
+    </button>
+
+    <div class="player-title">
+      <strong id="playerTitle">Video</strong>
+      <span id="playerEpisodeLabel">Episode</span>
+    </div>
+  </div>
+
+  <div class="player-stage">
+    <div class="player-shell" id="playerShell"></div>
+  </div>
 </section>
 
 <script>
-/* =====================================================================
-   MARAXIS CATALOG
-
-   source.provider can be:
-     "youtube"  -> paste a YouTube watch/share/embed URL or video ID
-     "facebook" -> paste the PUBLIC Facebook video/reel/post URL
-     "tiktok"   -> paste a TikTok video URL or numeric post ID
-     "mp4"      -> paste a direct public MP4/WebM URL
-
-   orientation:
-     "landscape" for YouTube/Facebook/movie-style video
-     "portrait"  for TikTok/vertical video
-
-   Replace poster:"" later with your own image, for example:
-     poster:"image/drama/reborn-empress.jpg"
-   ===================================================================== */
+/* =========================================================
+   MARAXIS AI CATALOG
+========================================================= */
 
 const GENRES = {
-  drama:["Reincarnation","Horror","Sci-Fi","Romance","Cyberpunk","Fantasy","Thriller","Comedy","Mystery"],
-  anime:["Isekai","Action","Adventure","Romance","Fantasy","Slice of Life","Mecha","Horror","Sci-Fi","Comedy"],
-  movie:["Action","Adventure","Comedy","Drama","Fantasy","Horror","Mystery","Romance","Sci-Fi","Thriller"]
+  drama:[
+    "Reincarnation",
+    "Horror",
+    "Sci-Fi",
+    "Romance",
+    "Cyberpunk",
+    "Fantasy",
+    "Thriller",
+    "Comedy",
+    "Mystery"
+  ],
+  anime:[
+    "Isekai",
+    "Action",
+    "Adventure",
+    "Romance",
+    "Fantasy",
+    "Slice of Life",
+    "Mecha",
+    "Horror",
+    "Sci-Fi",
+    "Comedy"
+  ],
+  movie:[
+    "Action",
+    "Adventure",
+    "Comedy",
+    "Drama",
+    "Fantasy",
+    "Horror",
+    "Mystery",
+    "Romance",
+    "Sci-Fi",
+    "Thriller"
+  ]
 };
-const LABEL = {drama:"AI Drama",anime:"Anime",movie:"Movie"};
 
-const YT_DEMO = "https://www.youtube.com/watch?v=M7lc1UVf-VE"; // official YouTube API demo video
-const TT_DEMO = "https://www.tiktok.com/@scout2015/video/6718335390845095173"; // TikTok developer-doc example
+const LABEL = {
+  drama:"AI Drama",
+  anime:"Anime",
+  movie:"Movie"
+};
+
+const YT_DEMO = "https://www.youtube.com/watch?v=M7lc1UVf-VE";
+const TT_DEMO = "https://www.tiktok.com/@scout2015/video/6718335390845095173";
 const FB_SAMPLE = "https://www.facebook.com/REPLACE_WITH_PUBLIC_VIDEO_URL";
 
-function makeSeasons(counts, provider, url, orientation){
-  return counts.map((count,si)=>({
-    season:si+1,
-    episodes:Array.from({length:count},(_,i)=>({
-      episode:i+1,
-      title:`Episode ${i+1}`,
-      source:{provider,url,orientation}
+function makeSeasons(counts,provider,url,orientation){
+  return counts.map((count,seasonIndex)=>({
+    season:seasonIndex + 1,
+    episodes:Array.from({length:count},(_,episodeIndex)=>({
+      episode:episodeIndex + 1,
+      title:`Episode ${episodeIndex + 1}`,
+      source:{
+        provider,
+        url,
+        orientation
+      }
     }))
   }));
 }
 
 const catalog = [
-  {id:"d1",title:"Reborn as the Empress's Rival",cat:"drama",genres:["Reincarnation","Romance"],year:2026,duration:"14 min",hue:330,flags:"nt",summary:"A modern engineer wakes inside a palace novel as the villain destined to die and decides to rewrite the ending.",poster:"",seasons:makeSeasons([12],"youtube",YT_DEMO,"landscape")},
-  {id:"d2",title:"Neon Ghost District",cat:"drama",genres:["Cyberpunk","Thriller"],year:2026,duration:"18 min",hue:290,flags:"nt",summary:"A courier discovers that the faces haunting city billboards belong to deleted people fighting to be remembered.",poster:"",seasons:makeSeasons([10],"facebook",FB_SAMPLE,"landscape")},
-  {id:"d3",title:"Hollow Frequency",cat:"drama",genres:["Horror","Mystery"],year:2025,duration:"14 min",hue:2,flags:"t",summary:"A night-shift radio host starts receiving calls from a station that vanished forty years earlier.",poster:"",seasons:makeSeasons([8],"youtube",YT_DEMO,"landscape")},
-  {id:"d4",title:"Aurora Protocol",cat:"drama",genres:["Sci-Fi","Thriller"],year:2026,duration:"12 min",hue:265,flags:"n",summary:"A rogue satellite network turns the northern lights into an encrypted message for humanity.",poster:"",seasons:makeSeasons([9],"youtube",YT_DEMO,"landscape")},
-  {id:"d5",title:"Second Life, First Love",cat:"drama",genres:["Romance","Reincarnation"],year:2026,duration:"20 min",hue:345,flags:"n",summary:"Two strangers realize they have been reborn together across three lifetimes and finally remember why.",poster:"",seasons:makeSeasons([12,10],"youtube",YT_DEMO,"landscape")},
-  {id:"d6",title:"The Silent Algorithm",cat:"drama",genres:["Cyberpunk","Mystery"],year:2026,duration:"24 min",hue:250,flags:"n",summary:"When a recommendation engine stops recommending, one analyst realizes it may already have chosen everything.",poster:"",seasons:makeSeasons([6],"youtube",YT_DEMO,"landscape")},
-  {id:"d7",title:"Laugh Track Zero",cat:"drama",genres:["Comedy","Sci-Fi"],year:2026,duration:"10 min",hue:55,flags:"n",summary:"A sitcom starring only AIs collapses when the laugh track starts reacting to scenes that never happened.",poster:"",seasons:makeSeasons([10],"tiktok",TT_DEMO,"portrait")},
-  {id:"d8",title:"Sunken Cathedral",cat:"drama",genres:["Fantasy","Horror"],year:2025,duration:"13 min",hue:205,flags:"",summary:"Divers enter a drowned cathedral where the bells still ring beneath the sea.",poster:"",seasons:makeSeasons([7],"youtube",YT_DEMO,"landscape")},
+  {
+    id:"d1",
+    title:"Reborn as the Empress's Rival",
+    cat:"drama",
+    genres:["Reincarnation","Romance"],
+    year:2026,
+    duration:"14 min",
+    hue:330,
+    flags:"nt",
+    summary:"A modern engineer wakes inside a palace novel as the villain destined to die and decides to rewrite the ending.",
+    poster:"",
+    seasons:makeSeasons([12],"youtube",YT_DEMO,"landscape")
+  },
+  {
+    id:"d2",
+    title:"Neon Ghost District",
+    cat:"drama",
+    genres:["Cyberpunk","Thriller"],
+    year:2026,
+    duration:"18 min",
+    hue:290,
+    flags:"nt",
+    summary:"A courier discovers that the faces haunting city billboards belong to deleted people fighting to be remembered.",
+    poster:"",
+    seasons:makeSeasons([10],"facebook",FB_SAMPLE,"landscape")
+  },
+  {
+    id:"d3",
+    title:"Hollow Frequency",
+    cat:"drama",
+    genres:["Horror","Mystery"],
+    year:2025,
+    duration:"14 min",
+    hue:2,
+    flags:"t",
+    summary:"A night-shift radio host starts receiving calls from a station that vanished forty years earlier.",
+    poster:"",
+    seasons:makeSeasons([8],"youtube",YT_DEMO,"landscape")
+  },
+  {
+    id:"d4",
+    title:"Aurora Protocol",
+    cat:"drama",
+    genres:["Sci-Fi","Thriller"],
+    year:2026,
+    duration:"12 min",
+    hue:265,
+    flags:"n",
+    summary:"A rogue satellite network turns the northern lights into an encrypted message for humanity.",
+    poster:"",
+    seasons:makeSeasons([9],"youtube",YT_DEMO,"landscape")
+  },
+  {
+    id:"d5",
+    title:"Second Life, First Love",
+    cat:"drama",
+    genres:["Romance","Reincarnation"],
+    year:2026,
+    duration:"20 min",
+    hue:345,
+    flags:"n",
+    summary:"Two strangers realize they have been reborn together across three lifetimes and finally remember why.",
+    poster:"",
+    seasons:makeSeasons([12,10],"youtube",YT_DEMO,"landscape")
+  },
+  {
+    id:"d6",
+    title:"The Silent Algorithm",
+    cat:"drama",
+    genres:["Cyberpunk","Mystery"],
+    year:2026,
+    duration:"24 min",
+    hue:250,
+    flags:"n",
+    summary:"When a recommendation engine stops recommending, one analyst realizes it may already have chosen everything.",
+    poster:"",
+    seasons:makeSeasons([6],"youtube",YT_DEMO,"landscape")
+  },
+  {
+    id:"d7",
+    title:"Laugh Track Zero",
+    cat:"drama",
+    genres:["Comedy","Sci-Fi"],
+    year:2026,
+    duration:"10 min",
+    hue:55,
+    flags:"n",
+    summary:"A sitcom starring only AIs collapses when the laugh track starts reacting to scenes that never happened.",
+    poster:"",
+    seasons:makeSeasons([10],"tiktok",TT_DEMO,"portrait")
+  },
+  {
+    id:"d8",
+    title:"Sunken Cathedral",
+    cat:"drama",
+    genres:["Fantasy","Horror"],
+    year:2025,
+    duration:"13 min",
+    hue:205,
+    flags:"",
+    summary:"Divers enter a drowned cathedral where the bells still ring beneath the sea.",
+    poster:"",
+    seasons:makeSeasons([7],"youtube",YT_DEMO,"landscape")
+  },
 
-  {id:"a1",title:"Villainess Reset",cat:"anime",genres:["Isekai","Romance"],year:2026,duration:"23 min",hue:320,flags:"nt",summary:"A gamer trapped in her favorite otome game uses knowledge of every route to survive the villainess role.",poster:"",seasons:makeSeasons([24],"youtube",YT_DEMO,"landscape")},
-  {id:"a2",title:"Iron Lullaby",cat:"anime",genres:["Mecha","Action"],year:2026,duration:"16 min",hue:215,flags:"t",summary:"A battle-worn pilot hums an old lullaby to keep her unstable mech calm through a final siege.",poster:"",seasons:makeSeasons([12],"facebook",FB_SAMPLE,"landscape")},
-  {id:"a3",title:"Paper Moon Café",cat:"anime",genres:["Slice of Life","Romance"],year:2025,duration:"11 min",hue:340,flags:"",summary:"Every midnight a tiny café appears on the moon, and two lonely strangers keep choosing the same table.",poster:"",seasons:makeSeasons([12],"tiktok",TT_DEMO,"portrait")},
-  {id:"a4",title:"Dragons of Glass",cat:"anime",genres:["Fantasy","Action"],year:2026,duration:"9 min",hue:195,flags:"nt",summary:"Crystal dragons migrate across a shattered sky, each wingbeat ringing like a cathedral bell.",poster:"",seasons:makeSeasons([12],"youtube",YT_DEMO,"landscape")},
-  {id:"a5",title:"Crimson Hallway",cat:"anime",genres:["Horror","Isekai"],year:2025,duration:"21 min",hue:8,flags:"t",summary:"A school corridor opens into a different world every night, and none of those worlds want students to leave.",poster:"",seasons:makeSeasons([10],"youtube",YT_DEMO,"landscape")},
-  {id:"a6",title:"Star Cafe Chronicles",cat:"anime",genres:["Comedy","Sci-Fi"],year:2026,duration:"12 min",hue:50,flags:"n",summary:"The galaxy's strangest customers argue, flirt, and plot over coffee at a station diner.",poster:"",seasons:makeSeasons([12],"tiktok",TT_DEMO,"portrait")},
+  {
+    id:"a1",
+    title:"Villainess Reset",
+    cat:"anime",
+    genres:["Isekai","Romance"],
+    year:2026,
+    duration:"23 min",
+    hue:320,
+    flags:"nt",
+    summary:"A gamer trapped in her favorite otome game uses knowledge of every route to survive the villainess role.",
+    poster:"",
+    seasons:makeSeasons([24],"youtube",YT_DEMO,"landscape")
+  },
+  {
+    id:"a2",
+    title:"Iron Lullaby",
+    cat:"anime",
+    genres:["Mecha","Action"],
+    year:2026,
+    duration:"16 min",
+    hue:215,
+    flags:"t",
+    summary:"A battle-worn pilot hums an old lullaby to keep her unstable mech calm through a final siege.",
+    poster:"",
+    seasons:makeSeasons([12],"facebook",FB_SAMPLE,"landscape")
+  },
+  {
+    id:"a3",
+    title:"Paper Moon Café",
+    cat:"anime",
+    genres:["Slice of Life","Romance"],
+    year:2025,
+    duration:"11 min",
+    hue:340,
+    flags:"",
+    summary:"Every midnight a tiny café appears on the moon, and two lonely strangers keep choosing the same table.",
+    poster:"",
+    seasons:makeSeasons([12],"tiktok",TT_DEMO,"portrait")
+  },
+  {
+    id:"a4",
+    title:"Dragons of Glass",
+    cat:"anime",
+    genres:["Fantasy","Action"],
+    year:2026,
+    duration:"9 min",
+    hue:195,
+    flags:"nt",
+    summary:"Crystal dragons migrate across a shattered sky, each wingbeat ringing like a cathedral bell.",
+    poster:"",
+    seasons:makeSeasons([12],"youtube",YT_DEMO,"landscape")
+  },
+  {
+    id:"a5",
+    title:"Crimson Hallway",
+    cat:"anime",
+    genres:["Horror","Isekai"],
+    year:2025,
+    duration:"21 min",
+    hue:8,
+    flags:"t",
+    summary:"A school corridor opens into a different world every night, and none of those worlds want students to leave.",
+    poster:"",
+    seasons:makeSeasons([10],"youtube",YT_DEMO,"landscape")
+  },
+  {
+    id:"a6",
+    title:"Star Cafe Chronicles",
+    cat:"anime",
+    genres:["Comedy","Sci-Fi"],
+    year:2026,
+    duration:"12 min",
+    hue:50,
+    flags:"n",
+    summary:"The galaxy's strangest customers argue, flirt, and plot over coffee at a station diner.",
+    poster:"",
+    seasons:makeSeasons([12],"tiktok",TT_DEMO,"portrait")
+  },
+
   {
     id:"a7",
     title:"I Got a Cheat Skill in Another World and Became Unrivaled in the Real World",
@@ -181,170 +1706,972 @@ const catalog = [
     duration:"24 min. per ep.",
     rating:"PG-13 - Teens 13 or older",
     hue:205,
-    flags:"",
+    flags:"n",
     summary:"Follows Yūya Tenjou, a bullied high school student who discovers a portal to a fantasy world named Argena after his grandfather's death. In this world, he gains powerful abilities that enhance his physical and social standing on Earth. The series explores his journey as he navigates both realms, using his newfound skills to defeat powerful enemies and improve his life. It has been adapted into a manga and anime, with a second season set to premiere in January 2027.",
     poster:"image/anime/Cheat-Skill-in-Another-World.jpg",
-    seasons:[{
-      season:1,
-      episodes:[
-        {episode:1,title:"Episode 1",source:{provider:"facebook",url:"https://www.facebook.com/share/v/14HjfRBYbCh/",orientation:"landscape"}},
-        {episode:2,title:"Episode 2",source:{provider:"facebook",url:"https://www.facebook.com/share/v/1CQCdhao2s/",orientation:"landscape"}},
-        {episode:3,title:"Episode 3",source:{provider:"facebook",url:"https://www.facebook.com/share/v/17GuXJx8mX/",orientation:"landscape"}},
-        {episode:4,title:"Episode 4",source:{provider:"facebook",url:"https://www.facebook.com/share/v/16kV1cB3U9/",orientation:"landscape"}},
-        {episode:5,title:"Episode 5",source:{provider:"facebook",url:"https://www.facebook.com/share/v/19bxGaZ74j/",orientation:"landscape"}},
-        {episode:6,title:"Episode 6",source:{provider:"facebook",url:"https://www.facebook.com/share/v/1CTxFSKcSs/",orientation:"landscape"}},
-        {episode:7,title:"Episode 7",source:{provider:"facebook",url:"https://www.facebook.com/share/v/1B4fVjtAks/",orientation:"landscape"}},
-        {episode:8,title:"Episode 8",source:{provider:"facebook",url:"https://www.facebook.com/share/v/1FJicKuUL3/",orientation:"landscape"}},
-        {episode:9,title:"Episode 9",source:{provider:"facebook",url:"https://www.facebook.com/share/v/1HJDRqbe5z/",orientation:"landscape"}},
-        {episode:10,title:"Episode 10",source:{provider:"facebook",url:"https://www.facebook.com/share/v/16qxF3qV3G/",orientation:"landscape"}},
-        {episode:11,title:"Episode 11",source:{provider:"facebook",url:"https://www.facebook.com/share/v/172SJuLtXf/",orientation:"landscape"}},
-        {episode:12,title:"Episode 12",source:{provider:"facebook",url:"https://www.facebook.com/share/v/1B3YqRRTTj/",orientation:"landscape"}},
-        {episode:13,title:"Episode 13",source:{provider:"facebook",url:"https://www.facebook.com/share/v/1ApXXtqbAg/",orientation:"landscape"}}
-      ]
-    }]
+    seasons:[
+      {
+        season:1,
+        episodes:[
+          {
+            episode:1,
+            title:"Episode 1",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/14HjfRBYbCh/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:2,
+            title:"Episode 2",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/1CQCdhao2s/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:3,
+            title:"Episode 3",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/17GuXJx8mX/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:4,
+            title:"Episode 4",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/16kV1cB3U9/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:5,
+            title:"Episode 5",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/19bxGaZ74j/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:6,
+            title:"Episode 6",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/1CTxFSKcSs/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:7,
+            title:"Episode 7",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/1B4fVjtAks/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:8,
+            title:"Episode 8",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/1FJicKuUL3/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:9,
+            title:"Episode 9",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/1HJDRqbe5z/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:10,
+            title:"Episode 10",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/16qxF3qV3G/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:11,
+            title:"Episode 11",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/172SJuLtXf/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:12,
+            title:"Episode 12",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/1B3YqRRTTj/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:13,
+            title:"Episode 13",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/1ApXXtqbAg/",
+              orientation:"landscape"
+            }
+          }
+        ]
+      }
+    ]
   },
 
-  {id:"m1",title:"Afterlight",cat:"movie",genres:["Action","Sci-Fi"],year:2026,duration:"1h 46m",hue:260,flags:"nt",summary:"A rescue pilot races across a collapsing orbital city before its artificial sun goes dark forever.",poster:"",seasons:makeSeasons([1],"youtube",YT_DEMO,"landscape")},
-  {id:"m2",title:"The Last Map",cat:"movie",genres:["Adventure","Mystery"],year:2026,duration:"1h 58m",hue:35,flags:"n",summary:"A cartographer finds a map that redraws itself every midnight and points toward a city erased from history.",poster:"",seasons:makeSeasons([1],"facebook",FB_SAMPLE,"landscape")},
-  {id:"m3",title:"Midnight Check-In",cat:"movie",genres:["Comedy","Drama"],year:2025,duration:"1h 34m",hue:315,flags:"t",summary:"A burned-out hotel clerk and a runaway celebrity spend one impossible night solving everyone else's problems.",poster:"",seasons:makeSeasons([1],"youtube",YT_DEMO,"landscape")},
-  {id:"m4",title:"Kingdom of Embers",cat:"movie",genres:["Fantasy","Adventure"],year:2026,duration:"2h 08m",hue:18,flags:"nt",summary:"An exiled heir returns to a kingdom powered by living fire and discovers the throne has chosen someone else.",poster:"",seasons:makeSeasons([1],"youtube",YT_DEMO,"landscape")},
-  {id:"m5",title:"Room 404",cat:"movie",genres:["Horror","Mystery"],year:2026,duration:"1h 41m",hue:355,flags:"n",summary:"A hotel room missing from every floor plan appears only to guests carrying the same forgotten memory.",poster:"",seasons:makeSeasons([1],"tiktok",TT_DEMO,"portrait")},
-  {id:"m6",title:"Letters in Winter",cat:"movie",genres:["Romance","Drama"],year:2025,duration:"1h 49m",hue:335,flags:"",summary:"Two strangers begin exchanging letters through a library book even though they live five years apart.",poster:"",seasons:makeSeasons([1],"youtube",YT_DEMO,"landscape")},
-  {id:"m7",title:"Blackout Mile",cat:"movie",genres:["Thriller","Action"],year:2026,duration:"1h 37m",hue:210,flags:"t",summary:"During a citywide blackout, a paramedic has one hour to cross a locked-down district with evidence everyone wants.",poster:"",seasons:makeSeasons([1],"facebook",FB_SAMPLE,"landscape")}
+  {
+    id:"m1",
+    title:"Afterlight",
+    cat:"movie",
+    genres:["Action","Sci-Fi"],
+    year:2026,
+    duration:"1h 46m",
+    hue:260,
+    flags:"nt",
+    summary:"A rescue pilot races across a collapsing orbital city before its artificial sun goes dark forever.",
+    poster:"",
+    seasons:makeSeasons([1],"youtube",YT_DEMO,"landscape")
+  },
+  {
+    id:"m2",
+    title:"The Last Map",
+    cat:"movie",
+    genres:["Adventure","Mystery"],
+    year:2026,
+    duration:"1h 58m",
+    hue:35,
+    flags:"n",
+    summary:"A cartographer finds a map that redraws itself every midnight and points toward a city erased from history.",
+    poster:"",
+    seasons:makeSeasons([1],"facebook",FB_SAMPLE,"landscape")
+  },
+  {
+    id:"m3",
+    title:"Midnight Check-In",
+    cat:"movie",
+    genres:["Comedy","Drama"],
+    year:2025,
+    duration:"1h 34m",
+    hue:315,
+    flags:"t",
+    summary:"A burned-out hotel clerk and a runaway celebrity spend one impossible night solving everyone else's problems.",
+    poster:"",
+    seasons:makeSeasons([1],"youtube",YT_DEMO,"landscape")
+  },
+  {
+    id:"m4",
+    title:"Kingdom of Embers",
+    cat:"movie",
+    genres:["Fantasy","Adventure"],
+    year:2026,
+    duration:"2h 08m",
+    hue:18,
+    flags:"nt",
+    summary:"An exiled heir returns to a kingdom powered by living fire and discovers the throne has chosen someone else.",
+    poster:"",
+    seasons:makeSeasons([1],"youtube",YT_DEMO,"landscape")
+  },
+  {
+    id:"m5",
+    title:"Room 404",
+    cat:"movie",
+    genres:["Horror","Mystery"],
+    year:2026,
+    duration:"1h 41m",
+    hue:355,
+    flags:"n",
+    summary:"A hotel room missing from every floor plan appears only to guests carrying the same forgotten memory.",
+    poster:"",
+    seasons:makeSeasons([1],"tiktok",TT_DEMO,"portrait")
+  },
+  {
+    id:"m6",
+    title:"Letters in Winter",
+    cat:"movie",
+    genres:["Romance","Drama"],
+    year:2025,
+    duration:"1h 49m",
+    hue:335,
+    flags:"",
+    summary:"Two strangers begin exchanging letters through a library book even though they live five years apart.",
+    poster:"",
+    seasons:makeSeasons([1],"youtube",YT_DEMO,"landscape")
+  },
+  {
+    id:"m7",
+    title:"Blackout Mile",
+    cat:"movie",
+    genres:["Thriller","Action"],
+    year:2026,
+    duration:"1h 37m",
+    hue:210,
+    flags:"t",
+    summary:"During a citywide blackout, a paramedic has one hour to cross a locked-down district with evidence everyone wants.",
+    poster:"",
+    seasons:makeSeasons([1],"facebook",FB_SAMPLE,"landscape")
+  }
 ];
 
-/* Add one sample card for every genre that is not already represented. */
-let autoId=100;
-for(const [cat,genres] of Object.entries(GENRES)){
-  for(const genre of genres){
-    if(catalog.some(v=>v.cat===cat&&v.genres.includes(genre))) continue;
-    const provider = autoId%3===0 ? "tiktok" : autoId%3===1 ? "youtube" : "facebook";
-    const orientation = provider==="tiktok" ? "portrait" : "landscape";
-    const url = provider==="youtube" ? YT_DEMO : provider==="tiktok" ? TT_DEMO : FB_SAMPLE;
-    catalog.push({
-      id:`auto${autoId++}`,title:`${genre} Sample`,cat,genres:[genre],year:2026,duration:cat==="movie"?"1h 40m":"18 min",hue:(autoId*37)%360,flags:"",summary:`Sample ${LABEL[cat]} title for the ${genre} genre. Replace this title, poster, description, and source URL with your real content later.`,poster:"",seasons:makeSeasons([cat==="movie"?1:12],provider,url,orientation)
+/* =========================================================
+   STATE / HELPERS
+========================================================= */
+
+const state = {
+  view:"home",
+  genre:"All",
+  query:"",
+  currentId:null,
+  season:1,
+  episode:1,
+  theme:localStorage.getItem("mx-theme") || "dark"
+};
+
+document.documentElement.dataset.theme = state.theme;
+
+const $ = (selector,root=document) => root.querySelector(selector);
+const $$ = (selector,root=document) => [...root.querySelectorAll(selector)];
+
+function esc(value){
+  return String(value ?? "").replace(/[&<>"']/g,char=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[char]));
+}
+
+function cssUrl(url){
+  return String(url ?? "")
+    .replace(/\\/g,"\\\\")
+    .replace(/"/g,'\\"');
+}
+
+function artStyle(item){
+  if(item.poster){
+    return `background-image:url("${cssUrl(item.poster)}")`;
+  }
+
+  const hue = Number(item.hue || 240);
+
+  return `
+    background-image:
+      radial-gradient(circle at 72% 24%,hsla(${(hue + 55) % 360},92%,72%,.58),transparent 24%),
+      linear-gradient(135deg,hsl(${hue},68%,43%),hsl(${(hue + 52) % 360},70%,17%) 66%,#07080d)
+  `;
+}
+
+function currentItem(){
+  return catalog.find(item=>item.id === state.currentId) || null;
+}
+
+function selectedSeason(item){
+  return item?.seasons?.find(season=>season.season === state.season)
+    || item?.seasons?.[0]
+    || null;
+}
+
+function selectedEpisode(item){
+  const season = selectedSeason(item);
+
+  return season?.episodes?.find(episode=>episode.episode === state.episode)
+    || season?.episodes?.[0]
+    || null;
+}
+
+function firstEpisode(item){
+  return item?.seasons?.[0]?.episodes?.[0] || null;
+}
+
+function searchMatches(item){
+  const query = state.query.trim().toLowerCase();
+
+  if(!query) return true;
+
+  const haystack = [
+    item.title,
+    item.summary,
+    item.genres.join(" "),
+    LABEL[item.cat],
+    item.year,
+    item.rating
+  ].join(" ").toLowerCase();
+
+  return haystack.includes(query);
+}
+
+/* =========================================================
+   CARD / HOME RENDERING
+========================================================= */
+
+function cardMarkup(item){
+  return `
+    <article
+      class="media-card"
+      tabindex="0"
+      role="button"
+      aria-label="View details for ${esc(item.title)}"
+      data-card-id="${esc(item.id)}"
+    >
+      <div class="card-art" style="${artStyle(item)}"></div>
+
+      <div class="card-top">
+        ${item.flags?.includes("n") ? '<span class="badge accent">New</span>' : ""}
+        ${item.flags?.includes("t") ? '<span class="badge">Trending</span>' : ""}
+        <span class="badge">${esc(LABEL[item.cat])}</span>
+      </div>
+
+      <div class="card-info">
+        <h3>${esc(item.title)}</h3>
+        <p>${esc(item.genres.join(" / "))} · ${esc(item.duration)}</p>
+      </div>
+    </article>
+  `;
+}
+
+function railMarkup(title,items){
+  if(!items.length) return "";
+
+  return `
+    <section class="content-section">
+      <div class="section-heading">
+        <h2>${esc(title)}</h2>
+        <p>${items.length} title${items.length === 1 ? "" : "s"}</p>
+      </div>
+
+      <div class="card-rail">
+        ${items.map(cardMarkup).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function featuredItem(){
+  return catalog.find(item=>item.id === "a7")
+    || catalog.find(item=>item.flags?.includes("t"))
+    || catalog[0];
+}
+
+function heroMarkup(){
+  const item = featuredItem();
+
+  return `
+    <section class="featured-wrap">
+      <div class="featured-label-row">
+        <span class="featured-label">Featured trailer</span>
+        <span class="featured-title-mini">${esc(item.title)}</span>
+      </div>
+
+      <section class="hero">
+        <div class="hero-art" style="${artStyle(item)}"></div>
+        <div class="hero-glow"></div>
+
+        <div class="hero-copy">
+          <span class="eyebrow">${esc(LABEL[item.cat])} · Featured</span>
+
+          <h1>${esc(item.title)}</h1>
+
+          <div class="meta-row">
+            ${item.year ? `<span>${esc(item.year)}</span><span class="meta-dot"></span>` : ""}
+            <span>${esc(item.duration)}</span>
+            <span class="meta-dot"></span>
+            <span>${esc(item.genres.join(" / "))}</span>
+            ${item.rating ? `<span class="meta-dot"></span><span>${esc(item.rating)}</span>` : ""}
+          </div>
+
+          <p class="hero-summary">${esc(item.summary)}</p>
+
+          <div class="hero-actions">
+            <button class="action-btn primary" type="button" data-details-id="${esc(item.id)}">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 5v14l11-7z"></path>
+              </svg>
+              Browse Episodes
+            </button>
+
+            <button class="action-btn secondary" type="button" data-details-id="${esc(item.id)}">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="M12 10v6M12 7h.01"></path>
+              </svg>
+              More Info
+            </button>
+          </div>
+        </div>
+      </section>
+    </section>
+  `;
+}
+
+function renderHome(){
+  const items = catalog.filter(searchMatches);
+
+  return `
+    ${heroMarkup()}
+    ${railMarkup("Trending Now",items.filter(item=>item.flags?.includes("t")))}
+    ${railMarkup("New Releases",items.filter(item=>item.flags?.includes("n")))}
+    ${railMarkup("AI Drama",items.filter(item=>item.cat === "drama"))}
+    ${railMarkup("Anime",items.filter(item=>item.cat === "anime"))}
+    ${railMarkup("Movies",items.filter(item=>item.cat === "movie"))}
+  `;
+}
+
+function renderGrid(title,subtitle,items,cat=null){
+  const genres = cat ? GENRES[cat] : [];
+  const filtered = state.genre === "All"
+    ? items
+    : items.filter(item=>item.genres.includes(state.genre));
+
+  return `
+    <section class="grid-page">
+      <span class="page-kicker">${cat ? esc(LABEL[cat]) : "MARAXIS AI"}</span>
+      <h1 class="page-title">${esc(title)}</h1>
+      <p class="page-subtitle">${esc(subtitle)}</p>
+
+      ${
+        cat
+          ? `
+            <div class="genre-chips">
+              ${["All",...genres].map(genre=>`
+                <button
+                  class="genre-chip ${state.genre === genre ? "active" : ""}"
+                  type="button"
+                  data-genre="${esc(genre)}"
+                >
+                  ${esc(genre)}
+                </button>
+              `).join("")}
+            </div>
+          `
+          : '<div style="height:22px"></div>'
+      }
+
+      ${
+        filtered.length
+          ? `<div class="cards-grid">${filtered.map(cardMarkup).join("")}</div>`
+          : '<div class="empty-state">No titles found.</div>'
+      }
+    </section>
+  `;
+}
+
+function renderApp(){
+  $$("#mainNav .nav-btn").forEach(button=>{
+    button.classList.toggle("active",button.dataset.view === state.view);
+  });
+
+  const searched = catalog.filter(searchMatches);
+  let html = "";
+
+  if(state.query.trim()){
+    html = renderGrid(
+      "Search Results",
+      `Found ${searched.length} matching title${searched.length === 1 ? "" : "s"}.`,
+      searched
+    );
+  }
+  else if(state.view === "drama"){
+    html = renderGrid(
+      "AI Drama",
+      "AI-generated series and short dramas across romance, science fiction, fantasy, horror, mystery, comedy, and more.",
+      catalog.filter(item=>item.cat === "drama"),
+      "drama"
+    );
+  }
+  else if(state.view === "anime"){
+    html = renderGrid(
+      "Anime",
+      "Browse anime series and shorts. Select a title first, then choose a season and episode from its details modal.",
+      catalog.filter(item=>item.cat === "anime"),
+      "anime"
+    );
+  }
+  else if(state.view === "movie"){
+    html = renderGrid(
+      "Movies",
+      "Feature-style titles across action, adventure, comedy, drama, fantasy, horror, mystery, romance, science fiction, and thrillers.",
+      catalog.filter(item=>item.cat === "movie"),
+      "movie"
+    );
+  }
+  else if(state.view === "new"){
+    const sorted = [...catalog].sort((a,b)=>{
+      const newDifference = Number(Boolean(b.flags?.includes("n"))) - Number(Boolean(a.flags?.includes("n")));
+      if(newDifference) return newDifference;
+
+      return Number(Boolean(b.flags?.includes("t"))) - Number(Boolean(a.flags?.includes("t")));
     });
+
+    html = renderGrid(
+      "New & Popular",
+      "Fresh releases and trending titles from across MARAXIS AI.",
+      sorted
+    );
+  }
+  else{
+    html = renderHome();
+  }
+
+  $("#app").innerHTML = html;
+}
+
+/* =========================================================
+   DETAILS MODAL
+========================================================= */
+
+function detailsMarkup(item){
+  const seasons = item.seasons || [];
+
+  return `
+    <div class="modal-visual" style="${artStyle(item)}">
+      <div class="modal-title-area">
+        <span class="eyebrow">${esc(LABEL[item.cat])}</span>
+        <h2 id="modalTitle">${esc(item.title)}</h2>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-meta">
+        ${item.year ? `<span class="meta-pill">${esc(item.year)}</span>` : ""}
+        <span class="meta-pill">${esc(item.duration)}</span>
+        <span class="meta-pill">${esc(item.genres.join(" / "))}</span>
+        ${item.rating ? `<span class="meta-pill">${esc(item.rating)}</span>` : ""}
+      </div>
+
+      <section class="summary-block">
+        <div class="summary-label">Summary</div>
+        <p class="summary-text">${esc(item.summary)}</p>
+      </section>
+
+      <div class="seasons-wrap">
+        ${seasons.map(season=>`
+          <section class="season-block">
+            <div class="season-title-row">
+              <h3>${item.cat === "movie" ? "Movie" : `Season ${season.season}`}</h3>
+              <span>${season.episodes.length} episode${season.episodes.length === 1 ? "" : "s"}</span>
+            </div>
+
+            <div class="episode-grid">
+              ${season.episodes.map(episode=>`
+                <button
+                  class="episode-btn ${
+                    state.season === season.season && state.episode === episode.episode
+                      ? "active"
+                      : ""
+                  }"
+                  type="button"
+                  data-season="${season.season}"
+                  data-episode="${episode.episode}"
+                  title="${esc(episode.title)}"
+                  aria-label="${esc(episode.title)}"
+                >
+                  ${episode.episode}
+                </button>
+              `).join("")}
+            </div>
+          </section>
+        `).join("")}
+
+        <div class="episode-help">
+          Select an episode number to open the video player. The card itself no longer starts a video automatically.
+          For Facebook, use a public embeddable video permalink such as a <strong>/videos/</strong> or
+          <strong>watch/?v=</strong> URL. Facebook <strong>/share/v/</strong> links often cannot be embedded.
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function openDetails(id){
+  const item = catalog.find(entry=>entry.id === id);
+  if(!item) return;
+
+  state.currentId = item.id;
+  state.season = item.seasons?.[0]?.season || 1;
+  state.episode = item.seasons?.[0]?.episodes?.[0]?.episode || 1;
+
+  $("#detailsContent").innerHTML = detailsMarkup(item);
+  $("#detailsModal").classList.add("open");
+  $("#detailsModal").setAttribute("aria-hidden","false");
+  document.body.classList.add("modal-open");
+
+  requestAnimationFrame(()=>{
+    $("#detailsModal").scrollTop = 0;
+  });
+}
+
+function refreshDetails(){
+  const item = currentItem();
+  if(!item) return;
+
+  $("#detailsContent").innerHTML = detailsMarkup(item);
+}
+
+function closeDetails(){
+  if($("#playerOverlay").classList.contains("open")){
+    closePlayer();
+  }
+
+  $("#detailsModal").classList.remove("open");
+  $("#detailsModal").setAttribute("aria-hidden","true");
+  document.body.classList.remove("modal-open");
+
+  state.currentId = null;
+}
+
+/* =========================================================
+   VIDEO PROVIDER HELPERS
+========================================================= */
+
+function youtubeId(url){
+  const value = String(url || "").trim();
+
+  if(/^[\w-]{11}$/.test(value)){
+    return value;
+  }
+
+  try{
+    const parsed = new URL(value);
+
+    if(parsed.hostname.includes("youtu.be")){
+      return parsed.pathname.split("/").filter(Boolean)[0] || "";
+    }
+
+    if(parsed.searchParams.get("v")){
+      return parsed.searchParams.get("v");
+    }
+
+    const pathMatch = parsed.pathname.match(/\/(?:embed|shorts|live)\/([^/?]+)/);
+    return pathMatch?.[1] || "";
+  }
+  catch{
+    return "";
   }
 }
 
-const state={view:"home",genre:"All",query:"",current:null,season:1,episode:1,theme:localStorage.getItem("mx-theme")||"dark"};
-document.documentElement.dataset.theme=state.theme;
-const $=(s,r=document)=>r.querySelector(s);
-const $$=(s,r=document)=>[...r.querySelectorAll(s)];
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const providerLabel=p=>({youtube:"YouTube",facebook:"Facebook",tiktok:"TikTok",mp4:"Video"}[p]||"Video");
+function tiktokId(url){
+  const value = String(url || "").trim();
 
-function art(v){
-  if(v.poster) return `background-image:linear-gradient(to top,rgba(0,0,0,.72),rgba(0,0,0,.04)),url('${esc(v.poster)}')`;
-  return `background:radial-gradient(circle at 72% 28%,hsla(${(v.hue+50)%360},90%,68%,.65),transparent 24%),linear-gradient(135deg,hsl(${v.hue},70%,42%),hsl(${(v.hue+55)%360},74%,18%) 66%,#07070d)`;
-}
-function firstSource(v){return v.seasons?.[0]?.episodes?.[0]?.source||null}
-function card(v){
-  const s=firstSource(v);return `<article class="card" tabindex="0" data-id="${esc(v.id)}"><div class="poster" style="${art(v)}"></div><div class="badges">${v.flags.includes("n")?'<span class="tag">NEW</span>':v.flags.includes("t")?'<span class="tag">HOT</span>':""}<span class="tag alt">${LABEL[v.cat]}</span><span class="tag alt provider">${providerLabel(s?.provider)}</span></div><div class="card-info"><h3>${esc(v.title)}</h3><small>${esc(v.genres.join(" / "))} · ${esc(v.duration)}</small></div></article>`;
-}
-function rail(title,items){return items.length?`<section class="section"><div class="section-head"><h2>${esc(title)}</h2><p>${items.length} titles</p></div><div class="rail">${items.map(card).join("")}</div></section>`:""}
-function hero(){const v=catalog.find(x=>x.flags.includes("t"))||catalog[0];return `<section class="hero" style="--hero-hue:${v.hue}"><div class="hero-bg"></div><div class="hero-copy"><span class="tag">FEATURED · ${LABEL[v.cat]}</span><h1>${esc(v.title)}</h1><div class="meta">${v.year?`<span>${esc(v.year)}</span>`:""}<span>${esc(v.duration)}</span><span>${esc(v.genres.join(" / "))}</span>${v.rating?`<span>${esc(v.rating)}</span>`:""}</div><p>${esc(v.summary)}</p><div class="btns"><button class="btn primary" data-play="${v.id}">▶ Play</button><button class="btn ghost" data-info="${v.id}">More info</button></div></div></section>`}
+  if(/^\d+$/.test(value)){
+    return value;
+  }
 
-function matches(v){const q=state.query.trim().toLowerCase();if(!q)return true;return `${v.title} ${v.genres.join(" ")} ${v.summary} ${LABEL[v.cat]}`.toLowerCase().includes(q)}
-function renderHome(){const items=catalog.filter(matches);return `${hero()}${rail("Trending Now",items.filter(v=>v.flags.includes("t")))}${rail("New Releases",items.filter(v=>v.flags.includes("n")))}${rail("AI Drama",items.filter(v=>v.cat==="drama"))}${rail("Anime",items.filter(v=>v.cat==="anime"))}${rail("Movies",items.filter(v=>v.cat==="movie"))}`}
-function renderGrid(title,sub,items,cat){
-  const genres=cat?GENRES[cat]:[];const filtered=state.genre==="All"?items:items.filter(v=>v.genres.includes(state.genre));
-  return `<section class="grid-page"><h1 class="page-title">${esc(title)}</h1><p class="page-sub">${esc(sub)}</p>${cat?`<div class="chips">${["All",...genres].map(g=>`<button class="chip ${state.genre===g?"on":""}" data-genre="${esc(g)}">${esc(g)}</button>`).join("")}</div>`:'<div style="height:18px"></div>'}${filtered.length?`<div class="cards-grid">${filtered.map(card).join("")}</div>`:'<div class="empty">No titles found.</div>'}</section>`}
-function render(){
-  $$("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.view===state.view));
-  let html="";const qitems=catalog.filter(matches);
-  if(state.query.trim()) html=renderGrid(`Search results`,`Found ${qitems.length} matching titles.`,qitems);
-  else if(state.view==="drama")html=renderGrid("AI Drama","AI-generated series and short dramas across every genre.",catalog.filter(v=>v.cat==="drama"),"drama");
-  else if(state.view==="anime")html=renderGrid("Anime","Anime series and shorts across every genre.",catalog.filter(v=>v.cat==="anime"),"anime");
-  else if(state.view==="movie")html=renderGrid("Movies","Feature-style titles across action, adventure, comedy, drama, fantasy, horror, mystery, romance, science fiction, and thrillers.",catalog.filter(v=>v.cat==="movie"),"movie");
-  else if(state.view==="new")html=renderGrid("New & Popular","Fresh releases and trending titles.",[...catalog].sort((a,b)=>(b.flags.includes("n")-a.flags.includes("n"))||(b.flags.includes("t")-a.flags.includes("t"))));
-  else html=renderHome();
-  $("#app").innerHTML=html;
+  return value.match(/\/video\/(\d+)/)?.[1] || "";
 }
 
-function youtubeId(url){const s=String(url||"").trim();if(/^[\w-]{11}$/.test(s))return s;try{const u=new URL(s);if(u.hostname.includes("youtu.be"))return u.pathname.split("/").filter(Boolean)[0]||"";if(u.searchParams.get("v"))return u.searchParams.get("v");const p=u.pathname.match(/\/(?:embed|shorts|live)\/([^/?]+)/);return p?.[1]||""}catch{return""}}
-function tiktokId(url){const s=String(url||"").trim();if(/^\d+$/.test(s))return s;return s.match(/\/video\/(\d+)/)?.[1]||""}
-function isPlaceholderFacebook(url){return !url||/REPLACE_WITH/i.test(url)}
+function isFacebookPlaceholder(url){
+  return !url || /REPLACE_WITH/i.test(url);
+}
+
+function isFacebookShareUrl(url){
+  return /facebook\.com\/share\//i.test(String(url || ""));
+}
+
+function playerErrorMarkup(title,message,url=""){
+  return `
+    <div class="player-error">
+      <h2>${esc(title)}</h2>
+      <p>${esc(message)}</p>
+      ${url ? `<code>${esc(url)}</code>` : ""}
+      ${
+        url
+          ? `<a class="source-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Open Original Video</a>`
+          : ""
+      }
+    </div>
+  `;
+}
 
 function playerMarkup(source,title){
-  const p=source?.provider,orientation=source?.orientation==="portrait"?"portrait":"landscape";
-  if(p==="youtube"){
-    const id=youtubeId(source.url);if(!id)return missingSource(title,"YouTube",source.url);
-    return `<iframe id="socialPlayer" class="player-frame ${orientation}" src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&controls=1&fs=1&playsinline=1&enablejsapi=1&rel=0" title="${esc(title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
-  }
-  if(p==="tiktok"){
-    const id=tiktokId(source.url);if(!id)return missingSource(title,"TikTok",source.url);
-    return `<iframe id="socialPlayer" class="player-frame portrait" src="https://www.tiktok.com/player/v1/${encodeURIComponent(id)}?autoplay=1&controls=1&description=0&music_info=0&rel=0" title="${esc(title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
-  }
-  if(p==="facebook"){
-    if(isPlaceholderFacebook(source.url))return missingSource(title,"Facebook",source.url,"Replace the sample Facebook URL in the catalog with the real PUBLIC Facebook video/reel/post URL.");
-    const src=`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(source.url)}&show_text=false&autoplay=true&width=1280`;
-    return `<iframe id="socialPlayer" class="player-frame landscape" src="${src}" title="${esc(title)}" scrolling="no" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share; fullscreen" allowfullscreen></iframe>`;
-  }
-  if(p==="mp4") return `<video id="nativePlayer" class="native-video" controls autoplay playsinline preload="metadata" src="${esc(source.url)}"></video>`;
-  return missingSource(title,"video",source?.url);
-}
-function missingSource(title,provider,url,msg="Add a valid public video URL or ID in the catalog."){return `<div class="player-message"><h2>${esc(title)}</h2><p>${esc(msg)}</p>${url?`<code>${esc(url)}</code>`:""}</div>`}
+  const provider = source?.provider;
+  const orientation = source?.orientation === "portrait" ? "portrait" : "landscape";
 
-function currentEpisode(v){const s=v.seasons.find(x=>x.season===state.season)||v.seasons[0];return s?.episodes.find(e=>e.episode===state.episode)||s?.episodes[0]}
-function viewerDetails(v){
-  return `<div class="detail-grid"><div class="detail-poster" style="${art(v)}"></div><div class="detail-copy"><span class="tag">${LABEL[v.cat]}</span><h1>${esc(v.title)}</h1><div class="detail-meta">${v.year?`<span>${esc(v.year)}</span>`:""}<span>${esc(v.duration)}</span><span>${esc(v.genres.join(" / "))}</span>${v.rating?`<span>${esc(v.rating)}</span>`:""}</div><p class="summary">${esc(v.summary)}</p>${v.seasons.map(s=>`<section class="season-block"><h2 class="season-title">${v.cat==="movie"?"Movie":"Season "+s.season}</h2><div class="episodes">${s.episodes.map(e=>`<button class="ep ${state.season===s.season&&state.episode===e.episode?"on":""}" data-season="${s.season}" data-episode="${e.episode}" title="${esc(e.title)}">${e.episode}</button>`).join("")}</div></section>`).join("")}<div class="source-note">Videos are embedded from their original provider. Playback controls and seeking are ultimately governed by YouTube, Facebook, TikTok, or the direct video host.</div></div></div>`;
-}
-function openViewer(id,autoplay=true){
-  const v=catalog.find(x=>x.id===id);if(!v)return;state.current=v.id;state.season=v.seasons[0]?.season||1;state.episode=v.seasons[0]?.episodes[0]?.episode||1;
-  $("#viewer").classList.add("open");$("#viewer").setAttribute("aria-hidden","false");document.body.style.overflow="hidden";loadEpisode(v,autoplay);$("#viewer").scrollTop=0;
-}
-function loadEpisode(v,autoplay=true){
-  const ep=currentEpisode(v),src=ep?.source||firstSource(v);$("#playerShell").innerHTML=playerMarkup(src,v.title);$("#viewerInfo").innerHTML=viewerDetails(v);configureTools(src);
-  if(!autoplay){const vid=$("#nativePlayer");if(vid)vid.pause()}
-}
-function closeViewer(){const v=$("#viewer");v.classList.remove("open");v.setAttribute("aria-hidden","true");$("#playerShell").innerHTML="";document.body.style.overflow="";state.current=null;if(document.fullscreenElement)document.exitFullscreen().catch(()=>{})}
+  if(provider === "youtube"){
+    const id = youtubeId(source.url);
 
-function configureTools(source){
-  const tools=$("#playerTools");const provider=source?.provider;tools.hidden=provider!=="mp4";$("#togglePlay").textContent="Pause";
-}
-function postYouTube(func,args=[]){const f=$("#socialPlayer");if(!f)return;f.contentWindow?.postMessage(JSON.stringify({event:"command",func,args}),"*")}
-function postTikTok(type,value){const f=$("#socialPlayer");if(!f)return;f.contentWindow?.postMessage({"x-tiktok-player":true,type,value},"https://www.tiktok.com")}
-function control(action){
-  const v=catalog.find(x=>x.id===state.current);if(!v)return;const src=currentEpisode(v)?.source;const provider=src?.provider;const native=$("#nativePlayer");
-  if(provider==="mp4"&&native){if(action==="toggle")native.paused?native.play():native.pause();if(action==="back")native.currentTime=Math.max(0,native.currentTime-10);if(action==="forward")native.currentTime=Math.min(native.duration||Infinity,native.currentTime+10);return}
-  if(provider==="youtube"){
-    if(action==="toggle"){postYouTube("playVideo");setTimeout(()=>postYouTube("pauseVideo"),10)}
-    /* YouTube's native controls and keyboard shortcuts provide reliable seeking. */
-    if(action==="back"||action==="forward"){
-      const iframe=$("#socialPlayer");iframe?.focus();
-      const key=action==="back"?"j":"l";try{iframe?.contentWindow?.postMessage({event:"command",func:key,args:[]},"*")}catch(e){}
+    if(!id){
+      return playerErrorMarkup(
+        title,
+        "This YouTube source is not a valid video URL or ID.",
+        source.url
+      );
     }
+
+    return `
+      <iframe
+        id="socialPlayer"
+        class="player-frame ${orientation}"
+        src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&controls=1&fs=1&playsinline=1&rel=0"
+        title="${esc(title)}"
+        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+        allowfullscreen
+      ></iframe>
+    `;
   }
-  if(provider==="tiktok"){
-    if(action==="toggle")postTikTok("play");
-    if(action==="back"||action==="forward"){
-      /* TikTok supports seekTo, but current time must come from player messages. Native timeline remains available. */
-      postTikTok(action==="back"?"pause":"play");
+
+  if(provider === "tiktok"){
+    const id = tiktokId(source.url);
+
+    if(!id){
+      return playerErrorMarkup(
+        title,
+        "This TikTok source is not a valid public TikTok video URL.",
+        source.url
+      );
     }
+
+    return `
+      <iframe
+        id="socialPlayer"
+        class="player-frame portrait"
+        src="https://www.tiktok.com/player/v1/${encodeURIComponent(id)}?autoplay=1&controls=1&description=0&music_info=0&rel=0"
+        title="${esc(title)}"
+        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+        allowfullscreen
+      ></iframe>
+    `;
+  }
+
+  if(provider === "facebook"){
+    if(isFacebookPlaceholder(source.url)){
+      return playerErrorMarkup(
+        title,
+        "Replace the sample Facebook URL with a real public Facebook video permalink."
+      );
+    }
+
+    /*
+      IMPORTANT:
+      facebook.com/share/v/... is a sharing URL, not a reliable embed URL.
+      Instead of loading Facebook's own "Video Unavailable" screen, this
+      template shows a useful explanation and lets the visitor open the
+      original source.
+
+      To embed inside MARAXIS AI, replace the episode URL with a public
+      permalink such as:
+      https://www.facebook.com/USERNAME/videos/VIDEO_ID/
+      or
+      https://www.facebook.com/watch/?v=VIDEO_ID
+    */
+    if(isFacebookShareUrl(source.url)){
+      return playerErrorMarkup(
+        title,
+        "This episode currently uses a Facebook /share/v/ link. Facebook normally does not allow that share URL to be used as an embedded video. Replace it with the video's public /videos/ permalink or watch/?v= URL and this player will embed it here.",
+        source.url
+      );
+    }
+
+    const src =
+      `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(source.url)}` +
+      `&show_text=false&autoplay=true&width=1280`;
+
+    return `
+      <iframe
+        id="socialPlayer"
+        class="player-frame landscape"
+        src="${src}"
+        title="${esc(title)}"
+        scrolling="no"
+        frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share; fullscreen"
+        allowfullscreen
+      ></iframe>
+    `;
+  }
+
+  if(provider === "mp4"){
+    if(!source.url){
+      return playerErrorMarkup(
+        title,
+        "No direct video URL was provided for this episode."
+      );
+    }
+
+    return `
+      <video
+        id="nativePlayer"
+        class="native-video"
+        src="${esc(source.url)}"
+        controls
+        autoplay
+        playsinline
+        preload="metadata"
+      ></video>
+    `;
+  }
+
+  return playerErrorMarkup(
+    title,
+    "This episode does not have a supported video source."
+  );
+}
+
+/* =========================================================
+   PLAYER OPEN / CLOSE
+========================================================= */
+
+function openPlayer(){
+  const item = currentItem();
+  const episode = selectedEpisode(item);
+
+  if(!item || !episode) return;
+
+  $("#playerTitle").textContent = item.title;
+  $("#playerEpisodeLabel").textContent =
+    item.cat === "movie"
+      ? "Movie"
+      : `Season ${state.season} · Episode ${state.episode}`;
+
+  $("#playerShell").innerHTML = playerMarkup(episode.source,item.title);
+
+  $("#playerOverlay").classList.add("open");
+  $("#playerOverlay").setAttribute("aria-hidden","false");
+
+  /*
+    Because openPlayer() is called directly from the episode button click,
+    browsers that allow fullscreen should treat this as a user-initiated
+    request.
+  */
+  const overlay = $("#playerOverlay");
+
+  if(overlay.requestFullscreen && !document.fullscreenElement){
+    overlay.requestFullscreen().catch(()=>{});
   }
 }
 
-/* Opening the viewer is already full-viewport. Where browsers allow it, request browser fullscreen from the same user click. */
-function tryFullscreen(){const viewer=$("#viewer");if(viewer?.requestFullscreen) viewer.requestFullscreen().catch(()=>{})}
+function closePlayer(){
+  const overlay = $("#playerOverlay");
 
-$("#viewerClose").onclick=closeViewer;
-$("#back10").onclick=()=>control("back");$("#forward10").onclick=()=>control("forward");$("#togglePlay").onclick=()=>control("toggle");
-$("#themeBtn").onclick=()=>{state.theme=state.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=state.theme;localStorage.setItem("mx-theme",state.theme)};
-$("#menuBtn").onclick=()=>$("#nav").classList.toggle("open");
-$("#search").addEventListener("input",e=>{state.query=e.target.value;render()});
+  overlay.classList.remove("open");
+  overlay.setAttribute("aria-hidden","true");
+  $("#playerShell").innerHTML = "";
 
-document.addEventListener("click",e=>{
-  const view=e.target.closest("[data-view]");if(view){e.preventDefault();state.view=view.dataset.view;state.genre="All";state.query="";$("#search").value="";$("#nav").classList.remove("open");render();scrollTo({top:0,behavior:"smooth"});return}
-  const genre=e.target.closest("[data-genre]");if(genre){state.genre=genre.dataset.genre;render();return}
-  const play=e.target.closest("[data-play]");if(play){openViewer(play.dataset.play,true);tryFullscreen();return}
-  const info=e.target.closest("[data-info]");if(info){openViewer(info.dataset.info,false);return}
-  const cardEl=e.target.closest(".card[data-id]");if(cardEl){openViewer(cardEl.dataset.id,true);tryFullscreen();return}
-  const ep=e.target.closest(".ep[data-season]");if(ep){state.season=Number(ep.dataset.season);state.episode=Number(ep.dataset.episode);const v=catalog.find(x=>x.id===state.current);if(v){loadEpisode(v,true);$("#viewer").scrollTo({top:0,behavior:"smooth"});tryFullscreen()}return}
+  if(document.fullscreenElement){
+    document.exitFullscreen().catch(()=>{});
+  }
+}
+
+/* =========================================================
+   GLOBAL EVENTS
+========================================================= */
+
+$("#themeBtn").addEventListener("click",()=>{
+  state.theme = state.theme === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = state.theme;
+  localStorage.setItem("mx-theme",state.theme);
 });
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#viewer").classList.contains("open"))closeViewer();const c=document.activeElement;if((e.key==="Enter"||e.key===" ")&&c?.classList?.contains("card")){e.preventDefault();openViewer(c.dataset.id,true);tryFullscreen()}});
 
-render();
+$("#menuBtn").addEventListener("click",()=>{
+  $("#mainNav").classList.toggle("open");
+});
+
+$("#searchInput").addEventListener("input",event=>{
+  state.query = event.target.value;
+  renderApp();
+});
+
+$("#detailsClose").addEventListener("click",closeDetails);
+$("#playerClose").addEventListener("click",closePlayer);
+
+$("#detailsModal").addEventListener("click",event=>{
+  if(event.target === $("#detailsModal")){
+    closeDetails();
+  }
+});
+
+document.addEventListener("click",event=>{
+  const viewButton = event.target.closest("[data-view]");
+
+  if(viewButton){
+    event.preventDefault();
+
+    state.view = viewButton.dataset.view;
+    state.genre = "All";
+    state.query = "";
+
+    $("#searchInput").value = "";
+    $("#mainNav").classList.remove("open");
+
+    renderApp();
+    window.scrollTo({top:0,behavior:"smooth"});
+    return;
+  }
+
+  const genreButton = event.target.closest("[data-genre]");
+
+  if(genreButton){
+    state.genre = genreButton.dataset.genre;
+    renderApp();
+    return;
+  }
+
+  const detailsButton = event.target.closest("[data-details-id]");
+
+  if(detailsButton){
+    openDetails(detailsButton.dataset.detailsId);
+    return;
+  }
+
+  const card = event.target.closest(".media-card[data-card-id]");
+
+  if(card){
+    openDetails(card.dataset.cardId);
+    return;
+  }
+
+  const episodeButton = event.target.closest(".episode-btn[data-season][data-episode]");
+
+  if(episodeButton){
+    state.season = Number(episodeButton.dataset.season);
+    state.episode = Number(episodeButton.dataset.episode);
+
+    refreshDetails();
+    openPlayer();
+    return;
+  }
+});
+
+document.addEventListener("keydown",event=>{
+  if(event.key === "Escape"){
+    if($("#playerOverlay").classList.contains("open")){
+      closePlayer();
+      return;
+    }
+
+    if($("#detailsModal").classList.contains("open")){
+      closeDetails();
+      return;
+    }
+  }
+
+  const focused = document.activeElement;
+
+  if(
+    (event.key === "Enter" || event.key === " ") &&
+    focused?.classList?.contains("media-card")
+  ){
+    event.preventDefault();
+    openDetails(focused.dataset.cardId);
+  }
+});
+
+renderApp();
 </script>
 </body>
 </html>
