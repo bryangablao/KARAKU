@@ -2347,6 +2347,214 @@ html[data-theme="dark"] .hero-art::after{
   font-weight:700;
 }
 
+
+
+/* =========================================================
+   KARAKU RESPONSIVE SYSTEM
+   Phone, tablet, laptop, desktop and wide-screen behavior.
+========================================================= */
+
+/* Keep wide layouts centered instead of stretching content endlessly. */
+#app,
+.site-footer{
+  width:100%;
+}
+
+.hero-copy,
+.section-heading,
+.card-rail,
+.grid-page,
+.footer-inner,
+.footer-bottom{
+  max-width:1600px;
+}
+
+@media (min-width:1600px){
+  :root{ --page-pad:72px; }
+  .hero{ height:min(72vh,760px); }
+  .media-card{ flex-basis:300px; }
+  .cards-grid{ grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); }
+}
+
+/* Laptop / small desktop */
+@media (min-width:1001px) and (max-width:1366px){
+  :root{ --page-pad:clamp(24px,3vw,42px); }
+  .site-header{ gap:13px; }
+  .desktop-nav{ gap:3px; }
+  .nav-btn{ padding-inline:9px; font-size:.82rem; }
+  .search-box{ width:min(260px,22vw); }
+  .hero{ height:clamp(520px,68vh,650px); }
+  .hero-copy{ width:min(610px,54vw); }
+  .hero h1{ font-size:clamp(2.2rem,4.6vw,4.15rem); }
+  .media-card{ flex-basis:clamp(220px,23vw,280px); }
+}
+
+/* Tablet */
+@media (min-width:701px) and (max-width:1000px){
+  :root{ --page-pad:clamp(20px,4vw,36px); }
+  .site-header{ gap:10px; }
+  .brand{ font-size:.94rem; }
+  .search-box{ width:min(310px,42vw); }
+  .hero{ height:clamp(500px,68svh,640px); padding-bottom:48px; }
+  .hero-copy{ width:min(620px,78vw); }
+  .hero h1{ font-size:clamp(2rem,6.2vw,3.6rem); }
+  .hero h1.hero-title-very-long{ font-size:clamp(1.65rem,4.8vw,2.7rem); }
+  .hero-summary-row{ max-width:590px; }
+  .cards-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .cards-grid .media-card{ aspect-ratio:16/10; }
+  .details-dialog{ width:min(900px,calc(100% - 32px)); }
+  .footer-inner{ grid-template-columns:1.4fr 1fr 1fr; }
+}
+
+/* Phones */
+@media (max-width:700px){
+  :root{
+    --header-h:108px;
+    --page-pad:16px;
+  }
+
+  .site-header{
+    height:var(--header-h);
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto auto;
+    grid-template-rows:54px 44px;
+    gap:4px 8px;
+    padding:5px 12px 7px;
+  }
+
+  .brand{ grid-column:1; grid-row:1; min-width:0; }
+  .brand img{ width:30px; height:30px; }
+  .brand span{ display:block; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .header-spacer{ display:none; }
+  #themeBtn{ grid-column:2; grid-row:1; }
+  #menuBtn{ grid-column:3; grid-row:1; }
+
+  .search-box{
+    display:block;
+    grid-column:1 / -1;
+    grid-row:2;
+    width:100%;
+  }
+  .search-box input{ height:38px; }
+
+  .desktop-nav{
+    top:var(--header-h);
+    max-height:calc(100dvh - var(--header-h));
+    overflow-y:auto;
+  }
+
+  .featured-wrap{ padding-top:var(--header-h); }
+  .hero{
+    height:calc(100svh - var(--header-h));
+    min-height:500px;
+    max-height:680px;
+    padding:76px 16px 26px;
+  }
+  .hero-copy{ max-height:calc(100% - 52px); overflow:hidden; }
+  .featured-controls{ top:10px; }
+  .hero h1{ font-size:clamp(1.82rem,9.5vw,3rem); }
+  .hero h1.hero-title-long{ font-size:clamp(1.55rem,7.8vw,2.45rem); }
+  .hero h1.hero-title-very-long{ font-size:clamp(1.3rem,6.5vw,2rem); line-height:1.08; }
+  .meta-row{ font-size:.72rem; gap:6px 8px; }
+  .hero-summary-row .hero-summary{ font-size:.8rem; line-height:1.45; }
+  .hero-actions{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .action-btn{ min-height:40px; padding:0 12px; font-size:.78rem; }
+
+  .content-section{ margin:22px 0; }
+  .section-heading{ padding:0 16px; }
+  .section-heading h2{ font-size:1.02rem; }
+  .category-separator{ margin:4px 16px 10px; }
+  .card-rail{ gap:10px; padding:11px 16px 17px; }
+  .media-card{ flex-basis:min(76vw,280px); }
+
+  .grid-page{ padding:calc(var(--header-h) + 22px) 16px 34px; }
+  .page-title{ font-size:clamp(1.6rem,8vw,2.35rem); }
+  .page-subtitle{ font-size:.88rem; }
+  .genre-chips{ padding:17px 0 14px; }
+  .cards-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  .cards-grid .media-card{ aspect-ratio:4/3; }
+  .card-info h3{ font-size:.76rem; }
+  .card-info p{ font-size:.62rem; }
+
+  .details-dialog{ width:calc(100% - 12px); margin:6px auto 12px; border-radius:16px; }
+  .modal-visual{ min-height:270px; }
+  .modal-title-area{ left:16px; right:16px; bottom:20px; }
+  .modal-title-area h2{ font-size:clamp(1.45rem,7vw,2.35rem); }
+  .modal-body{ padding:8px 16px 28px; }
+  .summary-paragraph{ font-size:.9rem; line-height:1.68; }
+  .summary-question{ font-size:.92rem; }
+  .episode-grid.ai-drama-list .episode-btn{ min-height:50px; padding:8px 11px; }
+
+  .preview-status-dialog{ width:min(420px,100%); padding:22px 18px; border-radius:18px; }
+  .preview-status-dialog h2{ font-size:1.18rem; }
+
+  .footer-inner{ grid-template-columns:1fr 1fr; gap:24px 18px; padding:30px 18px 22px; }
+  .footer-brand{ grid-column:1 / -1; }
+  .footer-bottom{ margin:0 18px; padding:17px 0 22px; }
+}
+
+/* Small phones */
+@media (max-width:480px){
+  :root{ --header-h:106px; }
+  .site-header{ padding-inline:10px; }
+  .brand span{ max-width:115px; font-size:.84rem; }
+  .hero{ min-height:480px; padding-inline:13px; padding-bottom:22px; }
+  .featured-controls{ transform:translateX(-50%) scale(.92); transform-origin:top center; }
+  .hero.featured-leaving .featured-controls,
+  .hero.featured-entering .featured-controls{ transform:translateX(-50%) scale(.92); }
+  .hero-actions{ grid-template-columns:1fr; }
+  .action-btn{ width:100%; }
+  .cards-grid{ grid-template-columns:1fr; }
+  .cards-grid .media-card{ aspect-ratio:16/10; }
+  .modal-meta{ gap:6px; }
+  .meta-pill{ font-size:.68rem; }
+  .footer-inner{ grid-template-columns:1fr; }
+  .footer-brand{ grid-column:auto; }
+  .footer-bottom{ align-items:flex-start; flex-direction:column; gap:8px; }
+}
+
+/* Very small phones */
+@media (max-width:360px){
+  :root{ --header-h:104px; }
+  .brand span{ display:block; max-width:82px; font-size:.78rem; }
+  .header-icon{ width:34px; height:34px; }
+  .hero{ min-height:460px; }
+  .hero h1{ font-size:1.72rem; }
+  .hero h1.hero-title-long{ font-size:1.45rem; }
+  .hero h1.hero-title-very-long{ font-size:1.18rem; }
+  .hero-summary-row .hero-summary{ font-size:.76rem; }
+  .section-see-more,.hero-see-more,.summary-toggle{ font-size:.68rem; }
+}
+
+/* Landscape phones: prioritize usable content height. */
+@media (max-height:520px) and (orientation:landscape){
+  :root{ --header-h:58px; }
+  .site-header{
+    height:var(--header-h);
+    display:flex;
+    padding:0 12px;
+  }
+  .search-box{ display:none; }
+  .header-spacer{ display:block; }
+  .desktop-nav{ top:var(--header-h); }
+  .featured-wrap{ padding-top:var(--header-h); }
+  .hero{ height:calc(100dvh - var(--header-h)); min-height:340px; max-height:none; padding:54px 22px 22px; }
+  .hero-copy{ width:min(610px,72vw); max-height:100%; }
+  .hero h1{ margin:8px 0; font-size:clamp(1.45rem,5vw,2.55rem); }
+  .hero h1.hero-title-very-long{ font-size:clamp(1.12rem,3.8vw,1.8rem); }
+  .hero-summary-row{ margin:7px 0 10px; }
+  .hero-summary-row .hero-summary{ font-size:.76rem; line-height:1.35; }
+  .meta-row{ font-size:.68rem; }
+  .action-btn{ min-height:36px; }
+}
+
+/* Make embedded/native players fit any viewport without overflow. */
+.player-stage,
+.player-shell{ min-width:0; min-height:0; }
+.player-frame.landscape{ width:min(100vw,177.78vh); height:min(100vh,56.25vw); max-width:100vw; max-height:100dvh; }
+.player-frame.portrait{ width:min(100vw,56.25vh); height:min(100vh,177.78vw); max-width:100vw; max-height:100dvh; }
+.native-video{ max-width:100vw; max-height:100dvh; }
+
 </style>
 </head>
 
