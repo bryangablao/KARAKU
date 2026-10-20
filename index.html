@@ -2290,6 +2290,63 @@ html[data-theme="dark"] .hero-art::after{
   }
 }
 
+
+/* Featured action button polish */
+.action-btn{
+  border-radius:999px !important;
+  overflow:hidden;
+  white-space:nowrap;
+}
+.action-btn.primary{
+  background:color-mix(in srgb,var(--accent) 72%,var(--surface));
+  box-shadow:0 8px 22px color-mix(in srgb,var(--accent) 18%,transparent);
+}
+.action-btn.secondary{
+  border:1px solid var(--hero-secondary-border);
+  border-radius:999px !important;
+}
+
+.preview-status-modal{
+  position:fixed;
+  z-index:170;
+  inset:0;
+  display:none;
+  place-items:center;
+  padding:20px;
+  background:rgba(1,3,8,.72);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.preview-status-modal.open{display:grid;}
+.preview-status-dialog{
+  width:min(460px,100%);
+  padding:28px;
+  border:1px solid var(--line-strong);
+  border-radius:22px;
+  background:var(--surface);
+  box-shadow:0 28px 90px rgba(0,0,0,.42);
+  text-align:center;
+}
+.preview-status-dialog h2{
+  margin-bottom:10px;
+  font-family:var(--font-display);
+  font-size:1.35rem;
+}
+.preview-status-dialog p{
+  color:var(--muted);
+  line-height:1.65;
+}
+.preview-status-close{
+  margin-top:20px;
+  min-height:42px;
+  padding:0 18px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--bg-soft);
+  color:var(--text);
+  font-weight:700;
+}
+
 </style>
 </head>
 
@@ -2398,6 +2455,15 @@ html[data-theme="dark"] .hero-art::after{
      FULL SCREEN PLAYER
      Opens only after the user chooses an episode.
 ======================================================== -->
+
+<section class="preview-status-modal" id="previewStatusModal" aria-hidden="true">
+  <div class="preview-status-dialog" role="dialog" aria-modal="true" aria-labelledby="previewStatusTitle">
+    <h2 id="previewStatusTitle">Trailer Feature Updating</h2>
+    <p>The trailer and preview feature is currently being updated. Please check back soon.</p>
+    <button class="preview-status-close" id="previewStatusClose" type="button">Close</button>
+  </div>
+</section>
+
 <section class="player-overlay" id="playerOverlay" aria-hidden="true">
   <div class="player-topbar">
     <button class="player-back" id="playerClose" type="button" aria-label="Back to episode list">
@@ -3906,6 +3972,21 @@ function closePlayer(){
   }
 }
 
+
+function openPreviewStatus(){
+  const modal = $("#previewStatusModal");
+  if(!modal) return;
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden","false");
+}
+
+function closePreviewStatus(){
+  const modal = $("#previewStatusModal");
+  if(!modal) return;
+  modal.classList.remove("open");
+  modal.setAttribute("aria-hidden","true");
+}
+
 /* =========================================================
    GLOBAL EVENTS
 ========================================================= */
@@ -3927,6 +4008,10 @@ $("#searchInput").addEventListener("input",event=>{
 
 $("#detailsClose").addEventListener("click",closeDetails);
 $("#playerClose").addEventListener("click",closePlayer);
+$("#previewStatusClose")?.addEventListener("click",closePreviewStatus);
+$("#previewStatusModal")?.addEventListener("click",event=>{
+  if(event.target === $("#previewStatusModal")) closePreviewStatus();
+});
 
 $("#detailsModal").addEventListener("click",event=>{
   if(event.target === $("#detailsModal")){
@@ -4022,6 +4107,13 @@ document.addEventListener("click",event=>{
     return;
   }
 
+  const previewButton = event.target.closest("[data-preview-status]");
+
+  if(previewButton){
+    openPreviewStatus();
+    return;
+  }
+
   const detailsButton = event.target.closest("[data-details-id]");
 
   if(detailsButton){
@@ -4050,6 +4142,11 @@ document.addEventListener("click",event=>{
 
 document.addEventListener("keydown",event=>{
   if(event.key === "Escape"){
+    if($("#previewStatusModal")?.classList.contains("open")){
+      closePreviewStatus();
+      return;
+    }
+
     if($("#playerOverlay").classList.contains("open")){
       closePlayer();
       return;
