@@ -2017,104 +2017,135 @@ html[data-theme="dark"] .hero-art::after{
 
 /* =========================================================
    KARAKU CONTENT POLISH
-   Compact featured copy, category separators, See more links,
+   Fixed-height featured area, text links, clean separators,
    readable summaries, and movie-style AI Drama episode rows.
 ========================================================= */
 .section-heading{
   align-items:center;
 }
 
-.section-see-more{
-  flex:0 0 auto;
+/* Text-only "See more" links used throughout the interface. */
+.section-see-more,
+.hero-see-more,
+.summary-toggle{
   display:inline-flex;
   align-items:center;
-  gap:7px;
-  min-height:34px;
-  padding:0 12px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 12%,var(--surface)),var(--surface));
-  color:var(--text);
-  font-size:.76rem;
+  gap:4px;
+  min-height:22px;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:inherit;
+  font-size:.74rem;
+  line-height:1.2;
   font-weight:700;
-  transition:transform .2s ease,border-color .2s ease,background .2s ease;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:transform .18s ease,opacity .18s ease;
 }
 
-.section-see-more:hover{
+.section-see-more:hover,
+.hero-see-more:hover,
+.summary-toggle:hover{
+  color:inherit;
+  background:transparent;
+  text-decoration:none;
   transform:translateX(3px);
-  border-color:color-mix(in srgb,var(--accent) 55%,var(--line));
-  background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 20%,var(--surface)),var(--surface));
+  opacity:.78;
 }
 
-.section-see-more svg{
-  width:15px;
-  height:15px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:2.2;
+.section-see-more .see-more-arrow,
+.hero-see-more .see-more-arrow{
+  display:inline-block;
+  font-size:.9rem;
+  line-height:1;
+  transition:transform .18s ease;
 }
 
+.section-see-more:hover .see-more-arrow,
+.hero-see-more:hover .see-more-arrow{
+  transform:translateX(2px);
+}
+
+/* Simple theme-aware divider between home categories. */
 .category-separator{
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:center;
-  gap:13px;
-  margin:34px var(--page-pad) 8px;
-  opacity:.95;
+  height:1px;
+  margin:8px var(--page-pad) 14px;
+  background:var(--line-strong);
 }
 
 .category-separator::before,
-.category-separator::after{
-  content:"";
-  height:1px;
-  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent) 55%,var(--line)),color-mix(in srgb,var(--accent-2) 55%,var(--line)),transparent);
-  box-shadow:0 0 18px color-mix(in srgb,var(--accent) 16%,transparent);
-}
-
+.category-separator::after,
 .category-separator-mark{
-  width:30px;
-  height:30px;
-  display:grid;
-  place-items:center;
-  border:1px solid color-mix(in srgb,var(--accent) 38%,var(--line));
-  border-radius:10px;
-  background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 16%,var(--surface)),color-mix(in srgb,var(--accent-2) 10%,var(--surface)));
-  box-shadow:0 8px 24px rgba(0,0,0,.14);
-  transform:rotate(45deg);
+  display:none;
 }
 
-.category-separator-mark::before{
-  content:"";
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--gradient);
-  box-shadow:0 0 13px color-mix(in srgb,var(--accent-2) 55%,transparent);
+/* Keep every featured slide the same height regardless of title length. */
+.hero{
+  height:clamp(540px,70vh,700px);
+  min-height:0;
+}
+
+.hero-copy{
+  max-height:calc(100% - 76px);
+  overflow:hidden;
+}
+
+.hero h1{
+  max-width:760px;
+}
+
+.hero h1.hero-title-long{
+  font-size:clamp(1.95rem,4.4vw,3.8rem);
+  line-height:1.03;
+}
+
+.hero h1.hero-title-very-long{
+  max-width:820px;
+  font-size:clamp(1.65rem,3.55vw,3rem);
+  line-height:1.05;
+  letter-spacing:-.035em;
 }
 
 .hero-summary-row{
   max-width:650px;
-  margin:16px 0 23px;
+  margin:13px 0 18px;
 }
 
 .hero-summary-row .hero-summary{
   display:inline;
   margin:0;
+  font-size:.9rem;
+  line-height:1.55;
 }
 
 .hero-see-more{
-  display:inline;
   margin-left:5px;
   color:var(--hero-text);
-  font-size:.9rem;
-  font-weight:800;
-  text-decoration:underline;
-  text-decoration-color:color-mix(in srgb,var(--accent-2) 70%,transparent);
-  text-underline-offset:3px;
 }
 
-.hero-see-more:hover{
-  color:var(--accent-2);
+/* Softer primary action so it does not overpower the artwork. */
+.action-btn.primary{
+  background:color-mix(in srgb,var(--accent) 72%,#111827);
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+}
+
+.action-btn.primary:hover{
+  filter:brightness(1.05);
+}
+
+.action-btn.preview-action{
+  color:var(--hero-secondary-text);
+  background:var(--hero-secondary-bg);
+  border:1px solid var(--hero-secondary-border);
+  backdrop-filter:blur(10px);
+}
+
+.action-btn[disabled]{
+  cursor:default;
+  opacity:.58;
+  transform:none !important;
 }
 
 .summary-content{
@@ -2149,21 +2180,13 @@ html[data-theme="dark"] .hero-art::after{
 }
 
 .summary-toggle{
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  margin-top:16px;
-  padding:8px 12px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  background:var(--bg-soft);
-  color:var(--text);
-  font-size:.78rem;
-  font-weight:750;
+  margin-top:12px;
+  color:var(--muted);
 }
 
 .summary-toggle::after{
   content:"⌄";
+  font-size:.8rem;
   line-height:1;
   transition:transform .2s ease;
 }
@@ -2210,23 +2233,51 @@ html[data-theme="dark"] .hero-art::after{
   to{opacity:1;transform:translateX(0)}
 }
 
+@media (max-width:1000px){
+  .hero{
+    height:clamp(520px,72svh,670px);
+    min-height:0;
+  }
+}
+
 @media (max-width:700px){
   .category-separator{
-    margin:26px 16px 5px;
+    margin:6px 16px 12px;
+  }
+
+  .hero{
+    height:calc(100svh - var(--header-h));
+    min-height:520px;
+    max-height:720px;
+  }
+
+  .hero-copy{
+    max-height:calc(100% - 66px);
+  }
+
+  .hero h1.hero-title-long{
+    font-size:clamp(1.75rem,8.4vw,2.75rem);
+  }
+
+  .hero h1.hero-title-very-long{
+    font-size:clamp(1.45rem,7vw,2.25rem);
+    line-height:1.08;
   }
 
   .hero-summary-row{
-    margin:13px 0 18px;
+    margin:10px 0 14px;
   }
 
   .hero-summary-row .hero-summary{
     display:inline;
-    font-size:.89rem;
-    line-height:1.58;
+    font-size:.84rem;
+    line-height:1.5;
   }
 
-  .hero-see-more{
-    font-size:.84rem;
+  .section-see-more,
+  .hero-see-more,
+  .summary-toggle{
+    font-size:.72rem;
   }
 
   .episode-grid.ai-drama-list .episode-btn{
@@ -2292,8 +2343,7 @@ html[data-theme="dark"] .hero-art::after{
         <span>KARAKU</span>
       </a>
       <p>
-        A cinematic streaming-style home for AI dramas, anime, movies,
-        and video experiences from supported providers.
+        Discover AI dramas, anime, movies, and stories in one evolving streaming collection.
       </p>
     </div>
 
@@ -2990,13 +3040,30 @@ function searchMatches(item){
 }
 
 
-function heroExcerpt(text,limit=235){
+function heroExcerpt(text,limit=190){
   const value = String(text || "").replace(/\s+/g," ").trim();
   if(value.length <= limit) return value;
 
   const clipped = value.slice(0,limit);
   const lastSpace = clipped.lastIndexOf(" ");
-  return `${clipped.slice(0,lastSpace > 150 ? lastSpace : limit).trim()}…`;
+  return `${clipped.slice(0,lastSpace > 125 ? lastSpace : limit).trim()}…`;
+}
+
+function heroTitleClass(title){
+  const length = String(title || "").length;
+  if(length >= 62) return "hero-title-very-long";
+  if(length >= 38) return "hero-title-long";
+  return "";
+}
+
+function featuredPlayableSource(item){
+  if(item?.trailerSource?.source) return item.trailerSource.source;
+  return firstEpisode(item)?.source || null;
+}
+
+function featuredPlaybackLabel(item){
+  if(item?.trailerSource?.source) return "Watch Trailer";
+  return featuredPlayableSource(item) ? "Watch Preview" : "Trailer Soon";
 }
 
 function summaryParts(item){
@@ -3055,7 +3122,7 @@ function summaryMarkup(item){
 }
 
 function categoryDividerMarkup(){
-  return `<div class="category-separator" aria-hidden="true"><span></span><span class="category-separator-mark"></span><span></span></div>`;
+  return `<div class="category-separator" aria-hidden="true"></div>`;
 }
 
 function railTargetView(title){
@@ -3107,10 +3174,9 @@ function railMarkup(title,items,{divider=false}={}){
     <section class="content-section">
       <div class="section-heading">
         <h2>${esc(title)}</h2>
-        <button class="section-see-more" type="button" data-view="${esc(targetView)}" aria-label="See more ${esc(title)}">
-          See more
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
-        </button>
+        <a class="section-see-more" href="#" data-view="${esc(targetView)}" aria-label="See more ${esc(title)}">
+          See more <span class="see-more-arrow" aria-hidden="true">›</span>
+        </a>
       </div>
 
       <div class="rail-shell">
@@ -3188,7 +3254,7 @@ function heroContentMarkup(item,items){
     <div class="hero-copy">
       <span class="eyebrow">${esc(LABEL[item.cat])} · Featured</span>
 
-      <h1>${esc(item.title)}</h1>
+      <h1 class="${heroTitleClass(item.title)}">${esc(item.title)}</h1>
 
       <div class="meta-row">
         ${item.year ? `<span>${esc(item.year)}</span><span class="meta-dot"></span>` : ""}
@@ -3200,23 +3266,29 @@ function heroContentMarkup(item,items){
 
       <div class="hero-summary-row">
         <p class="hero-summary">${esc(heroExcerpt(item.summary))}</p>
-        <button class="hero-see-more" type="button" data-details-id="${esc(item.id)}">See more &gt;</button>
+        <button class="hero-see-more" type="button" data-details-id="${esc(item.id)}">See more <span class="see-more-arrow" aria-hidden="true">›</span></button>
       </div>
 
       <div class="hero-actions">
         <button class="action-btn primary" type="button" data-details-id="${esc(item.id)}">
           <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 5v14l11-7z"></path>
-          </svg>
-          Browse Episodes
-        </button>
-
-        <button class="action-btn secondary" type="button" data-details-id="${esc(item.id)}">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="9"></circle>
             <path d="M12 10v6M12 7h.01"></path>
           </svg>
-          More Info
+          View Details
+        </button>
+
+        <button
+          class="action-btn preview-action"
+          type="button"
+          data-feature-play-id="${esc(item.id)}"
+          ${featuredPlayableSource(item) ? "" : "disabled"}
+          aria-label="${esc(featuredPlaybackLabel(item))} for ${esc(item.title)}"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 5v14l11-7z"></path>
+          </svg>
+          ${esc(featuredPlaybackLabel(item))}
         </button>
       </div>
     </div>
@@ -3323,10 +3395,9 @@ function newReleasesMarkup(items){
     <section class="content-section">
       <div class="section-heading">
         <h2>New Releases</h2>
-        <button class="section-see-more" type="button" data-view="new">
-          See more
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
-        </button>
+        <a class="section-see-more" href="#" data-view="new">
+          See more <span class="see-more-arrow" aria-hidden="true">›</span>
+        </a>
       </div>
       <div class="empty-state new-release-empty">No releases are currently within the two-month New Releases window.</div>
     </section>
@@ -3828,6 +3899,11 @@ function closePlayer(){
   if(document.fullscreenElement){
     document.exitFullscreen().catch(()=>{});
   }
+
+  if(!$("#detailsModal").classList.contains("open")){
+    document.body.classList.remove("modal-open");
+    state.currentId = null;
+  }
 }
 
 /* =========================================================
@@ -3923,6 +3999,26 @@ document.addEventListener("click",event=>{
     content?.classList.toggle("is-collapsed",expanded);
     summaryToggle.setAttribute("aria-expanded",String(!expanded));
     summaryToggle.textContent = expanded ? "See more" : "See less";
+    return;
+  }
+
+  const featurePlayButton = event.target.closest("[data-feature-play-id]");
+
+  if(featurePlayButton && !featurePlayButton.disabled){
+    const item = catalog.find(entry=>entry.id === featurePlayButton.dataset.featurePlayId);
+    const source = featuredPlayableSource(item);
+
+    if(item && source){
+      state.currentId = item.id;
+      state.season = item.seasons?.[0]?.season || 1;
+      state.episode = item.seasons?.[0]?.episodes?.[0]?.episode || 1;
+      $("#playerTitle").textContent = item.title;
+      $("#playerEpisodeLabel").textContent = item?.trailerSource?.source ? "Trailer" : "Preview";
+      $("#playerShell").innerHTML = playerMarkup(source,item.title);
+      $("#playerOverlay").classList.add("open");
+      $("#playerOverlay").setAttribute("aria-hidden","false");
+      document.body.classList.add("modal-open");
+    }
     return;
   }
 
