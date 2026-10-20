@@ -757,8 +757,7 @@ main{min-height:50vh;padding-bottom:64px}
 
 .page-subtitle{max-width:760px;margin-top:10px;color:var(--muted);line-height:1.68}
 
-.genre-chips{display:flex;gap:8px;overflow-x:auto;padding:24px 0 20px;scrollbar-width:none}
-.genre-chips::-webkit-scrollbar{display:none}
+.genre-chips{display:flex;flex-wrap:wrap;gap:8px;padding:24px 0 20px}
 
 .genre-chip{
   flex:0 0 auto;
@@ -1398,7 +1397,8 @@ main{min-height:50vh;padding-bottom:64px}
   .grid-page{padding:calc(var(--header-h) + 22px) 16px 34px}
   .page-title{font-size:clamp(1.7rem,8vw,2.4rem)}
   .page-subtitle{font-size:.88rem}
-  .genre-chips{padding:17px 0 14px}
+  .genre-chips{padding:17px 0 14px;gap:7px}
+  .genre-chip{min-height:34px;padding:0 13px;font-size:.78rem}
   .cards-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .cards-grid .media-card{min-width:0;aspect-ratio:4/3}
   .card-top{top:7px;left:7px;right:7px}
