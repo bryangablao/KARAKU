@@ -2014,6 +2014,231 @@ html[data-theme="dark"] .hero-art::after{
   }
 }
 
+
+/* =========================================================
+   KARAKU CONTENT POLISH
+   Compact featured copy, category separators, See more links,
+   readable summaries, and movie-style AI Drama episode rows.
+========================================================= */
+.section-heading{
+  align-items:center;
+}
+
+.section-see-more{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  min-height:34px;
+  padding:0 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 12%,var(--surface)),var(--surface));
+  color:var(--text);
+  font-size:.76rem;
+  font-weight:700;
+  transition:transform .2s ease,border-color .2s ease,background .2s ease;
+}
+
+.section-see-more:hover{
+  transform:translateX(3px);
+  border-color:color-mix(in srgb,var(--accent) 55%,var(--line));
+  background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 20%,var(--surface)),var(--surface));
+}
+
+.section-see-more svg{
+  width:15px;
+  height:15px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2.2;
+}
+
+.category-separator{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:13px;
+  margin:34px var(--page-pad) 8px;
+  opacity:.95;
+}
+
+.category-separator::before,
+.category-separator::after{
+  content:"";
+  height:1px;
+  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent) 55%,var(--line)),color-mix(in srgb,var(--accent-2) 55%,var(--line)),transparent);
+  box-shadow:0 0 18px color-mix(in srgb,var(--accent) 16%,transparent);
+}
+
+.category-separator-mark{
+  width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  border:1px solid color-mix(in srgb,var(--accent) 38%,var(--line));
+  border-radius:10px;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 16%,var(--surface)),color-mix(in srgb,var(--accent-2) 10%,var(--surface)));
+  box-shadow:0 8px 24px rgba(0,0,0,.14);
+  transform:rotate(45deg);
+}
+
+.category-separator-mark::before{
+  content:"";
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--gradient);
+  box-shadow:0 0 13px color-mix(in srgb,var(--accent-2) 55%,transparent);
+}
+
+.hero-summary-row{
+  max-width:650px;
+  margin:16px 0 23px;
+}
+
+.hero-summary-row .hero-summary{
+  display:inline;
+  margin:0;
+}
+
+.hero-see-more{
+  display:inline;
+  margin-left:5px;
+  color:var(--hero-text);
+  font-size:.9rem;
+  font-weight:800;
+  text-decoration:underline;
+  text-decoration-color:color-mix(in srgb,var(--accent-2) 70%,transparent);
+  text-underline-offset:3px;
+}
+
+.hero-see-more:hover{
+  color:var(--accent-2);
+}
+
+.summary-content{
+  position:relative;
+}
+
+.summary-paragraph{
+  max-width:820px;
+  margin:0;
+  color:var(--text);
+  line-height:1.78;
+  font-size:.95rem;
+  text-align:left;
+}
+
+.summary-paragraph + .summary-paragraph{
+  margin-top:15px;
+}
+
+.summary-question{
+  max-width:820px;
+  margin:18px 0 0;
+  color:var(--text);
+  line-height:1.72;
+  font-size:.98rem;
+  font-weight:800;
+}
+
+.summary-content.is-collapsed .summary-paragraph:nth-of-type(n+3),
+.summary-content.is-collapsed .summary-question{
+  display:none;
+}
+
+.summary-toggle{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin-top:16px;
+  padding:8px 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--bg-soft);
+  color:var(--text);
+  font-size:.78rem;
+  font-weight:750;
+}
+
+.summary-toggle::after{
+  content:"⌄";
+  line-height:1;
+  transition:transform .2s ease;
+}
+
+.summary-toggle[aria-expanded="true"]::after{
+  transform:rotate(180deg);
+}
+
+.episode-grid.ai-drama-list{
+  grid-template-columns:1fr;
+}
+
+.episode-grid.ai-drama-list .episode-btn{
+  min-height:54px;
+  display:grid;
+  grid-template-columns:38px minmax(0,1fr) auto;
+  align-items:center;
+  justify-items:start;
+  gap:12px;
+  padding:9px 14px;
+  text-align:left;
+}
+
+.episode-grid.ai-drama-list .collection-film-title,
+.episode-grid.ai-drama-list .coming-soon-label{
+  display:block;
+}
+
+.episode-grid.ai-drama-list .coming-soon-label{
+  color:var(--muted);
+  font-size:.72rem;
+  font-weight:700;
+}
+
+#app > .grid-page,
+#app > .featured-wrap,
+#app > .content-section,
+#app > .category-separator{
+  animation:karakuViewIn .38s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes karakuViewIn{
+  from{opacity:0;transform:translateX(18px)}
+  to{opacity:1;transform:translateX(0)}
+}
+
+@media (max-width:700px){
+  .category-separator{
+    margin:26px 16px 5px;
+  }
+
+  .hero-summary-row{
+    margin:13px 0 18px;
+  }
+
+  .hero-summary-row .hero-summary{
+    display:inline;
+    font-size:.89rem;
+    line-height:1.58;
+  }
+
+  .hero-see-more{
+    font-size:.84rem;
+  }
+
+  .episode-grid.ai-drama-list .episode-btn{
+    grid-template-columns:32px minmax(0,1fr);
+  }
+
+  .episode-grid.ai-drama-list .coming-soon-label{
+    grid-column:2;
+    margin-top:-5px;
+  }
+}
+
 </style>
 </head>
 
@@ -2181,7 +2406,9 @@ const catalog = [
     year:"",
     duration:"15 minutes per episode",
     hue:330,
-    flags:"",
+    flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
     summary:"After losing the love of his life in a tragic accident, 29-year-old Adrian Vale becomes a shadow of the man he once was. He abandons his dreams, avoids his friends, and spends every night watching old videos of the woman he can no longer hold. One rainy evening, he discovers a mysterious antique clock in the abandoned shop where he and his late girlfriend, Elena, shared their first kiss. The clock begins ticking backward, and a strange voice offers him an impossible bargain: he can spend one more day with Elena, but every hour he spends with her will erase one precious memory of their life together. Adrian accepts without hesitation. For twenty-four hours, he gets to laugh with Elena, revisit their favorite places, and experience the ordinary moments he once took for granted. But as the clock approaches midnight, he begins to realize that Elena knows something about the accident that killed her. And she is hiding the truth because she knows what will happen if he discovers it. What would you sacrifice to spend one last day with the person you love?",
     poster:"image/aidrama/OneMoreDay.jfif",
     trailer:"Coming Soon...",
@@ -2199,7 +2426,9 @@ const catalog = [
     year:"",
     duration:"15 minutes per episode",
     hue:2,
-    flags:"",
+    flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
     summary:"When struggling journalist Daniel Cross moves into a cheap apartment in the middle of the city, he considers himself lucky. Apartment 909 is spacious, strangely affordable, and located in a building where the other tenants seem determined to avoid him. But strange things begin happening after midnight. He hears footsteps inside the walls. His bathroom mirror occasionally reflects a woman standing behind him. And every morning, a handwritten note appears beneath his door, warning him not to investigate the apartment below his own. The problem is that the building has no tenth floor, and according to the official blueprints, there is nothing beneath Apartment 909 except concrete foundations. Determined to uncover the truth, Daniel investigates the building's history and discovers that a family disappeared there twenty years earlier. Their disappearance was ruled an accident, but every record connected to the case was mysteriously destroyed. Then Daniel finds an old photograph of the missing family. Standing in the background is a man who looks exactly like him. As the walls begin revealing hidden doors and the tenants start disappearing one by one, Daniel realizes Apartment 909 was never meant to be rented. It was meant to keep something imprisoned. What if the apartment you live in is hiding a crime that has not finished happening?",
     poster:"image/aidrama/Apartment909.jfif",
     trailer:"Coming Soon...",
@@ -2217,7 +2446,9 @@ const catalog = [
     year:"",
     duration:"15 minutes per episode",
     hue:265,
-    flags:"",
+    flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
     summary:"In a world where scientists have discovered how to observe parallel timelines, 27-year-old physicist Ethan Rowe has devoted his life to proving that every decision creates another version of reality. He never expected to meet someone from one of those realities. During an experiment, Ethan sees a woman named Claire through an unexplained temporal fracture. Although they live in different timelines, they begin communicating through the unstable connection. Their conversations become the highlight of their lives, and eventually, they fall deeply in love. But their relationship has an impossible complication. In Claire's timeline, Ethan is a wanted criminal responsible for a catastrophe that destroyed an entire city. In Ethan's timeline, Claire died as a child in an accident that never happened in hers. When the fracture begins collapsing, they discover that their two timelines are merging. If they allow the process to continue, millions of people in both worlds will disappear. The scientists offer only one solution: permanently separate the timelines, erasing every trace of their connection. Ethan and Claire refuse to accept that their love must end simply because the universe has decided they should never have met. But the deeper they investigate, the more disturbing the truth becomes. Their connection was not an accident. Someone deliberately created the fracture, and one of them may be responsible for destroying both worlds. Can two people save the universe without losing the only person who makes their lives worth living?",
     poster:"image/aidrama/WrongTimeline.jfif",
     trailer:"Coming Soon...",
@@ -2235,7 +2466,9 @@ const catalog = [
     year:"",
     duration:"15 minutes per episode",
     hue:205,
-    flags:"",
+    flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
     summary:"Three hundred years after magic appeared in the human world, civilization has been divided into kingdoms ruled by powerful beings known as the Ascendants. Humans without magical abilities have become second-class citizens, while those born with extraordinary powers are trained to serve the ruling order. In this world lives Kael Draven, a quiet young man believed to possess no magic whatsoever. After his village is destroyed during an Ascendant raid, Kael is left for dead beneath the ruins. As he struggles to survive, something awakens inside him: the ability to erase any form of magic he touches. He can destroy spells, neutralize magical weapons, break enchanted barriers, and even strip immortals of their supernatural abilities. But every time he uses his power, the world around him begins to unravel. Kael soon learns that his ability is not merely forbidden. It is the power that existed before magic itself, the original force capable of ending the reign of every Ascendant. The rulers declare him humanity's greatest threat, sending armies and legendary hunters to capture him. Meanwhile, rebels begin worshipping him as the only person who can free humanity. Caught between those who want to control him and those who want to turn him into a weapon, Kael must uncover the truth about his origins. The greatest revelation comes when he discovers that the Ascendants were once ordinary humans who stole their powers from an ancient being. And that being is still alive inside him. What happens when the weakest person in the world possesses the one power that can destroy its gods?",
     poster:"image/aidrama/LastForbiddenHuman.jfif",
     trailer:"Coming Soon...",
@@ -2253,7 +2486,9 @@ const catalog = [
     year:"",
     duration:"15 minutes per episode",
     hue:42,
-    flags:"",
+    flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
     summary:"Twenty-six-year-old Ethan Cole has spent his entire adult life struggling to survive. He works two jobs, rents a tiny apartment, and sends most of his earnings to support his sick mother. Despite his efforts, he is constantly buried under debt, while his wealthy childhood friends treat him as a failure who will never escape poverty. One rainy night, after losing his job and receiving an eviction notice, Ethan returns home to find a black envelope waiting outside his apartment. Inside is a bank card, a photograph of himself standing beside an unfamiliar skyscraper, and a handwritten letter bearing his own signature. The letter contains a warning. Do not trust the people who suddenly become your friends. And whatever you do, never withdraw the final dollar. The bank card grants him access to an account containing one hundred million dollars. Its owner is listed as Ethan Cole, but the account was opened thirty years in the future. At first, Ethan believes it is an elaborate scam. However, every transaction succeeds, and the account balance replenishes itself whenever he spends money. Within weeks, he escapes poverty, purchases a luxury apartment, and begins investing in businesses that have not yet become successful. His investments are impossibly accurate because the account comes with encrypted messages predicting future events. But Ethan's newfound fortune attracts dangerous attention. Financial investigators begin tracing the mysterious account, powerful investors attempt to manipulate him, and a secret organization approaches him with an offer to surrender the money in exchange for his mother's safety. Then Ethan discovers something disturbing. The photograph inside the envelope was taken in a building that does not yet exist. When he investigates its construction plans, he finds a sealed underground facility bearing his name and a date thirty years in the future. Inside is a recording of an older Ethan. His future self reveals that the fortune is not a gift. It is the result of a financial empire built after a global catastrophe, and the money has been sent backward through time to prevent that catastrophe from happening. But the recording ends with a confession: the older Ethan was responsible for causing the disaster in the first place. Now, the younger Ethan must decide whether to trust the future version of himself or discover why his older self is so desperate to change history. What if the richest man in your future was yourself, and his fortune was meant to prevent a disaster you haven't caused yet?",
     poster:"image/aidrama/FutureSelfFortune.jfif",
     trailer:"Coming Soon...",
@@ -2271,7 +2506,9 @@ const catalog = [
     year:"",
     duration:"15 minutes per episode",
     hue:250,
-    flags:"",
+    flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
     summary:"At exactly 11:59 PM, the world ends. A catastrophic event wipes out civilization in a flash of white light. Buildings collapse, the oceans rise, and billions of people vanish without explanation. But when the clock strikes midnight, the world returns to normal. Everyone wakes up in their beds, unaware that the apocalypse ever happened. Everyone except Noah Hayes. Noah awakens in the same abandoned street where he died, retaining every memory of the destroyed world. At first, he believes he is suffering from a mental breakdown. But when the same disasters repeat over the following nights, he realizes that reality is being reset every twenty-four hours. He begins using his knowledge to prevent accidents, save strangers, and investigate the event responsible for the repeated destruction. Yet something is wrong. The more he changes the day's events, the more the world deviates from its original pattern. People begin remembering things they have never experienced. Children draw pictures of cities that do not exist. And strangers approach Noah with questions about a future that should have been erased. Then, on the seventh reset, Noah discovers that one person remembers everything he does. A woman named Evelyn tells him that the world has been reset thousands of times, and Noah was never supposed to survive the first one. He was deliberately excluded from the reset. Because the system responsible for rebuilding humanity has identified him as the cause of the apocalypse. What if you were the only person who remembered the end of the world, and the world itself wanted you erased?",
     poster:"image/aidrama/WorldReset.jfif",
     trailer:"Coming Soon...",
@@ -2289,7 +2526,9 @@ const catalog = [
     year:"",
     duration:"15 minutes per episode",
     hue:55,
-    flags:"",
+    flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
     summary:"In a world where supernatural abilities determine a person's wealth, status, and future, nineteen-year-old Darius Venn is born completely powerless. His family belongs to a respected bloodline of elemental warriors, but Darius possesses neither magical energy nor the ability to awaken a conventional skill. His father considers him a disgrace, his siblings treat him as a burden, and the prestigious Imperial Academy rejects his application. When his family is attacked by a rival clan, Darius attempts to defend his younger sister but is easily defeated. His father orders him to flee, then publicly disowns him for bringing shame to their bloodline. With nowhere to go, Darius escapes into the abandoned industrial district, where discarded magical weapons and broken experimental machines are dumped. Instead of accepting his fate, he begins studying the technology that wealthy families consider inferior to magic. He discovers that supernatural abilities produce measurable energy, and that energy can be captured, stored, and redirected through specially designed machinery. Working with scrap metal, stolen research papers, and abandoned laboratory equipment, he builds his first combat device: a mechanical gauntlet capable of absorbing magical attacks and converting them into physical force. His invention is crude, unstable, and almost kills him during its first test. But it works. Over the following years, Darius develops an entirely new form of power. His armor evolves, his weapons adapt to enemy abilities, and his artificial energy core becomes capable of generating power without an external source. Eventually, he creates a combat system that allows an ordinary human to challenge the strongest supernatural warriors. When the Imperial Academy hosts its annual tournament, Darius enters under a false identity. The same institution that once rejected him becomes the stage where he defeats its most celebrated champions, one after another. His victories attract the attention of the empire's most powerful families, including the clan that abandoned him. But Darius soon discovers that the world's supernatural abilities originated from an ancient technology buried beneath the capital. The ruling families have concealed this truth for generations because the original technology could allow anyone to become powerful. His inventions are not merely imitations of magic. They are the first steps toward making the entire power hierarchy obsolete. What if a powerless man refused to accept the rules of his world and invented a power that could defeat them all?",
     poster:"image/aidrama/BornWithoutPower.jfif",
     trailer:"Coming Soon...",
@@ -2307,7 +2546,9 @@ const catalog = [
     year:"",
     duration:"15 minutes per episode",
     hue:290,
-    flags:"",
+    flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
     summary:"In the Kingdom of Aetherion, every human receives a supernatural skill when they turn eighteen. Some gain the ability to control fire, others develop extraordinary strength, and the rarest individuals receive legendary skills capable of changing entire kingdoms. Those without skills are classified as Nulls. They are forbidden from joining the royal military, entering magical academies, or holding positions of authority. Kael Arden is one of them. After being abandoned by his noble family and publicly humiliated during the Awakening Ceremony, Kael survives by working in the underground districts of the capital. His former friends become celebrated warriors, while he struggles to afford food and shelter. Everything changes when he accepts a dangerous job exploring an abandoned dungeon beneath the royal academy. Deep inside, Kael discovers a mysterious black crystal that activates an ancient system invisible to everyone else. A message appears before his eyes: LEVEL 1 DETECTED. TRUE CLASSIFICATION: UNREGISTERED. Unlike ordinary skills, the system does not grant Kael a specific ability. Instead, it allows him to gain experience through nearly any action: surviving battles, solving ancient puzzles, discovering hidden locations, and defeating enemies stronger than himself. At first, his progress is painfully slow. But when Kael survives a battle against a creature that once destroyed an entire army, his level rises dramatically. Within months, he reaches levels that the kingdom's greatest warriors believe are impossible. Eventually, Kael reaches Level 999, the highest number the system has ever displayed. His abilities begin breaking the established laws of magic. He can interrupt other people's skills, create entirely new powers, and access sealed locations that even the royal family cannot enter. The kingdom's rulers attempt to recruit him, then control him, and finally eliminate him when they realize he cannot be measured by their ranking system. But the greatest secret lies beyond Level 999. Kael discovers that the skill system was created by an ancient civilization to restrain humanity's growth. Anyone who surpasses its intended limits risks awakening an entity buried beneath the world. And that entity has begun calling him by a name no living person should know. What if the person with no skill was the only person capable of reaching the highest level in existence?",
     poster:"image/aidrama/SkillExceptMeLvl999.jfif",
     trailer:"Coming Soon...",
@@ -2325,7 +2566,9 @@ const catalog = [
     year:"",
     duration:"15 minutes per episode",
     hue:345,
-    flags:"",
+    flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
     summary:"Twenty-four-year-old Noah Mercer has reached the lowest point of his life. He has lost his job, his savings, and the apartment he shared with his girlfriend. His closest friend has betrayed him, leaving him responsible for a debt he never agreed to take. With nowhere to sleep, Noah spends a freezing night beneath the roof of an abandoned train station, wondering how a lifetime of hard work brought him absolutely nothing. At midnight, a notification suddenly appears in front of his eyes. [ULTIMATE RECOVERY SYSTEM ACTIVATED.] [HOST STATUS: FINANCIAL FAILURE. SOCIAL FAILURE. PHYSICAL FAILURE.] [CONGRATULATIONS. YOU QUALIFY FOR EMERGENCY RECONSTRUCTION.] The system offers Noah a series of missions designed to rebuild his life. His first task is humiliatingly simple: earn enough money to buy a meal without borrowing from anyone. When he completes it, he receives a cash reward, an increase in physical stamina, and a mysterious ability called Perfect Analysis. The ability allows him to recognize hidden opportunities, identify weaknesses in machinery, calculate financial risks, and understand the true value of objects others overlook. Noah initially uses the system to find work and escape homelessness. But each completed mission unlocks increasingly extraordinary rewards, including accelerated learning, enhanced reflexes, and the ability to temporarily copy specialized skills. Soon, he transforms from an exhausted nobody into a wealthy entrepreneur with abilities that make him seem almost superhuman. Those who abandoned him begin returning, pretending they always believed in him. His former employer offers him a position, his ex-girlfriend attempts to reconcile, and wealthy investors compete to gain access to his rapidly expanding businesses. Noah rejects them all. However, the system begins issuing missions that seem increasingly personal. It directs him toward specific people, warns him about events before they happen, and occasionally displays information about individuals he has never met. One night, Noah receives a mission unlike any before it. [MISSION: PREVENT YOUR OWN DEATH.] [TIME REMAINING: 72 HOURS.] The system reveals that someone has been manipulating Noah's life for years, deliberately pushing him toward financial ruin. His worst day was not an unfortunate coincidence. It was the final stage of an experiment designed to activate the system inside him. And the people responsible have been monitoring his progress from the beginning. What if your greatest failure was secretly the first step in becoming someone the world could never control?",
     poster:"image/aidrama/CheatSystemonMyWorstDay.jfif",
     trailer:"Coming Soon...",
@@ -2343,7 +2586,9 @@ const catalog = [
     year:"",
     duration:"15 minutes per episode",
     hue:12,
-    flags:"",
+    flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
     summary:"For twenty years, the criminal underworld knew him only as Ghost. He was the world's most feared assassin, a man who could infiltrate the most heavily guarded facilities, eliminate the most protected targets, and disappear without leaving a trace. Governments denied his existence, criminal syndicates feared his name, and intelligence agencies maintained entire divisions dedicated to finding him. Then, without warning, Ghost vanished. Five years later, a quiet man named Adrian Vale works as a cleaner in a luxury corporate tower. He arrives before sunrise, keeps his head down, speaks to almost no one, and spends his evenings in a small apartment far removed from his former life. Nobody suspects that the man polishing office windows once brought down an international criminal empire. Adrian abandoned his profession after a mission went catastrophically wrong. He was ordered to eliminate a young witness who had uncovered evidence of a global conspiracy. Instead, he spared her life, faked his own death, and disappeared before his former employers could punish him. He has spent five years trying to live peacefully, believing that remaining invisible will allow him to escape the consequences of his past. That illusion ends when a new executive arrives at the tower. The executive recognizes Adrian immediately. He is the younger brother of the witness Adrian once saved, and he has spent years searching for the man who disappeared with the only evidence capable of exposing the conspiracy. Before Adrian can leave, armed operatives attack the building. Trapped inside with hundreds of employees, he is forced to use the skills he has spent years suppressing. He disarms attackers with improvised tools, predicts enemy movements, and navigates the building as if he designed every corridor himself. Security footage captures only fragments of the encounter, but those fragments are enough to reach the criminal underworld. Ghost is alive. Soon, rival assassins, corrupt officials, and former allies begin hunting Adrian. Some want revenge, others want to recruit him, and one wants him to complete the mission he refused five years earlier. Meanwhile, the executive reveals that the conspiracy has infiltrated the corporation's leadership and is preparing an operation that could destabilize several governments. Adrian must decide whether to remain the harmless cleaner he has pretended to be or become Ghost again. But this time, his mission is not to kill a target. It is to dismantle the organization that taught him how. What happens when the world's deadliest assassin tries to live an ordinary life, only to discover that his past has followed him into the one place he thought was safe?",
     poster:"image/aidrama/DeadliestAssassinBecameCleaner.jfif",
     trailer:"Coming Soon...",
@@ -2361,7 +2606,9 @@ const catalog = [
     year:"",
     duration:"15 minutes per episode",
     hue:155,
-    flags:"",
+    flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
     summary:"The world collapsed twelve years ago when mysterious creatures emerged from underground ruins and began attacking human settlements. Entire nations disappeared within months, global supply chains collapsed, and the surviving population scattered into isolated communities surrounded by hostile wilderness. Among the survivors was Bryan Voss, a former civil engineer who lost his family during the first wave of attacks. Unlike the warlords who built their power through violence, Bryan believed humanity could survive by rebuilding civilization. He gathered scattered survivors, engineers, farmers, doctors, and former soldiers, leading them to a defensible region surrounded by mountains. There, he built the last safe city on Earth. Using salvaged technology, renewable energy, advanced defensive systems, and carefully planned agriculture, Bryan transformed a ruined settlement into a thriving metropolis. Its walls could withstand monster attacks, its farms produced enough food to feed hundreds of thousands, and its hospitals offered treatment to anyone willing to follow the city's laws. For the first time since the apocalypse began, humanity had hope. Bryan became the city's founder and protector, refusing to accept wealth or absolute authority. He worked alongside ordinary citizens, personally inspected the defensive walls, and ensured that even refugees received food and shelter. But as the city prospered, its leaders grew increasingly ambitious. Merchants wanted control over food distribution. Military commanders demanded authority over the city's defenses. Wealthy residents complained that refugees were consuming too many resources. Political factions accused Bryan of being too powerful, despite the fact that he had repeatedly refused to become their king. The final betrayal came during a major monster attack. While Bryan led a defense operation outside the city, a coalition of officials seized control of the central government. They accused him of deliberately withholding military technology and using the city's dependence on his leadership to maintain power. When Bryan returned, the gates were closed against him. The man who had built their homes, protected their children, and saved their lives was declared an enemy of humanity. His loyal supporters were arrested, his access codes were revoked, and the city began dismantling the very systems he had designed. The new government believed it could operate everything without him. Within weeks, food production declined, defensive systems malfunctioned, and the city's outer districts fell to the monsters. The officials attempted to conceal the failures, blaming Bryan for sabotaging the infrastructure before his expulsion. Meanwhile, Bryan survived in the wasteland. Far from the city, he discovered an abandoned research facility containing advanced technology linked to the creatures that destroyed civilization. He learned how to improve his equipment, command autonomous defense machines, and construct a new settlement beyond the reach of the old government. As word spread that Bryan was building another sanctuary, survivors began leaving the original city to join him. The government demanded his return, then threatened him, and finally sent an army to destroy his new settlement. Bryan had one final decision to make. He could destroy the city he once loved and allow its people to suffer the consequences of their betrayal, or return to save the very society that had abandoned him. But when he discovers that the government has been secretly experimenting on captured creatures, he realizes that the betrayal was only a small part of a much larger conspiracy. The monsters may not be the greatest threat humanity faces. What happens when the man who saves humanity is betrayed by the civilization he built, then becomes the only person capable of saving it again?",
     poster:"image/aidrama/LastSafeCityHumanityBetrayedMe.jfif",
     trailer:"Coming Soon...",
@@ -2742,6 +2989,85 @@ function searchMatches(item){
   return haystack.includes(query);
 }
 
+
+function heroExcerpt(text,limit=235){
+  const value = String(text || "").replace(/\s+/g," ").trim();
+  if(value.length <= limit) return value;
+
+  const clipped = value.slice(0,limit);
+  const lastSpace = clipped.lastIndexOf(" ");
+  return `${clipped.slice(0,lastSpace > 150 ? lastSpace : limit).trim()}…`;
+}
+
+function summaryParts(item){
+  let text = String(item?.summary || "").replace(/\s+/g," ").trim();
+  let question = "";
+
+  if(item?.cat === "drama"){
+    const questionMatch = text.match(/([^.!?]+\?)$/);
+    if(questionMatch){
+      question = questionMatch[1].trim();
+      text = text.slice(0,questionMatch.index).trim();
+    }
+  }
+
+  const sentences = text.match(/[^.!?]+[.!?]+(?:[”'\"])?|[^.!?]+$/g) || [text];
+  const paragraphs = [];
+  let current = "";
+
+  sentences.forEach(sentence=>{
+    const clean = sentence.trim();
+    if(!clean) return;
+
+    const standalone = clean.length < 95 || /^\[[^\]]+\]/.test(clean) || /^(But|Then|And|Yet|However|Meanwhile|Eventually|Everything|Nobody|Ghost|There|Inside|Everyone|He was|It was|The final)/.test(clean);
+    const wouldBeLong = (current + " " + clean).trim().length > 310;
+
+    if(current && (wouldBeLong || standalone)){
+      paragraphs.push(current.trim());
+      current = clean;
+    }
+    else{
+      current = `${current} ${clean}`.trim();
+    }
+
+    if(standalone && current.length < 150){
+      paragraphs.push(current.trim());
+      current = "";
+    }
+  });
+
+  if(current) paragraphs.push(current.trim());
+
+  return { paragraphs:paragraphs.filter(Boolean), question };
+}
+
+function summaryMarkup(item){
+  const {paragraphs,question} = summaryParts(item);
+  const shouldCollapse = paragraphs.length > 2 || Boolean(question);
+
+  return `
+    <div class="summary-content ${shouldCollapse ? "is-collapsed" : ""}">
+      ${paragraphs.map(paragraph=>`<p class="summary-paragraph">${esc(paragraph)}</p>`).join("")}
+      ${question ? `<p class="summary-question">${esc(question)}</p>` : ""}
+    </div>
+    ${shouldCollapse ? `<button class="summary-toggle" type="button" data-summary-toggle aria-expanded="false">See more</button>` : ""}
+  `;
+}
+
+function categoryDividerMarkup(){
+  return `<div class="category-separator" aria-hidden="true"><span></span><span class="category-separator-mark"></span><span></span></div>`;
+}
+
+function railTargetView(title){
+  return ({
+    "Trending Now":"new",
+    "New Releases":"new",
+    "AI Drama":"drama",
+    "Anime":"anime",
+    "Movies":"movie"
+  })[title] || "home";
+}
+
 /* =========================================================
    CARD / HOME RENDERING
 ========================================================= */
@@ -2771,14 +3097,20 @@ function cardMarkup(item){
   `;
 }
 
-function railMarkup(title,items){
+function railMarkup(title,items,{divider=false}={}){
   if(!items.length) return "";
 
+  const targetView = railTargetView(title);
+
   return `
+    ${divider ? categoryDividerMarkup() : ""}
     <section class="content-section">
       <div class="section-heading">
         <h2>${esc(title)}</h2>
-        <p>${items.length} title${items.length === 1 ? "" : "s"}</p>
+        <button class="section-see-more" type="button" data-view="${esc(targetView)}" aria-label="See more ${esc(title)}">
+          See more
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+        </button>
       </div>
 
       <div class="rail-shell">
@@ -2866,7 +3198,10 @@ function heroContentMarkup(item,items){
         ${item.rating ? `<span class="meta-dot"></span><span>${esc(item.rating)}</span>` : ""}
       </div>
 
-      <p class="hero-summary">${esc(item.summary)}</p>
+      <div class="hero-summary-row">
+        <p class="hero-summary">${esc(heroExcerpt(item.summary))}</p>
+        <button class="hero-see-more" type="button" data-details-id="${esc(item.id)}">See more &gt;</button>
+      </div>
 
       <div class="hero-actions">
         <button class="action-btn primary" type="button" data-details-id="${esc(item.id)}">
@@ -2962,13 +3297,19 @@ function restartFeaturedRotation(){
 
 function currentMonthlyReleases(items){
   const now = new Date();
-  const currentMonth = now.getMonth() + 1;
-  const currentYear = now.getFullYear();
+  const currentIndex = now.getFullYear() * 12 + now.getMonth();
 
-  return items.filter(item=>
-    Number(item.releaseMonth) === currentMonth &&
-    Number(item.releaseYear) === currentYear
-  );
+  return items.filter(item=>{
+    const month = Number(item.releaseMonth);
+    const year = Number(item.releaseYear);
+    if(!month || !year) return false;
+
+    const releaseIndex = year * 12 + (month - 1);
+    const ageInMonths = currentIndex - releaseIndex;
+
+    // A release remains in New Releases for its release month plus the next month.
+    return ageInMonths >= 0 && ageInMonths < 2;
+  });
 }
 
 function newReleasesMarkup(items){
@@ -2982,9 +3323,12 @@ function newReleasesMarkup(items){
     <section class="content-section">
       <div class="section-heading">
         <h2>New Releases</h2>
-        <p>0 titles</p>
+        <button class="section-see-more" type="button" data-view="new">
+          See more
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+        </button>
       </div>
-      <div class="empty-state new-release-empty">No new releases within this month.</div>
+      <div class="empty-state new-release-empty">No releases are currently within the two-month New Releases window.</div>
     </section>
   `;
 }
@@ -2996,9 +3340,9 @@ function renderHome(){
     ${heroMarkup()}
     ${railMarkup("Trending Now",items.filter(item=>item.flags?.includes("t")))}
     ${newReleasesMarkup(items)}
-    ${railMarkup("AI Drama",items.filter(item=>item.cat === "drama"))}
-    ${railMarkup("Anime",items.filter(item=>item.cat === "anime"))}
-    ${railMarkup("Movies",items.filter(item=>item.cat === "movie"))}
+    ${railMarkup("AI Drama",items.filter(item=>item.cat === "drama"),{divider:true})}
+    ${railMarkup("Anime",items.filter(item=>item.cat === "anime"),{divider:true})}
+    ${railMarkup("Movies",items.filter(item=>item.cat === "movie"),{divider:true})}
   `;
 }
 
@@ -3137,16 +3481,14 @@ function renderApp(){
     );
   }
   else if(state.view === "new"){
-    const sorted = [...catalog].sort((a,b)=>{
-      const newDifference = Number(Boolean(b.flags?.includes("n"))) - Number(Boolean(a.flags?.includes("n")));
-      if(newDifference) return newDifference;
-
-      return Number(Boolean(b.flags?.includes("t"))) - Number(Boolean(a.flags?.includes("t")));
-    });
+    const releases = currentMonthlyReleases(searched);
+    const releaseIds = new Set(releases.map(item=>item.id));
+    const popular = searched.filter(item=>!releaseIds.has(item.id) && item.flags?.includes("t"));
+    const sorted = [...releases,...popular];
 
     html = renderGrid(
       "New & Popular",
-      "Fresh releases and trending titles from across KARAKU.",
+      "Titles stay in New Releases for their release month and the following month, with trending titles shown after them.",
       sorted
     );
   }
@@ -3165,6 +3507,7 @@ function renderApp(){
 
 function detailsMarkup(item){
   const seasons = item.seasons || [];
+  const listStyleEpisodes = item.collection || item.cat === "drama";
 
   return `
     <div class="modal-visual" style="${artStyle(item)}">
@@ -3186,22 +3529,22 @@ function detailsMarkup(item){
 
       <section class="summary-block">
         <div class="summary-label">Summary</div>
-        <p class="summary-text">${esc(item.summary)}</p>
+        ${summaryMarkup(item)}
       </section>
 
       <div class="seasons-wrap">
         ${seasons.map(season=>`
           <section class="season-block">
             <div class="season-title-row">
-              <h3>${item.collection ? "Movies" : (item.cat === "movie" ? "Movie" : `Season ${season.season}`)}</h3>
+              <h3>${item.collection ? "Movies" : item.cat === "drama" ? "Episodes" : (item.cat === "movie" ? "Movie" : `Season ${season.season}`)}</h3>
               <span>${season.episodes.length} ${item.collection ? `film${season.episodes.length === 1 ? "" : "s"}` : `episode${season.episodes.length === 1 ? "" : "s"}`}</span>
             </div>
 
-            <div class="episode-grid">
+            <div class="episode-grid ${item.cat === "drama" ? "ai-drama-list" : ""}">
               ${season.episodes.map(episode=>`
                 <button
                   class="episode-btn ${
-                    state.season === season.season && state.episode === episode.episode
+                    !episode.comingSoon && state.season === season.season && state.episode === episode.episode
                       ? "active"
                       : ""
                   } ${episode.comingSoon ? "coming-soon" : ""}"
@@ -3212,7 +3555,7 @@ function detailsMarkup(item){
                   aria-label="${esc(episode.title)}${episode.comingSoon ? " - Coming Soon" : ""}"
                   ${episode.comingSoon ? "disabled" : ""}
                 >
-                  ${item.collection
+                  ${listStyleEpisodes
                     ? `<span class="collection-film-number">${episode.episode}</span><span class="collection-film-title">${esc(episode.title)}</span>${episode.comingSoon ? '<span class="coming-soon-label">Coming Soon...</span>' : ''}`
                     : episode.comingSoon
                       ? `<span class="episode-coming-text">Episode ${episode.episode}<small>Coming Soon...</small></span>`
@@ -3568,6 +3911,18 @@ document.addEventListener("click",event=>{
   if(genreButton){
     state.genre = genreButton.dataset.genre;
     renderApp();
+    return;
+  }
+
+  const summaryToggle = event.target.closest("[data-summary-toggle]");
+
+  if(summaryToggle){
+    const content = summaryToggle.previousElementSibling;
+    const expanded = summaryToggle.getAttribute("aria-expanded") === "true";
+
+    content?.classList.toggle("is-collapsed",expanded);
+    summaryToggle.setAttribute("aria-expanded",String(!expanded));
+    summaryToggle.textContent = expanded ? "See more" : "See less";
     return;
   }
 
