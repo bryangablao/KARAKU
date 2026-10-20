@@ -1,0 +1,3633 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KARAKU — Stream the Synthetic Imagination</title>
+<link rel="icon" type="image/x-icon" href="image/karakulogo.ico">
+<meta name="description" content="KARAKU is a streaming-style website for AI dramas, anime, movies, and embedded social video.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --font-display:"Space Grotesk",system-ui,sans-serif;
+  --font-body:"Inter",system-ui,sans-serif;
+
+  --accent:#8b5cf6;
+  --accent-2:#22d3ee;
+  --accent-3:#f472b6;
+  --gradient:linear-gradient(135deg,var(--accent),var(--accent-2));
+
+  --header-h:72px;
+  --page-pad:clamp(16px,4vw,64px);
+  --radius:18px;
+  --radius-sm:12px;
+}
+
+html[data-theme="dark"]{
+  --bg:#07080d;
+  --bg-soft:#0d1018;
+  --surface:#111520;
+  --surface-2:#171c29;
+  --text:#f7f8fb;
+  --muted:#a5adbd;
+  --line:rgba(255,255,255,.10);
+  --line-strong:rgba(255,255,255,.16);
+  --glass:rgba(7,8,13,.86);
+  --shadow:0 24px 70px rgba(0,0,0,.48);
+}
+
+html[data-theme="light"]{
+  --bg:#f5f7fb;
+  --bg-soft:#eef1f7;
+  --surface:#ffffff;
+  --surface-2:#e8ecf4;
+  --text:#131722;
+  --muted:#667085;
+  --line:rgba(20,25,40,.11);
+  --line-strong:rgba(20,25,40,.18);
+  --glass:rgba(255,255,255,.90);
+  --shadow:0 24px 60px rgba(31,41,55,.15);
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  overflow-x:hidden;
+  font-family:var(--font-body);
+  color:var(--text);
+  background:
+    radial-gradient(circle at 14% 0%,rgba(139,92,246,.08),transparent 28%),
+    radial-gradient(circle at 92% 24%,rgba(34,211,238,.05),transparent 22%),
+    var(--bg);
+  transition:background .25s ease,color .25s ease;
+}
+
+body.modal-open{
+  overflow:hidden;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+button{
+  border:0;
+  color:inherit;
+  background:none;
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+img{
+  max-width:100%;
+  display:block;
+}
+
+[hidden]{
+  display:none !important;
+}
+
+:focus-visible{
+  outline:2px solid var(--accent-2);
+  outline-offset:3px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+.site-header{
+  position:fixed;
+  z-index:60;
+  top:0;
+  left:0;
+  right:0;
+  height:var(--header-h);
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:0 var(--page-pad);
+  background:var(--glass);
+  border-bottom:1px solid var(--line-strong);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+
+.brand{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  flex-shrink:0;
+  font-family:var(--font-display);
+  font-weight:700;
+  letter-spacing:.08em;
+}
+
+.brand img{
+  width:34px;
+  height:34px;
+  object-fit:contain;
+}
+
+.brand b{
+  font-weight:700;
+  background:var(--gradient);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.desktop-nav{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.nav-btn{
+  position:relative;
+  padding:10px 11px;
+  border-radius:9px;
+  color:var(--muted);
+  font-size:.88rem;
+  font-weight:600;
+  transition:color .2s ease,background .2s ease;
+}
+
+.nav-btn:hover{
+  color:var(--text);
+  background:var(--surface);
+}
+
+.nav-btn.active{
+  color:var(--text);
+}
+
+.nav-btn.active::after{
+  display:none;
+}
+
+.nav-indicator{
+  position:absolute;
+  z-index:3;
+  left:0;
+  bottom:3px;
+  width:0;
+  height:2px;
+  border-radius:999px;
+  background:var(--gradient);
+  opacity:0;
+  pointer-events:none;
+  transform:translate3d(0,0,0);
+  transition:
+    transform .38s cubic-bezier(.22,1,.36,1),
+    width .38s cubic-bezier(.22,1,.36,1),
+    opacity .18s ease;
+  will-change:transform,width;
+}
+
+.header-spacer{
+  flex:1;
+}
+
+.search-box{
+  position:relative;
+  width:min(310px,26vw);
+}
+
+.search-box input{
+  width:100%;
+  height:40px;
+  padding:0 42px 0 15px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--surface);
+  color:var(--text);
+}
+
+.search-box input::placeholder{
+  color:var(--muted);
+}
+
+.search-box svg{
+  position:absolute;
+  right:13px;
+  top:50%;
+  width:18px;
+  height:18px;
+  transform:translateY(-50%);
+  fill:none;
+  stroke:var(--muted);
+  stroke-width:2;
+}
+
+.header-icon{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  border:1px solid transparent;
+  transition:background .2s ease,border-color .2s ease;
+}
+
+.header-icon:hover{
+  background:var(--surface);
+  border-color:var(--line);
+}
+
+.header-icon svg{
+  width:20px;
+  height:20px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+}
+
+.mobile-menu-btn{
+  display:none;
+}
+
+/* =========================================================
+   FEATURED / TRAILER AREA
+========================================================= */
+.featured-wrap{
+  padding-top:var(--header-h);
+  border-bottom:1px solid var(--line-strong);
+}
+
+
+.hero{
+  position:relative;
+  min-height:min(70vh,690px);
+  overflow:hidden;
+  isolation:isolate;
+  display:flex;
+  align-items:flex-end;
+  padding:clamp(72px,9vw,130px) var(--page-pad) clamp(54px,7vw,88px);
+  background:#090b12;
+}
+
+.featured-controls{
+  position:absolute;
+  z-index:8;
+  top:22px;
+  right:var(--page-pad);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.featured-arrow{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:50%;
+  background:rgba(0,0,0,.48);
+  color:#fff;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  transition:transform .18s ease,background .18s ease;
+}
+
+.featured-arrow:hover{
+  transform:scale(1.05);
+  background:rgba(17,21,32,.88);
+}
+
+.featured-arrow svg{
+  width:18px;
+  height:18px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2.2;
+}
+
+.featured-dots{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 10px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:999px;
+  background:rgba(0,0,0,.38);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+.featured-dot{
+  width:8px;
+  height:8px;
+  border-radius:999px;
+  background:rgba(255,255,255,.38);
+  transition:width .22s ease,background .22s ease;
+}
+
+.featured-dot.active{
+  width:24px;
+  background:#fff;
+}
+
+.hero-art{
+  position:absolute;
+  inset:0;
+  z-index:-3;
+  overflow:hidden;
+  background-size:cover;
+  background-position:center 26%;
+  transform:scale(1.015);
+}
+
+.hero-art img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 26%;
+}
+
+.hero-art::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg,rgba(6,7,12,.96) 0%,rgba(6,7,12,.73) 37%,rgba(6,7,12,.23) 68%,rgba(6,7,12,.45) 100%),
+    linear-gradient(0deg,var(--bg) 0%,rgba(7,8,13,.25) 44%,rgba(7,8,13,.10) 100%);
+}
+
+.hero-glow{
+  position:absolute;
+  z-index:-2;
+  inset:auto auto -120px -100px;
+  width:520px;
+  height:520px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(139,92,246,.20),transparent 68%);
+  filter:blur(8px);
+}
+
+.hero-copy{
+  width:min(690px,100%);
+}
+
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:999px;
+  background:rgba(0,0,0,.32);
+  color:#fff;
+  font-size:.68rem;
+  font-weight:700;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  backdrop-filter:blur(10px);
+}
+
+.hero h1{
+  margin:15px 0 12px;
+  max-width:760px;
+  font-family:var(--font-display);
+  font-size:clamp(2.3rem,5.8vw,5rem);
+  line-height:1.02;
+  letter-spacing:-.04em;
+  color:#fff;
+  text-wrap:balance;
+}
+
+.meta-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:9px 13px;
+  color:#c9ced9;
+  font-size:.84rem;
+}
+
+.meta-dot{
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:#737b8b;
+}
+
+.hero-summary{
+  max-width:620px;
+  margin:16px 0 23px;
+  color:#d5d9e2;
+  line-height:1.68;
+  font-size:clamp(.92rem,1.4vw,1rem);
+}
+
+.hero-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.action-btn{
+  min-height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  padding:0 18px;
+  border-radius:11px;
+  font-weight:700;
+  transition:transform .18s ease,filter .18s ease,background .18s ease;
+}
+
+.action-btn:hover{
+  transform:translateY(-1px);
+}
+
+.action-btn.primary{
+  color:#fff;
+  background:var(--gradient);
+  box-shadow:0 10px 34px rgba(139,92,246,.26);
+}
+
+.action-btn.secondary{
+  color:#fff;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.16);
+  backdrop-filter:blur(10px);
+}
+
+.action-btn svg{
+  width:18px;
+  height:18px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+}
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+main{
+  min-height:50vh;
+  padding-bottom:64px;
+}
+
+.content-section{
+  margin:34px 0;
+}
+
+.section-heading{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:16px;
+  padding:0 var(--page-pad);
+}
+
+.section-heading h2{
+  font-family:var(--font-display);
+  font-size:clamp(1.08rem,2vw,1.32rem);
+  letter-spacing:-.02em;
+}
+
+.section-heading p{
+  color:var(--muted);
+  font-size:.78rem;
+}
+
+.rail-shell{
+  position:relative;
+}
+
+.card-rail{
+  display:flex;
+  gap:15px;
+  overflow-x:auto;
+  padding:15px var(--page-pad) 24px;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-x;
+  scrollbar-width:none;
+}
+
+.card-rail::-webkit-scrollbar{
+  display:none;
+}
+
+.rail-nav{
+  position:absolute;
+  z-index:6;
+  top:50%;
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:50%;
+  background:rgba(7,8,13,.78);
+  color:#fff;
+  box-shadow:0 10px 30px rgba(0,0,0,.28);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  transform:translateY(-50%);
+  transition:opacity .18s ease,transform .18s ease,background .18s ease;
+}
+
+.rail-nav:hover{
+  background:rgba(17,21,32,.94);
+  transform:translateY(-50%) scale(1.05);
+}
+
+.rail-nav.prev{
+  left:max(8px,calc(var(--page-pad) - 22px));
+}
+
+.rail-nav.next{
+  right:max(8px,calc(var(--page-pad) - 22px));
+}
+
+.rail-nav[disabled]{
+  opacity:0;
+  pointer-events:none;
+}
+
+.rail-nav svg{
+  width:20px;
+  height:20px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2.2;
+}
+
+.media-card{
+  flex:0 0 clamp(225px,21vw,305px);
+  aspect-ratio:16/10;
+  position:relative;
+  overflow:hidden;
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  background:var(--surface);
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+  scroll-snap-align:start;
+  cursor:pointer;
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+}
+
+.media-card:hover{
+  z-index:2;
+  transform:translateY(-5px);
+  border-color:var(--line-strong);
+  box-shadow:var(--shadow);
+}
+
+.card-art{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  background-size:cover;
+  background-position:center;
+  transition:transform .35s ease;
+}
+
+.card-art img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+
+.media-card:hover .card-art{
+  transform:scale(1.045);
+}
+
+.card-art::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.04) 25%,rgba(0,0,0,.85) 100%);
+}
+
+.card-top{
+  position:absolute;
+  z-index:2;
+  top:10px;
+  left:10px;
+  right:10px;
+  display:flex;
+  gap:7px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  min-height:25px;
+  padding:0 9px;
+  border-radius:999px;
+  background:rgba(7,8,13,.70);
+  border:1px solid rgba(255,255,255,.14);
+  color:#fff;
+  font-size:.62rem;
+  font-weight:700;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  backdrop-filter:blur(8px);
+}
+
+.badge.accent{
+  border:0;
+  background:var(--gradient);
+}
+
+.card-info{
+  position:absolute;
+  z-index:2;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:34px 13px 13px;
+  color:#fff;
+}
+
+.card-info h3{
+  margin-bottom:5px;
+  font-family:var(--font-display);
+  font-size:.96rem;
+  line-height:1.25;
+}
+
+.card-info p{
+  overflow:hidden;
+  color:#d3d8e2;
+  font-size:.72rem;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.grid-page{
+  padding:calc(var(--header-h) + 34px) var(--page-pad) 40px;
+}
+
+.page-kicker{
+  color:var(--accent-2);
+  font-size:.69rem;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.page-title{
+  margin-top:7px;
+  font-family:var(--font-display);
+  font-size:clamp(1.9rem,4vw,3rem);
+  letter-spacing:-.035em;
+}
+
+.page-subtitle{
+  max-width:760px;
+  margin-top:8px;
+  color:var(--muted);
+  line-height:1.65;
+}
+
+.genre-chips{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:22px 0 18px;
+  scrollbar-width:none;
+}
+
+.genre-chips::-webkit-scrollbar{
+  display:none;
+}
+
+.genre-chip{
+  flex:0 0 auto;
+  min-height:36px;
+  padding:0 14px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--surface);
+  color:var(--muted);
+  font-size:.8rem;
+  font-weight:600;
+}
+
+.genre-chip.active{
+  border-color:transparent;
+  color:#fff;
+  background:var(--gradient);
+}
+
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:16px;
+}
+
+.cards-grid .media-card{
+  width:100%;
+  flex:none;
+}
+
+.empty-state{
+  padding:90px 20px;
+  text-align:center;
+  color:var(--muted);
+}
+
+
+/* Movie collection episode/film selector */
+.collection-film-title{
+  display:none;
+}
+
+.coming-soon-label{
+  display:none;
+}
+
+.episode-btn.coming-soon{
+  opacity:.72;
+  cursor:not-allowed;
+  border-style:dashed;
+}
+
+.episode-grid:has(.episode-coming-text){
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+}
+
+.episode-btn:has(.episode-coming-text){
+  min-height:54px;
+  padding:8px 12px;
+}
+
+.episode-coming-text{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:2px;
+  line-height:1.2;
+}
+
+.episode-coming-text small{
+  color:var(--muted);
+  font-size:.68rem;
+  font-weight:600;
+}
+
+.new-release-empty{
+  min-height:150px;
+  display:grid;
+  place-items:center;
+  margin:15px var(--page-pad) 24px;
+  padding:28px 18px;
+  border:1px dashed var(--line-strong);
+  border-radius:var(--radius);
+  background:var(--surface);
+}
+
+@media (min-width:701px){
+  .details-modal .episode-grid:has(.collection-film-title){
+    grid-template-columns:1fr;
+  }
+
+  .details-modal .episode-grid:has(.collection-film-title) .episode-btn{
+    min-height:54px;
+    display:grid;
+    grid-template-columns:38px 1fr auto;
+    align-items:center;
+    justify-items:start;
+    gap:12px;
+    padding:9px 14px;
+    text-align:left;
+  }
+
+  .collection-film-title,
+  .coming-soon-label{
+    display:block;
+  }
+
+  .collection-film-title{
+    font-size:.82rem;
+    font-weight:600;
+  }
+
+  .coming-soon-label{
+    color:var(--muted);
+    font-size:.72rem;
+    font-weight:700;
+  }
+}
+
+@media (max-width:700px){
+  .details-modal .episode-grid:has(.collection-film-title){
+    grid-template-columns:1fr;
+  }
+
+  .details-modal .episode-grid:has(.collection-film-title) .episode-btn{
+    min-height:52px;
+    display:grid;
+    grid-template-columns:34px minmax(0,1fr);
+    gap:10px;
+    align-items:center;
+    justify-items:start;
+    padding:8px 12px;
+    text-align:left;
+  }
+
+  .collection-film-title{
+    display:block;
+    min-width:0;
+    font-size:.78rem;
+    line-height:1.35;
+  }
+
+  .coming-soon-label{
+    display:block;
+    grid-column:2;
+    margin-top:-5px;
+    color:var(--muted);
+    font-size:.68rem;
+  }
+}
+
+/* =========================================================
+   DETAILS MODAL
+   Card click opens this first. No video autoplay here.
+========================================================= */
+.details-modal{
+  position:fixed;
+  z-index:100;
+  inset:0;
+  display:none;
+  overflow-y:auto;
+  background:rgba(1,3,8,.78);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  overscroll-behavior:contain;
+}
+
+.details-modal.open{
+  display:block;
+}
+
+.details-dialog{
+  width:min(920px,calc(100% - 28px));
+  margin:max(22px,env(safe-area-inset-top)) auto max(28px,env(safe-area-inset-bottom));
+  overflow:hidden;
+  border:1px solid var(--line-strong);
+  border-radius:24px;
+  background:var(--surface);
+  box-shadow:0 40px 120px rgba(0,0,0,.60);
+}
+
+.modal-close{
+  position:fixed;
+  z-index:106;
+  top:max(20px,env(safe-area-inset-top));
+  right:max(20px,env(safe-area-inset-right));
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.17);
+  border-radius:50%;
+  background:rgba(0,0,0,.68);
+  color:#fff;
+  backdrop-filter:blur(8px);
+}
+
+.modal-close svg{
+  width:20px;
+  height:20px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+}
+
+.modal-visual{
+  position:relative;
+  min-height:clamp(300px,48vw,500px);
+  overflow:hidden;
+  background:#090b12;
+  background-size:cover;
+  background-position:center 24%;
+  background-repeat:no-repeat;
+}
+
+.modal-visual-image{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 24%;
+  filter:none;
+  opacity:1;
+}
+
+.modal-visual::after{
+  content:"";
+  position:absolute;
+  z-index:1;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(0deg,rgba(9,11,18,.92) 0%,rgba(9,11,18,.18) 43%,rgba(0,0,0,.06) 100%),
+    linear-gradient(90deg,rgba(0,0,0,.48),transparent 66%);
+}
+
+html[data-theme="light"] .modal-visual::after{
+  background:
+    linear-gradient(0deg,rgba(9,11,18,.82) 0%,rgba(9,11,18,.12) 42%,rgba(0,0,0,.04) 100%),
+    linear-gradient(90deg,rgba(0,0,0,.42),transparent 66%);
+}
+
+.modal-title-area{
+  position:absolute;
+  z-index:2;
+  left:clamp(18px,4vw,44px);
+  right:clamp(18px,4vw,44px);
+  bottom:30px;
+  color:#fff;
+}
+
+.modal-title-area h2{
+  max-width:760px;
+  margin-top:10px;
+  font-family:var(--font-display);
+  font-size:clamp(1.8rem,4vw,3.2rem);
+  line-height:1.05;
+  letter-spacing:-.035em;
+}
+
+.modal-body{
+  padding:8px clamp(18px,4vw,44px) 38px;
+}
+
+.modal-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:20px;
+}
+
+.meta-pill{
+  display:inline-flex;
+  align-items:center;
+  min-height:30px;
+  padding:0 10px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--bg-soft);
+  color:var(--muted);
+  font-size:.74rem;
+  font-weight:600;
+}
+
+.summary-block{
+  padding-bottom:25px;
+  border-bottom:1px solid var(--line);
+}
+
+.summary-label{
+  margin-bottom:8px;
+  color:var(--muted);
+  font-size:.70rem;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.summary-text{
+  max-width:820px;
+  color:var(--text);
+  line-height:1.75;
+  font-size:.95rem;
+}
+
+.seasons-wrap{
+  padding-top:25px;
+}
+
+.season-block + .season-block{
+  margin-top:28px;
+}
+
+.season-title-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:13px;
+}
+
+.season-title-row h3{
+  font-family:var(--font-display);
+  font-size:1.08rem;
+}
+
+.season-title-row span{
+  color:var(--muted);
+  font-size:.76rem;
+}
+
+.episode-grid{
+  display:grid;
+  grid-template-columns:repeat(13,minmax(46px,1fr));
+  gap:8px;
+}
+
+.episode-btn{
+  min-height:46px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--bg-soft);
+  color:var(--text);
+  font-weight:700;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease;
+}
+
+.episode-btn:hover{
+  transform:translateY(-1px);
+  border-color:rgba(139,92,246,.65);
+  background:var(--surface-2);
+}
+
+.episode-btn.active{
+  color:#fff;
+  border-color:transparent;
+  background:var(--gradient);
+}
+
+.episode-help{
+  margin-top:15px;
+  padding:13px 14px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--bg-soft);
+  color:var(--muted);
+  font-size:.78rem;
+  line-height:1.6;
+}
+
+/* =========================================================
+   FULLSCREEN VIDEO OVERLAY
+   Only opens AFTER an episode button is clicked.
+========================================================= */
+.player-overlay{
+  position:fixed;
+  z-index:140;
+  inset:0;
+  display:none;
+  background:#000;
+}
+
+.player-overlay.open{
+  display:block;
+}
+
+.player-topbar{
+  position:absolute;
+  z-index:145;
+  top:0;
+  left:0;
+  right:0;
+  min-height:64px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:
+    max(10px,env(safe-area-inset-top))
+    max(14px,env(safe-area-inset-right))
+    10px
+    max(14px,env(safe-area-inset-left));
+  background:linear-gradient(180deg,rgba(0,0,0,.78),transparent);
+  pointer-events:none;
+}
+
+.player-back{
+  width:42px;
+  height:42px;
+  flex:0 0 auto;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:50%;
+  background:rgba(0,0,0,.58);
+  color:#fff;
+  pointer-events:auto;
+  backdrop-filter:blur(8px);
+}
+
+.player-back svg{
+  width:20px;
+  height:20px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+}
+
+.player-title{
+  min-width:0;
+  color:#fff;
+}
+
+.player-title strong{
+  display:block;
+  overflow:hidden;
+  font-family:var(--font-display);
+  font-size:.92rem;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.player-title span{
+  display:block;
+  margin-top:2px;
+  color:#c8ccd6;
+  font-size:.74rem;
+}
+
+.player-stage{
+  width:100%;
+  height:100dvh;
+  min-height:100svh;
+  display:grid;
+  place-items:center;
+  background:#000;
+  padding:
+    max(0px,env(safe-area-inset-top))
+    max(0px,env(safe-area-inset-right))
+    max(0px,env(safe-area-inset-bottom))
+    max(0px,env(safe-area-inset-left));
+}
+
+.player-shell{
+  width:100%;
+  height:100%;
+  display:grid;
+  place-items:center;
+}
+
+.player-frame{
+  display:block;
+  border:0;
+  background:#000;
+}
+
+.player-frame.landscape{
+  width:100%;
+  height:auto;
+  max-height:100dvh;
+  aspect-ratio:16/9;
+}
+
+.player-frame.portrait{
+  width:auto;
+  height:100%;
+  max-width:100vw;
+  aspect-ratio:9/16;
+}
+
+.native-video{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#000;
+}
+
+.player-error{
+  width:min(680px,calc(100% - 30px));
+  padding:34px;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:18px;
+  background:#0d111b;
+  color:#fff;
+  text-align:center;
+}
+
+.player-error h2{
+  margin-bottom:10px;
+  font-family:var(--font-display);
+  font-size:1.4rem;
+}
+
+.player-error p{
+  color:#bec5d2;
+  line-height:1.65;
+}
+
+.player-error code{
+  display:block;
+  margin:16px 0;
+  padding:12px;
+  overflow-wrap:anywhere;
+  border-radius:10px;
+  background:#07090e;
+  color:#d6dbe5;
+  font-size:.76rem;
+}
+
+.source-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  padding:0 15px;
+  border-radius:10px;
+  background:var(--gradient);
+  color:#fff;
+  font-weight:700;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+.site-footer{
+  border-top:1px solid var(--line-strong);
+  background:linear-gradient(180deg,var(--bg-soft),var(--bg));
+}
+
+.footer-inner{
+  display:grid;
+  grid-template-columns:minmax(260px,1.5fr) repeat(3,minmax(140px,1fr));
+  gap:34px;
+  padding:44px var(--page-pad) 30px;
+}
+
+.footer-brand p{
+  max-width:390px;
+  margin-top:13px;
+  color:var(--muted);
+  font-size:.84rem;
+  line-height:1.7;
+}
+
+.footer-col h4{
+  margin-bottom:12px;
+  font-family:var(--font-display);
+  font-size:.86rem;
+}
+
+.footer-col a,
+.footer-col p{
+  display:block;
+  margin:7px 0;
+  color:var(--muted);
+  font-size:.82rem;
+  line-height:1.55;
+}
+
+.footer-col a:hover{
+  color:var(--text);
+}
+
+.footer-bottom{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin:0 var(--page-pad);
+  padding:20px 0 26px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:.76rem;
+}
+
+.footer-status{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+}
+
+.footer-status::before{
+  content:"";
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#34d399;
+  box-shadow:0 0 12px rgba(52,211,153,.55);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width:1000px){
+  .desktop-nav{
+    position:fixed;
+    z-index:58;
+    top:var(--header-h);
+    left:0;
+    right:0;
+    display:none;
+    flex-direction:column;
+    align-items:stretch;
+    gap:3px;
+    padding:10px var(--page-pad) 15px;
+    border-bottom:1px solid var(--line-strong);
+    background:var(--glass);
+    backdrop-filter:blur(18px);
+  }
+
+  .desktop-nav.open{
+    display:flex;
+  }
+
+  .nav-btn{
+    text-align:left;
+  }
+
+  .nav-btn.active::after,
+  .nav-indicator{
+    display:none;
+  }
+
+  .nav-btn.active{
+    background:var(--surface);
+  }
+
+  .mobile-menu-btn{
+    display:grid;
+  }
+
+  .search-box{
+    width:min(280px,36vw);
+  }
+
+  .episode-grid{
+    grid-template-columns:repeat(7,minmax(44px,1fr));
+  }
+
+  .footer-inner{
+    grid-template-columns:1.4fr 1fr 1fr;
+  }
+
+  .footer-brand{
+    grid-row:span 2;
+  }
+}
+
+@media (max-width:700px){
+  :root{
+    --header-h:62px;
+  }
+
+  .site-header{
+    gap:9px;
+  }
+
+  .brand{
+    font-size:.91rem;
+    letter-spacing:.04em;
+  }
+
+  .brand img{
+    width:29px;
+    height:29px;
+  }
+
+  .search-box{
+    display:none;
+  }
+
+  .header-icon{
+    width:37px;
+    height:37px;
+  }
+
+  .featured-controls{
+    top:14px;
+    right:16px;
+    gap:7px;
+  }
+
+  .featured-arrow{
+    width:36px;
+    height:36px;
+  }
+
+  .featured-dots{
+    gap:6px;
+    padding:7px 9px;
+  }
+
+  .hero{
+    min-height:68svh;
+    padding-top:78px;
+    padding-bottom:48px;
+  }
+
+  .hero-art{
+    background-position:center top;
+  }
+
+  .hero-art::after{
+    background:
+      linear-gradient(0deg,var(--bg) 0%,rgba(7,8,13,.56) 45%,rgba(7,8,13,.16) 100%),
+      linear-gradient(90deg,rgba(7,8,13,.78),rgba(7,8,13,.18));
+  }
+
+  .hero h1{
+    font-size:clamp(2rem,11vw,3.5rem);
+  }
+
+  .hero-summary{
+    display:-webkit-box;
+    overflow:hidden;
+    -webkit-line-clamp:4;
+    -webkit-box-orient:vertical;
+  }
+
+  .media-card{
+    flex-basis:min(78vw,300px);
+  }
+
+  .rail-nav{
+    display:none;
+  }
+
+  .grid-page{
+    padding-top:calc(var(--header-h) + 26px);
+  }
+
+  .cards-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .cards-grid .media-card{
+    aspect-ratio:4/3;
+  }
+
+  .card-info h3{
+    font-size:.83rem;
+  }
+
+  .card-info p{
+    font-size:.66rem;
+  }
+
+  .details-dialog{
+    width:min(100% - 16px,920px);
+    margin:8px auto 16px;
+    border-radius:18px;
+  }
+
+  .modal-close{
+    top:max(13px,env(safe-area-inset-top));
+    right:max(13px,env(safe-area-inset-right));
+    width:40px;
+    height:40px;
+  }
+
+  .modal-visual{
+    min-height:310px;
+  }
+
+  .modal-title-area{
+    bottom:23px;
+  }
+
+  .episode-grid{
+    grid-template-columns:repeat(5,minmax(42px,1fr));
+  }
+
+  .player-error{
+    padding:25px 18px;
+  }
+
+  .footer-inner{
+    grid-template-columns:1fr 1fr;
+    gap:28px 22px;
+  }
+
+  .footer-brand{
+    grid-column:1 / -1;
+    grid-row:auto;
+  }
+
+  .footer-bottom{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+
+@media (max-width:440px){
+  .cards-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .episode-grid{
+    grid-template-columns:repeat(4,minmax(40px,1fr));
+  }
+
+  .footer-inner{
+    grid-template-columns:1fr;
+  }
+
+  .footer-brand{
+    grid-column:auto;
+  }
+}
+
+@media (hover:none){
+  .media-card:hover{
+    transform:none;
+  }
+
+  .media-card:hover .card-art{
+    transform:none;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,
+  *::before,
+  *::after{
+    scroll-behavior:auto !important;
+    transition:none !important;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE + THEME-AWARE FEATURED EXPERIENCE
+========================================================= */
+html[data-theme="dark"]{
+  --hero-text:#ffffff;
+  --hero-muted:#d5d9e2;
+  --hero-meta:#c9ced9;
+  --hero-control-bg:rgba(7,8,13,.62);
+  --hero-control-bg-hover:rgba(20,24,34,.92);
+  --hero-control-border:rgba(255,255,255,.20);
+  --hero-control-text:#ffffff;
+  --hero-dot:rgba(255,255,255,.42);
+  --hero-dot-active:#ffffff;
+  --hero-chip-bg:rgba(7,8,13,.56);
+  --hero-chip-border:rgba(255,255,255,.17);
+  --hero-secondary-bg:rgba(255,255,255,.11);
+  --hero-secondary-border:rgba(255,255,255,.18);
+  --hero-secondary-text:#ffffff;
+}
+
+html[data-theme="light"]{
+  --hero-text:#101828;
+  --hero-muted:#344054;
+  --hero-meta:#344054;
+  --hero-control-bg:rgba(255,255,255,.80);
+  --hero-control-bg-hover:rgba(255,255,255,.96);
+  --hero-control-border:rgba(16,24,40,.16);
+  --hero-control-text:#101828;
+  --hero-dot:rgba(16,24,40,.30);
+  --hero-dot-active:#101828;
+  --hero-chip-bg:rgba(255,255,255,.72);
+  --hero-chip-border:rgba(16,24,40,.14);
+  --hero-secondary-bg:rgba(255,255,255,.78);
+  --hero-secondary-border:rgba(16,24,40,.15);
+  --hero-secondary-text:#101828;
+}
+
+.hero{
+  min-height:clamp(520px,70vh,720px);
+}
+
+.hero-art,
+.hero-copy,
+.featured-controls{
+  transition:
+    opacity .46s cubic-bezier(.22,1,.36,1),
+    transform .58s cubic-bezier(.22,1,.36,1),
+    filter .46s ease;
+}
+
+.hero.featured-leaving .hero-art{
+  opacity:0;
+  transform:translateX(-3.5%) scale(1.035);
+  filter:blur(2px);
+}
+
+.hero.featured-leaving .hero-copy{
+  opacity:0;
+  transform:translateX(-28px);
+}
+
+.hero.featured-leaving .featured-controls{
+  opacity:.45;
+}
+
+.hero.featured-entering .hero-art{
+  opacity:0;
+  transform:translateX(3.5%) scale(1.035);
+  filter:blur(2px);
+}
+
+.hero.featured-entering .hero-copy{
+  opacity:0;
+  transform:translateX(28px);
+}
+
+.hero h1{
+  color:var(--hero-text);
+  text-shadow:0 2px 24px rgba(0,0,0,.12);
+}
+
+.meta-row{
+  color:var(--hero-meta);
+}
+
+.hero-summary{
+  color:var(--hero-muted);
+}
+
+.eyebrow{
+  color:var(--hero-text);
+  background:var(--hero-chip-bg);
+  border-color:var(--hero-chip-border);
+}
+
+.action-btn.secondary{
+  color:var(--hero-secondary-text);
+  background:var(--hero-secondary-bg);
+  border-color:var(--hero-secondary-border);
+}
+
+.featured-controls{
+  gap:9px;
+  padding:5px;
+  border:1px solid var(--hero-control-border);
+  border-radius:999px;
+  background:var(--hero-control-bg);
+  box-shadow:0 12px 34px rgba(0,0,0,.16);
+  backdrop-filter:blur(16px) saturate(140%);
+  -webkit-backdrop-filter:blur(16px) saturate(140%);
+}
+
+.featured-arrow{
+  width:38px;
+  height:38px;
+  border:0;
+  background:transparent;
+  color:var(--hero-control-text);
+  box-shadow:none;
+}
+
+.featured-arrow:hover{
+  background:var(--hero-control-bg-hover);
+  transform:scale(1.06);
+}
+
+.featured-dots{
+  gap:6px;
+  padding:0 3px;
+  border:0;
+  background:transparent;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+}
+
+.featured-dot{
+  position:relative;
+  width:10px;
+  height:10px;
+  border:1px solid transparent;
+  background:var(--hero-dot);
+  opacity:.82;
+  transform:scale(.88);
+  transition:
+    width .35s cubic-bezier(.22,1,.36,1),
+    transform .25s ease,
+    opacity .25s ease,
+    background .25s ease,
+    box-shadow .25s ease;
+}
+
+.featured-dot:hover{
+  opacity:1;
+  transform:scale(1.06);
+}
+
+.featured-dot.active{
+  width:30px;
+  background:var(--hero-dot-active);
+  opacity:1;
+  transform:scale(1);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--hero-dot-active) 12%,transparent);
+}
+
+html[data-theme="light"] .hero-art::after{
+  background:
+    linear-gradient(90deg,rgba(245,247,251,.97) 0%,rgba(245,247,251,.82) 36%,rgba(245,247,251,.22) 68%,rgba(245,247,251,.34) 100%),
+    linear-gradient(0deg,var(--bg) 0%,rgba(245,247,251,.22) 46%,rgba(245,247,251,.06) 100%);
+}
+
+html[data-theme="dark"] .hero-art::after{
+  background:
+    linear-gradient(90deg,rgba(6,7,12,.96) 0%,rgba(6,7,12,.73) 37%,rgba(6,7,12,.23) 68%,rgba(6,7,12,.45) 100%),
+    linear-gradient(0deg,var(--bg) 0%,rgba(7,8,13,.25) 44%,rgba(7,8,13,.10) 100%);
+}
+
+@media (max-width:1000px){
+  .site-header{
+    padding-left:clamp(14px,3vw,28px);
+    padding-right:clamp(14px,3vw,28px);
+  }
+
+  .hero{
+    min-height:clamp(500px,72svh,670px);
+    padding-left:clamp(20px,5vw,46px);
+    padding-right:clamp(20px,5vw,46px);
+  }
+
+  .featured-controls{
+    right:clamp(16px,3vw,28px);
+  }
+
+  .footer-inner{
+    padding-left:clamp(20px,4vw,38px);
+    padding-right:clamp(20px,4vw,38px);
+  }
+}
+
+@media (max-width:700px){
+  body{
+    font-size:15px;
+  }
+
+  .site-header{
+    min-width:0;
+    padding:0 12px;
+  }
+
+  .brand{
+    min-width:0;
+  }
+
+  .brand span{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .header-spacer{
+    min-width:4px;
+  }
+
+  .hero{
+    min-height:calc(100svh - var(--header-h));
+    align-items:flex-end;
+    padding:104px 18px 42px;
+  }
+
+  .hero-art,
+  .hero-art img{
+    background-position:center 18%;
+    object-position:center 18%;
+  }
+
+  html[data-theme="dark"] .hero-art::after{
+    background:
+      linear-gradient(0deg,var(--bg) 0%,rgba(7,8,13,.76) 40%,rgba(7,8,13,.26) 72%,rgba(7,8,13,.12) 100%),
+      linear-gradient(90deg,rgba(7,8,13,.55),rgba(7,8,13,.10));
+  }
+
+  html[data-theme="light"] .hero-art::after{
+    background:
+      linear-gradient(0deg,var(--bg) 0%,rgba(245,247,251,.88) 38%,rgba(245,247,251,.44) 72%,rgba(245,247,251,.14) 100%),
+      linear-gradient(90deg,rgba(245,247,251,.44),rgba(245,247,251,.06));
+  }
+
+  .featured-controls{
+    top:14px;
+    left:50%;
+    right:auto;
+    transform:translateX(-50%);
+    gap:4px;
+    max-width:calc(100% - 24px);
+  }
+
+  .hero.featured-leaving .featured-controls,
+  .hero.featured-entering .featured-controls{
+    transform:translateX(-50%);
+  }
+
+  .featured-arrow{
+    width:34px;
+    height:34px;
+  }
+
+  .featured-arrow svg{
+    width:16px;
+    height:16px;
+  }
+
+  .featured-dot{
+    width:8px;
+    height:8px;
+  }
+
+  .featured-dot.active{
+    width:24px;
+  }
+
+  .hero-copy{
+    width:100%;
+  }
+
+  .hero h1{
+    max-width:100%;
+    margin-top:12px;
+    font-size:clamp(2rem,10.5vw,3.25rem);
+    line-height:1.04;
+  }
+
+  .meta-row{
+    gap:7px 9px;
+    font-size:.76rem;
+  }
+
+  .hero-summary{
+    margin:13px 0 18px;
+    font-size:.89rem;
+    line-height:1.58;
+    -webkit-line-clamp:4;
+  }
+
+  .hero-actions{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .action-btn{
+    min-width:0;
+    padding:0 12px;
+    font-size:.82rem;
+  }
+
+  .content-section{
+    margin:28px 0;
+  }
+
+  .section-heading{
+    align-items:flex-start;
+    padding:0 16px;
+  }
+
+  .card-rail{
+    gap:11px;
+    padding:13px 16px 21px;
+  }
+
+  .media-card{
+    flex-basis:min(78vw,286px);
+  }
+
+  .grid-page{
+    padding-left:16px;
+    padding-right:16px;
+  }
+
+  .cards-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .cards-grid .media-card{
+    min-width:0;
+  }
+
+  .card-info{
+    padding:30px 10px 10px;
+  }
+
+  .card-info h3{
+    font-size:.79rem;
+  }
+
+  .card-top{
+    top:7px;
+    left:7px;
+    right:7px;
+  }
+
+  .badge{
+    min-height:22px;
+    padding:0 7px;
+    font-size:.55rem;
+  }
+
+  .modal-body{
+    padding-left:16px;
+    padding-right:16px;
+  }
+
+  .footer-inner{
+    grid-template-columns:1fr 1fr;
+    padding:34px 18px 24px;
+  }
+
+  .footer-brand{
+    grid-column:1 / -1;
+  }
+
+  .footer-bottom{
+    margin:0 18px;
+  }
+}
+
+@media (max-width:480px){
+  .brand span{
+    max-width:125px;
+  }
+
+  .hero{
+    padding-left:14px;
+    padding-right:14px;
+    padding-bottom:30px;
+  }
+
+  .hero-actions{
+    grid-template-columns:1fr;
+  }
+
+  .action-btn{
+    width:100%;
+  }
+
+  .cards-grid{
+    grid-template-columns:1fr;
+  }
+
+  .cards-grid .media-card{
+    aspect-ratio:16/10;
+  }
+
+  .footer-inner{
+    grid-template-columns:1fr;
+  }
+
+  .footer-brand{
+    grid-column:auto;
+  }
+}
+
+@media (max-width:360px){
+  .brand span{
+    display:none;
+  }
+
+  .featured-controls{
+    padding:4px;
+  }
+
+  .featured-arrow{
+    width:31px;
+    height:31px;
+  }
+
+  .featured-dot.active{
+    width:19px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <a class="brand" href="#" data-view="home" aria-label="KARAKU home">
+    <img src="image/karakulogo.ico" alt="KARAKU logo">
+    <span>KARAKU</span>
+  </a>
+
+  <nav class="desktop-nav" id="mainNav" aria-label="Primary navigation">
+    <button class="nav-btn active" data-view="home">Home</button>
+    <button class="nav-btn" data-view="new">New &amp; Popular</button>
+    <button class="nav-btn" data-view="drama">AI Drama</button>
+    <button class="nav-btn" data-view="anime">Anime</button>
+    <button class="nav-btn" data-view="movie">Movies</button>
+    <span class="nav-indicator" id="navIndicator" aria-hidden="true"></span>
+  </nav>
+
+  <div class="header-spacer"></div>
+
+  <label class="search-box" aria-label="Search titles">
+    <input id="searchInput" type="search" placeholder="Search titles, genres..." autocomplete="off">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"></circle>
+      <path d="M21 21l-4.3-4.3"></path>
+    </svg>
+  </label>
+
+  <button class="header-icon" id="themeBtn" type="button" aria-label="Toggle color theme">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"></path>
+    </svg>
+  </button>
+
+  <button class="header-icon mobile-menu-btn" id="menuBtn" type="button" aria-label="Open navigation">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18"></path>
+    </svg>
+  </button>
+</header>
+
+<div id="app"></div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a class="brand" href="#" data-view="home">
+        <img src="image/karakulogo.ico" alt="KARAKU logo">
+        <span>KARAKU</span>
+      </a>
+      <p>
+        A cinematic streaming-style home for AI dramas, anime, movies,
+        and video experiences from supported providers.
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Browse</h4>
+      <a href="#" data-view="home">Home</a>
+      <a href="#" data-view="new">New &amp; Popular</a>
+      <a href="#" data-view="anime">Anime</a>
+      <a href="#" data-view="movie">Movies</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Categories</h4>
+      <a href="#" data-view="drama">AI Drama</a>
+      <a href="#" data-view="anime">Anime Series</a>
+      <a href="#" data-view="movie">Feature Movies</a>
+      <p>More categories coming soon.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="privacypolicy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <p>Embedded videos remain subject to their original provider.</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Accxs Creations. All rights reserved.</span>
+    <span class="footer-status">KARAKU streaming interface</span>
+  </div>
+</footer>
+
+<!-- =======================================================
+     DETAILS MODAL
+     A card opens this modal first.
+     No episode is played automatically.
+======================================================== -->
+<section class="details-modal" id="detailsModal" aria-hidden="true">
+  <button class="modal-close" id="detailsClose" type="button" aria-label="Close details">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18"></path>
+    </svg>
+  </button>
+
+  <div class="details-dialog" id="detailsDialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div id="detailsContent"></div>
+  </div>
+</section>
+
+<!-- =======================================================
+     FULL SCREEN PLAYER
+     Opens only after the user chooses an episode.
+======================================================== -->
+<section class="player-overlay" id="playerOverlay" aria-hidden="true">
+  <div class="player-topbar">
+    <button class="player-back" id="playerClose" type="button" aria-label="Back to episode list">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M15 18l-6-6 6-6"></path>
+      </svg>
+    </button>
+
+    <div class="player-title">
+      <strong id="playerTitle">Video</strong>
+      <span id="playerEpisodeLabel">Episode</span>
+    </div>
+  </div>
+
+  <div class="player-stage">
+    <div class="player-shell" id="playerShell"></div>
+  </div>
+</section>
+
+<script>
+/* =========================================================
+   KARAKU CATALOG
+========================================================= */
+
+const LABEL = {
+  drama:"AI Drama",
+  anime:"Anime",
+  movie:"Movie"
+};
+
+const YT_DEMO = "https://www.youtube.com/watch?v=M7lc1UVf-VE";
+const TT_DEMO = "https://www.tiktok.com/@scout2015/video/6718335390845095173";
+const FB_SAMPLE = "https://www.facebook.com/REPLACE_WITH_PUBLIC_VIDEO_URL";
+
+function makeSeasons(counts,provider,url,orientation){
+  return counts.map((count,seasonIndex)=>({
+    season:seasonIndex + 1,
+    episodes:Array.from({length:count},(_,episodeIndex)=>({
+      episode:episodeIndex + 1,
+      title:`Episode ${episodeIndex + 1}`,
+      source:{
+        provider,
+        url,
+        orientation
+      }
+    }))
+  }));
+}
+
+const catalog = [
+  {
+    id:"d1",
+    title:"If I Had One More Day With You",
+    cat:"drama",
+    genres:["Romance","Fantasy","Drama"],
+    year:"",
+    duration:"15 minutes per episode",
+    hue:330,
+    flags:"",
+    summary:"After losing the love of his life in a tragic accident, 29-year-old Adrian Vale becomes a shadow of the man he once was. He abandons his dreams, avoids his friends, and spends every night watching old videos of the woman he can no longer hold. One rainy evening, he discovers a mysterious antique clock in the abandoned shop where he and his late girlfriend, Elena, shared their first kiss. The clock begins ticking backward, and a strange voice offers him an impossible bargain: he can spend one more day with Elena, but every hour he spends with her will erase one precious memory of their life together. Adrian accepts without hesitation. For twenty-four hours, he gets to laugh with Elena, revisit their favorite places, and experience the ordinary moments he once took for granted. But as the clock approaches midnight, he begins to realize that Elena knows something about the accident that killed her. And she is hiding the truth because she knows what will happen if he discovers it. What would you sacrifice to spend one last day with the person you love?",
+    poster:"image/aidrama/OneMoreDay.jfif",
+    trailer:"Coming Soon...",
+    /* Possible ending: Adrian discovers that saving Elena would require him to sacrifice every memory of her. He must choose between living in a world where she is alive but he no longer knows her, or preserving their love by finally letting her go. */
+    seasons:[{
+      season:1,
+      episodes:[{ episode:1, title:"Episode 1", comingSoon:true, source:null }]
+    }]
+  },
+  {
+    id:"d2",
+    title:"The Secret Beneath Apartment 909",
+    cat:"drama",
+    genres:["Mystery","Horror"],
+    year:"",
+    duration:"15 minutes per episode",
+    hue:2,
+    flags:"",
+    summary:"When struggling journalist Daniel Cross moves into a cheap apartment in the middle of the city, he considers himself lucky. Apartment 909 is spacious, strangely affordable, and located in a building where the other tenants seem determined to avoid him. But strange things begin happening after midnight. He hears footsteps inside the walls. His bathroom mirror occasionally reflects a woman standing behind him. And every morning, a handwritten note appears beneath his door, warning him not to investigate the apartment below his own. The problem is that the building has no tenth floor, and according to the official blueprints, there is nothing beneath Apartment 909 except concrete foundations. Determined to uncover the truth, Daniel investigates the building's history and discovers that a family disappeared there twenty years earlier. Their disappearance was ruled an accident, but every record connected to the case was mysteriously destroyed. Then Daniel finds an old photograph of the missing family. Standing in the background is a man who looks exactly like him. As the walls begin revealing hidden doors and the tenants start disappearing one by one, Daniel realizes Apartment 909 was never meant to be rented. It was meant to keep something imprisoned. What if the apartment you live in is hiding a crime that has not finished happening?",
+    poster:"image/aidrama/Apartment909.jfif",
+    trailer:"Coming Soon...",
+    /* Possible ending: Daniel discovers that the missing family never left the building. They have been trapped in a hidden layer of reality beneath Apartment 909, and his arrival has begun weakening the barrier keeping them there. The final photograph reveals that Daniel himself was the original architect of their imprisonment in a life he cannot remember. */
+    seasons:[{
+      season:1,
+      episodes:[{ episode:1, title:"Episode 1", comingSoon:true, source:null }]
+    }]
+  },
+  {
+    id:"d3",
+    title:"We Fell in Love in the Wrong Timeline",
+    cat:"drama",
+    genres:["Sci-Fi","Romance","Mystery"],
+    year:"",
+    duration:"15 minutes per episode",
+    hue:265,
+    flags:"",
+    summary:"In a world where scientists have discovered how to observe parallel timelines, 27-year-old physicist Ethan Rowe has devoted his life to proving that every decision creates another version of reality. He never expected to meet someone from one of those realities. During an experiment, Ethan sees a woman named Claire through an unexplained temporal fracture. Although they live in different timelines, they begin communicating through the unstable connection. Their conversations become the highlight of their lives, and eventually, they fall deeply in love. But their relationship has an impossible complication. In Claire's timeline, Ethan is a wanted criminal responsible for a catastrophe that destroyed an entire city. In Ethan's timeline, Claire died as a child in an accident that never happened in hers. When the fracture begins collapsing, they discover that their two timelines are merging. If they allow the process to continue, millions of people in both worlds will disappear. The scientists offer only one solution: permanently separate the timelines, erasing every trace of their connection. Ethan and Claire refuse to accept that their love must end simply because the universe has decided they should never have met. But the deeper they investigate, the more disturbing the truth becomes. Their connection was not an accident. Someone deliberately created the fracture, and one of them may be responsible for destroying both worlds. Can two people save the universe without losing the only person who makes their lives worth living?",
+    poster:"image/aidrama/WrongTimeline.jfif",
+    trailer:"Coming Soon...",
+    /* Possible ending: Ethan discovers that in the original timeline, he and Claire were married and had a daughter. The catastrophe was caused by his attempt to bring Claire back after her death. To restore reality, he must allow the original tragedy to happen again, even though he now remembers a love that technically never existed. */
+    seasons:[{
+      season:1,
+      episodes:[{ episode:1, title:"Episode 1", comingSoon:true, source:null }]
+    }]
+  },
+  {
+    id:"d4",
+    title:"The Last Human With a Forbidden Power",
+    cat:"drama",
+    genres:["Post-Apocalyptic","Fantasy","Adventure","Action"],
+    year:"",
+    duration:"15 minutes per episode",
+    hue:205,
+    flags:"",
+    summary:"Three hundred years after magic appeared in the human world, civilization has been divided into kingdoms ruled by powerful beings known as the Ascendants. Humans without magical abilities have become second-class citizens, while those born with extraordinary powers are trained to serve the ruling order. In this world lives Kael Draven, a quiet young man believed to possess no magic whatsoever. After his village is destroyed during an Ascendant raid, Kael is left for dead beneath the ruins. As he struggles to survive, something awakens inside him: the ability to erase any form of magic he touches. He can destroy spells, neutralize magical weapons, break enchanted barriers, and even strip immortals of their supernatural abilities. But every time he uses his power, the world around him begins to unravel. Kael soon learns that his ability is not merely forbidden. It is the power that existed before magic itself, the original force capable of ending the reign of every Ascendant. The rulers declare him humanity's greatest threat, sending armies and legendary hunters to capture him. Meanwhile, rebels begin worshipping him as the only person who can free humanity. Caught between those who want to control him and those who want to turn him into a weapon, Kael must uncover the truth about his origins. The greatest revelation comes when he discovers that the Ascendants were once ordinary humans who stole their powers from an ancient being. And that being is still alive inside him. What happens when the weakest person in the world possesses the one power that can destroy its gods?",
+    poster:"image/aidrama/LastForbiddenHuman.jfif",
+    trailer:"Coming Soon...",
+    /* Possible ending: Kael defeats the Ascendants but discovers that destroying all magic would also erase the forces sustaining the world. He must choose between ruling humanity through fear or sacrificing his own existence to create a world where no one can ever monopolize power again. */
+    seasons:[{
+      season:1,
+      episodes:[{ episode:1, title:"Episode 1", comingSoon:true, source:null }]
+    }]
+  },
+  {
+    id:"d5",
+    title:"My Future Self Left Me an Unlimited Fortune",
+    cat:"drama",
+    genres:["Sci-Fi","Thriller","Drama"],
+    year:"",
+    duration:"15 minutes per episode",
+    hue:42,
+    flags:"",
+    summary:"Twenty-six-year-old Ethan Cole has spent his entire adult life struggling to survive. He works two jobs, rents a tiny apartment, and sends most of his earnings to support his sick mother. Despite his efforts, he is constantly buried under debt, while his wealthy childhood friends treat him as a failure who will never escape poverty. One rainy night, after losing his job and receiving an eviction notice, Ethan returns home to find a black envelope waiting outside his apartment. Inside is a bank card, a photograph of himself standing beside an unfamiliar skyscraper, and a handwritten letter bearing his own signature. The letter contains a warning. Do not trust the people who suddenly become your friends. And whatever you do, never withdraw the final dollar. The bank card grants him access to an account containing one hundred million dollars. Its owner is listed as Ethan Cole, but the account was opened thirty years in the future. At first, Ethan believes it is an elaborate scam. However, every transaction succeeds, and the account balance replenishes itself whenever he spends money. Within weeks, he escapes poverty, purchases a luxury apartment, and begins investing in businesses that have not yet become successful. His investments are impossibly accurate because the account comes with encrypted messages predicting future events. But Ethan's newfound fortune attracts dangerous attention. Financial investigators begin tracing the mysterious account, powerful investors attempt to manipulate him, and a secret organization approaches him with an offer to surrender the money in exchange for his mother's safety. Then Ethan discovers something disturbing. The photograph inside the envelope was taken in a building that does not yet exist. When he investigates its construction plans, he finds a sealed underground facility bearing his name and a date thirty years in the future. Inside is a recording of an older Ethan. His future self reveals that the fortune is not a gift. It is the result of a financial empire built after a global catastrophe, and the money has been sent backward through time to prevent that catastrophe from happening. But the recording ends with a confession: the older Ethan was responsible for causing the disaster in the first place. Now, the younger Ethan must decide whether to trust the future version of himself or discover why his older self is so desperate to change history. What if the richest man in your future was yourself, and his fortune was meant to prevent a disaster you haven't caused yet?",
+    poster:"image/aidrama/FutureSelfFortune.jfif",
+    trailer:"Coming Soon...",
+    /* Possible ending: Ethan discovers that every time he uses the fortune, he changes the future that created it. His final withdrawal activates a hidden message revealing that his future self did not send him money to save humanity. He sent it to ensure that one particular person survives, even if the rest of the world does not. */
+    seasons:[{
+      season:1,
+      episodes:[{ episode:1, title:"Episode 1", comingSoon:true, source:null }]
+    }]
+  },
+  {
+    id:"d6",
+    title:"The World Reset Without Me",
+    cat:"drama",
+    genres:["Post-Apocalyptic","Sci-Fi","Mystery"],
+    year:"",
+    duration:"15 minutes per episode",
+    hue:250,
+    flags:"",
+    summary:"At exactly 11:59 PM, the world ends. A catastrophic event wipes out civilization in a flash of white light. Buildings collapse, the oceans rise, and billions of people vanish without explanation. But when the clock strikes midnight, the world returns to normal. Everyone wakes up in their beds, unaware that the apocalypse ever happened. Everyone except Noah Hayes. Noah awakens in the same abandoned street where he died, retaining every memory of the destroyed world. At first, he believes he is suffering from a mental breakdown. But when the same disasters repeat over the following nights, he realizes that reality is being reset every twenty-four hours. He begins using his knowledge to prevent accidents, save strangers, and investigate the event responsible for the repeated destruction. Yet something is wrong. The more he changes the day's events, the more the world deviates from its original pattern. People begin remembering things they have never experienced. Children draw pictures of cities that do not exist. And strangers approach Noah with questions about a future that should have been erased. Then, on the seventh reset, Noah discovers that one person remembers everything he does. A woman named Evelyn tells him that the world has been reset thousands of times, and Noah was never supposed to survive the first one. He was deliberately excluded from the reset. Because the system responsible for rebuilding humanity has identified him as the cause of the apocalypse. What if you were the only person who remembered the end of the world, and the world itself wanted you erased?",
+    poster:"image/aidrama/WorldReset.jfif",
+    trailer:"Coming Soon...",
+    /* Possible ending: Noah discovers that the reset system was created by humanity's future descendants to prevent an extinction event. Every reset has been an attempt to eliminate him because, in the original timeline, he destroys the system to save someone he loves. But Noah begins to suspect that the system is not preventing the apocalypse. It is creating it. The final scene reveals a new countdown beginning, with a message appearing across every screen on Earth: RESET FAILED. HUMANITY HAS REMEMBERED. */
+    seasons:[{
+      season:1,
+      episodes:[{ episode:1, title:"Episode 1", comingSoon:true, source:null }]
+    }]
+  },
+  {
+    id:"d7",
+    title:"I Was Born Without Power, So I Created My Own",
+    cat:"drama",
+    genres:["Sci-Fi","Fantasy","Action","Revenge"],
+    year:"",
+    duration:"15 minutes per episode",
+    hue:55,
+    flags:"",
+    summary:"In a world where supernatural abilities determine a person's wealth, status, and future, nineteen-year-old Darius Venn is born completely powerless. His family belongs to a respected bloodline of elemental warriors, but Darius possesses neither magical energy nor the ability to awaken a conventional skill. His father considers him a disgrace, his siblings treat him as a burden, and the prestigious Imperial Academy rejects his application. When his family is attacked by a rival clan, Darius attempts to defend his younger sister but is easily defeated. His father orders him to flee, then publicly disowns him for bringing shame to their bloodline. With nowhere to go, Darius escapes into the abandoned industrial district, where discarded magical weapons and broken experimental machines are dumped. Instead of accepting his fate, he begins studying the technology that wealthy families consider inferior to magic. He discovers that supernatural abilities produce measurable energy, and that energy can be captured, stored, and redirected through specially designed machinery. Working with scrap metal, stolen research papers, and abandoned laboratory equipment, he builds his first combat device: a mechanical gauntlet capable of absorbing magical attacks and converting them into physical force. His invention is crude, unstable, and almost kills him during its first test. But it works. Over the following years, Darius develops an entirely new form of power. His armor evolves, his weapons adapt to enemy abilities, and his artificial energy core becomes capable of generating power without an external source. Eventually, he creates a combat system that allows an ordinary human to challenge the strongest supernatural warriors. When the Imperial Academy hosts its annual tournament, Darius enters under a false identity. The same institution that once rejected him becomes the stage where he defeats its most celebrated champions, one after another. His victories attract the attention of the empire's most powerful families, including the clan that abandoned him. But Darius soon discovers that the world's supernatural abilities originated from an ancient technology buried beneath the capital. The ruling families have concealed this truth for generations because the original technology could allow anyone to become powerful. His inventions are not merely imitations of magic. They are the first steps toward making the entire power hierarchy obsolete. What if a powerless man refused to accept the rules of his world and invented a power that could defeat them all?",
+    poster:"image/aidrama/BornWithoutPower.jfif",
+    trailer:"Coming Soon...",
+    /* Possible ending: Darius defeats the emperor's strongest warrior and exposes the truth about the origins of magic. Instead of destroying the supernatural system, he releases his technology to the world, giving ordinary people the ability to choose their own strength. However, his final experiment awakens an ancient machine that recognizes him as the successor to its original creator, revealing that humanity's first civilization may have been destroyed by someone who possessed the exact same power. */
+    seasons:[{
+      season:1,
+      episodes:[{ episode:1, title:"Episode 1", comingSoon:true, source:null }]
+    }]
+  },
+  {
+    id:"d8",
+    title:"Everyone Had a Skill Except Me, Until Level 999",
+    cat:"drama",
+    genres:["Fantasy","Action","Supernatural"],
+    year:"",
+    duration:"15 minutes per episode",
+    hue:290,
+    flags:"",
+    summary:"In the Kingdom of Aetherion, every human receives a supernatural skill when they turn eighteen. Some gain the ability to control fire, others develop extraordinary strength, and the rarest individuals receive legendary skills capable of changing entire kingdoms. Those without skills are classified as Nulls. They are forbidden from joining the royal military, entering magical academies, or holding positions of authority. Kael Arden is one of them. After being abandoned by his noble family and publicly humiliated during the Awakening Ceremony, Kael survives by working in the underground districts of the capital. His former friends become celebrated warriors, while he struggles to afford food and shelter. Everything changes when he accepts a dangerous job exploring an abandoned dungeon beneath the royal academy. Deep inside, Kael discovers a mysterious black crystal that activates an ancient system invisible to everyone else. A message appears before his eyes: LEVEL 1 DETECTED. TRUE CLASSIFICATION: UNREGISTERED. Unlike ordinary skills, the system does not grant Kael a specific ability. Instead, it allows him to gain experience through nearly any action: surviving battles, solving ancient puzzles, discovering hidden locations, and defeating enemies stronger than himself. At first, his progress is painfully slow. But when Kael survives a battle against a creature that once destroyed an entire army, his level rises dramatically. Within months, he reaches levels that the kingdom's greatest warriors believe are impossible. Eventually, Kael reaches Level 999, the highest number the system has ever displayed. His abilities begin breaking the established laws of magic. He can interrupt other people's skills, create entirely new powers, and access sealed locations that even the royal family cannot enter. The kingdom's rulers attempt to recruit him, then control him, and finally eliminate him when they realize he cannot be measured by their ranking system. But the greatest secret lies beyond Level 999. Kael discovers that the skill system was created by an ancient civilization to restrain humanity's growth. Anyone who surpasses its intended limits risks awakening an entity buried beneath the world. And that entity has begun calling him by a name no living person should know. What if the person with no skill was the only person capable of reaching the highest level in existence?",
+    poster:"image/aidrama/SkillExceptMeLvl999.jfif",
+    trailer:"Coming Soon...",
+    /* Possible ending: Kael breaks through the system's final limit and discovers that Level 999 was never the maximum level. It was a warning. Beyond it lies a hidden classification reserved for beings capable of rewriting the laws of reality, and the system has spent centuries preventing another human from reaching it. */
+    seasons:[{
+      season:1,
+      episodes:[{ episode:1, title:"Episode 1", comingSoon:true, source:null }]
+    }]
+  },
+  {
+    id:"d9",
+    title:"I Received a Cheat System on My Worst Day",
+    cat:"drama",
+    genres:["Fantasy","Action","Revenge"],
+    year:"",
+    duration:"15 minutes per episode",
+    hue:345,
+    flags:"",
+    summary:"Twenty-four-year-old Noah Mercer has reached the lowest point of his life. He has lost his job, his savings, and the apartment he shared with his girlfriend. His closest friend has betrayed him, leaving him responsible for a debt he never agreed to take. With nowhere to sleep, Noah spends a freezing night beneath the roof of an abandoned train station, wondering how a lifetime of hard work brought him absolutely nothing. At midnight, a notification suddenly appears in front of his eyes. [ULTIMATE RECOVERY SYSTEM ACTIVATED.] [HOST STATUS: FINANCIAL FAILURE. SOCIAL FAILURE. PHYSICAL FAILURE.] [CONGRATULATIONS. YOU QUALIFY FOR EMERGENCY RECONSTRUCTION.] The system offers Noah a series of missions designed to rebuild his life. His first task is humiliatingly simple: earn enough money to buy a meal without borrowing from anyone. When he completes it, he receives a cash reward, an increase in physical stamina, and a mysterious ability called Perfect Analysis. The ability allows him to recognize hidden opportunities, identify weaknesses in machinery, calculate financial risks, and understand the true value of objects others overlook. Noah initially uses the system to find work and escape homelessness. But each completed mission unlocks increasingly extraordinary rewards, including accelerated learning, enhanced reflexes, and the ability to temporarily copy specialized skills. Soon, he transforms from an exhausted nobody into a wealthy entrepreneur with abilities that make him seem almost superhuman. Those who abandoned him begin returning, pretending they always believed in him. His former employer offers him a position, his ex-girlfriend attempts to reconcile, and wealthy investors compete to gain access to his rapidly expanding businesses. Noah rejects them all. However, the system begins issuing missions that seem increasingly personal. It directs him toward specific people, warns him about events before they happen, and occasionally displays information about individuals he has never met. One night, Noah receives a mission unlike any before it. [MISSION: PREVENT YOUR OWN DEATH.] [TIME REMAINING: 72 HOURS.] The system reveals that someone has been manipulating Noah's life for years, deliberately pushing him toward financial ruin. His worst day was not an unfortunate coincidence. It was the final stage of an experiment designed to activate the system inside him. And the people responsible have been monitoring his progress from the beginning. What if your greatest failure was secretly the first step in becoming someone the world could never control?",
+    poster:"image/aidrama/CheatSystemonMyWorstDay.jfif",
+    trailer:"Coming Soon...",
+    /* Possible ending: Noah tracks down the organization behind his misfortune and discovers that the system was created by a future version of humanity to identify individuals capable of surviving a coming supernatural catastrophe. But the system has been hiding one crucial detail: Noah is not its first successful host. He is the only host who has ever survived long enough to discover what happens when the final mission is completed. */
+    seasons:[{
+      season:1,
+      episodes:[{ episode:1, title:"Episode 1", comingSoon:true, source:null }]
+    }]
+  },
+  {
+    id:"d10",
+    title:"The World's Deadliest Assassin Became a Cleaner",
+    cat:"drama",
+    genres:["Action","Thriller","Crime"],
+    year:"",
+    duration:"15 minutes per episode",
+    hue:12,
+    flags:"",
+    summary:"For twenty years, the criminal underworld knew him only as Ghost. He was the world's most feared assassin, a man who could infiltrate the most heavily guarded facilities, eliminate the most protected targets, and disappear without leaving a trace. Governments denied his existence, criminal syndicates feared his name, and intelligence agencies maintained entire divisions dedicated to finding him. Then, without warning, Ghost vanished. Five years later, a quiet man named Adrian Vale works as a cleaner in a luxury corporate tower. He arrives before sunrise, keeps his head down, speaks to almost no one, and spends his evenings in a small apartment far removed from his former life. Nobody suspects that the man polishing office windows once brought down an international criminal empire. Adrian abandoned his profession after a mission went catastrophically wrong. He was ordered to eliminate a young witness who had uncovered evidence of a global conspiracy. Instead, he spared her life, faked his own death, and disappeared before his former employers could punish him. He has spent five years trying to live peacefully, believing that remaining invisible will allow him to escape the consequences of his past. That illusion ends when a new executive arrives at the tower. The executive recognizes Adrian immediately. He is the younger brother of the witness Adrian once saved, and he has spent years searching for the man who disappeared with the only evidence capable of exposing the conspiracy. Before Adrian can leave, armed operatives attack the building. Trapped inside with hundreds of employees, he is forced to use the skills he has spent years suppressing. He disarms attackers with improvised tools, predicts enemy movements, and navigates the building as if he designed every corridor himself. Security footage captures only fragments of the encounter, but those fragments are enough to reach the criminal underworld. Ghost is alive. Soon, rival assassins, corrupt officials, and former allies begin hunting Adrian. Some want revenge, others want to recruit him, and one wants him to complete the mission he refused five years earlier. Meanwhile, the executive reveals that the conspiracy has infiltrated the corporation's leadership and is preparing an operation that could destabilize several governments. Adrian must decide whether to remain the harmless cleaner he has pretended to be or become Ghost again. But this time, his mission is not to kill a target. It is to dismantle the organization that taught him how. What happens when the world's deadliest assassin tries to live an ordinary life, only to discover that his past has followed him into the one place he thought was safe?",
+    poster:"image/aidrama/DeadliestAssassinBecameCleaner.jfif",
+    trailer:"Coming Soon...",
+    /* Possible ending: Adrian destroys the conspiracy's leadership but discovers that his former handler deliberately allowed him to disappear. The handler had been secretly protecting him from an even more powerful organization, one that has now identified Adrian's true weakness: he no longer wants to kill. The final scene shows a new target file appearing on Adrian's old encrypted network, bearing the name of the person he has sworn to protect. */
+    seasons:[{
+      season:1,
+      episodes:[{ episode:1, title:"Episode 1", comingSoon:true, source:null }]
+    }]
+  },
+  {
+    id:"d11",
+    title:"I Built the Last Safe City, Then Humanity Betrayed Me",
+    cat:"drama",
+    genres:["Post-Apocalyptic","Sci-Fi","Action"],
+    year:"",
+    duration:"15 minutes per episode",
+    hue:155,
+    flags:"",
+    summary:"The world collapsed twelve years ago when mysterious creatures emerged from underground ruins and began attacking human settlements. Entire nations disappeared within months, global supply chains collapsed, and the surviving population scattered into isolated communities surrounded by hostile wilderness. Among the survivors was Bryan Voss, a former civil engineer who lost his family during the first wave of attacks. Unlike the warlords who built their power through violence, Bryan believed humanity could survive by rebuilding civilization. He gathered scattered survivors, engineers, farmers, doctors, and former soldiers, leading them to a defensible region surrounded by mountains. There, he built the last safe city on Earth. Using salvaged technology, renewable energy, advanced defensive systems, and carefully planned agriculture, Bryan transformed a ruined settlement into a thriving metropolis. Its walls could withstand monster attacks, its farms produced enough food to feed hundreds of thousands, and its hospitals offered treatment to anyone willing to follow the city's laws. For the first time since the apocalypse began, humanity had hope. Bryan became the city's founder and protector, refusing to accept wealth or absolute authority. He worked alongside ordinary citizens, personally inspected the defensive walls, and ensured that even refugees received food and shelter. But as the city prospered, its leaders grew increasingly ambitious. Merchants wanted control over food distribution. Military commanders demanded authority over the city's defenses. Wealthy residents complained that refugees were consuming too many resources. Political factions accused Bryan of being too powerful, despite the fact that he had repeatedly refused to become their king. The final betrayal came during a major monster attack. While Bryan led a defense operation outside the city, a coalition of officials seized control of the central government. They accused him of deliberately withholding military technology and using the city's dependence on his leadership to maintain power. When Bryan returned, the gates were closed against him. The man who had built their homes, protected their children, and saved their lives was declared an enemy of humanity. His loyal supporters were arrested, his access codes were revoked, and the city began dismantling the very systems he had designed. The new government believed it could operate everything without him. Within weeks, food production declined, defensive systems malfunctioned, and the city's outer districts fell to the monsters. The officials attempted to conceal the failures, blaming Bryan for sabotaging the infrastructure before his expulsion. Meanwhile, Bryan survived in the wasteland. Far from the city, he discovered an abandoned research facility containing advanced technology linked to the creatures that destroyed civilization. He learned how to improve his equipment, command autonomous defense machines, and construct a new settlement beyond the reach of the old government. As word spread that Bryan was building another sanctuary, survivors began leaving the original city to join him. The government demanded his return, then threatened him, and finally sent an army to destroy his new settlement. Bryan had one final decision to make. He could destroy the city he once loved and allow its people to suffer the consequences of their betrayal, or return to save the very society that had abandoned him. But when he discovers that the government has been secretly experimenting on captured creatures, he realizes that the betrayal was only a small part of a much larger conspiracy. The monsters may not be the greatest threat humanity faces. What happens when the man who saves humanity is betrayed by the civilization he built, then becomes the only person capable of saving it again?",
+    poster:"image/aidrama/LastSafeCityHumanityBetrayedMe.jfif",
+    trailer:"Coming Soon...",
+    /* Possible ending: Bryan defeats the army sent to destroy his new settlement but refuses to conquer the old city. Instead, he exposes the government's experiments and allows its citizens to decide their own future. Just as peace seems possible, his researchers discover that the monsters have begun gathering beyond the mountains, responding to a signal coming from beneath Bryan's original city. The final revelation is devastating: the city was built directly above the source of the apocalypse, and Bryan unknowingly spent twelve years protecting the very thing that could end humanity. */
+    seasons:[{
+      season:1,
+      episodes:[{ episode:1, title:"Episode 1", comingSoon:true, source:null }]
+    }]
+  },
+  {
+    id:"a7",
+    title:"I Got a Cheat Skill in Another World and Became Unrivaled in the Real World",
+    cat:"anime",
+    genres:["Action","Adventure","Fantasy"],
+    year:"",
+    duration:"24 minutes per episode",
+    rating:"PG-13 - Teens 13 or older",
+    hue:205,
+    flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
+    summary:"Follows Yūya Tenjou, a bullied high school student who discovers a portal to a fantasy world named Argena after his grandfather's death. In this world, he gains powerful abilities that enhance his physical and social standing on Earth. The series explores his journey as he navigates both realms, using his newfound skills to defeat powerful enemies and improve his life. It has been adapted into a manga and anime, with a second season set to premiere in January 2027.",
+    poster:"image/anime/Cheat-Skill-in-Another-World.jpg",
+    seasons:[
+      {
+        season:1,
+        episodes:[
+          {
+            episode:1,
+            title:"Episode 1",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/14HjfRBYbCh/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:2,
+            title:"Episode 2",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/1CQCdhao2s/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:3,
+            title:"Episode 3",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/17GuXJx8mX/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:4,
+            title:"Episode 4",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/16kV1cB3U9/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:5,
+            title:"Episode 5",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/19bxGaZ74j/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:6,
+            title:"Episode 6",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/1CTxFSKcSs/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:7,
+            title:"Episode 7",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/1B4fVjtAks/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:8,
+            title:"Episode 8",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/1FJicKuUL3/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:9,
+            title:"Episode 9",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/1HJDRqbe5z/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:10,
+            title:"Episode 10",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/16qxF3qV3G/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:11,
+            title:"Episode 11",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/172SJuLtXf/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:12,
+            title:"Episode 12",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/1B3YqRRTTj/",
+              orientation:"landscape"
+            }
+          },
+          {
+            episode:13,
+            title:"Episode 13",
+            source:{
+              provider:"facebook",
+              url:"https://www.facebook.com/share/v/1ApXXtqbAg/",
+              orientation:"landscape"
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    id:"a8",
+    title:"Wise Man's Grandchild",
+    cat:"anime",
+    genres:["Action","Comedy","Fantasy","Romance","Isekai"],
+    year:"",
+    duration:"23 minutes per episode",
+    hue:42,
+    flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
+    summary:"In the kingdom of Earlshide, Merlin Wolford was once regarded as a national hero, hailed for both his power and achievements. Preferring a quiet life however, he secludes himself deep in the rural woods, dedicating his time to raising an orphan that he saved. This orphan is Shin, a normal salaryman in modern-day Japan who was reincarnated into Merlin's world while still retaining his past memories. As the years pass, Shin displays unparalleled talent in both magic casting and martial arts, much to Merlin's constant amazement. On his 15th birthday, however, it becomes apparent that Shin only developed his combat skills and nothing else, leaving him with blatant social awkwardness, a lack of common sense, and a middling sense of responsibility. As a result, Shin enrolls in the kingdom's Magic Academy to hone his skills and mature among other teenagers. However, living a normal life is impossible, as he is established as a local celebrity almost as soon as he arrives.",
+    poster:"image/anime/Wise-Mans-Grandchild.jpg",
+    seasons:[
+      {
+        season:1,
+        episodes:[
+          { episode:1, title:"Episode 1", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/1379882522568720", orientation:"landscape" } },
+          { episode:2, title:"Episode 2", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/103845136129904", orientation:"landscape" } },
+          { episode:3, title:"Episode 3", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/627528682486183", orientation:"landscape" } },
+          { episode:4, title:"Episode 4", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/1485615252263973", orientation:"landscape" } },
+          { episode:5, title:"Episode 5", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/1720419851734781", orientation:"landscape" } },
+          { episode:6, title:"Episode 6", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/807796557599275", orientation:"landscape" } },
+          { episode:7, title:"Episode 7", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/3620268934963499", orientation:"landscape" } },
+          { episode:8, title:"Episode 8", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/1923994607971084", orientation:"landscape" } },
+          { episode:9, title:"Episode 9", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/578082937824555", orientation:"landscape" } },
+          { episode:10, title:"Episode 10", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/819462799464448", orientation:"landscape" } },
+          { episode:11, title:"Episode 11", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/1792047927875825/", orientation:"landscape" } },
+          { episode:12, title:"Episode 12", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/1346495742744491", orientation:"landscape" } }
+        ]
+      }
+    ]
+  },
+
+  {
+    id:"m8",
+    title:"Ice Age",
+    cat:"movie",
+    genres:["Adventure","Comedy","Animation","Family"],
+    year:"2002–2027",
+    duration:"81 Minutes per Movie",
+    hue:202,
+    flags:"n",
+    releaseMonth:10,
+    releaseYear:2026,
+    collection:true,
+    summary:"The Ice Age franchise follows Manny the mammoth, Sid the sloth, Diego the saber-toothed tiger, and their friends as they return a human baby to its family, escape melting ice, explore a hidden dinosaur world, fight pirates, prevent a cosmic disaster, and face dangerous adventures while building a strong friendship and family.",
+    poster:"image/movies/Ice-Age.jpg",
+    seasons:[
+      {
+        season:1,
+        episodes:[
+          { episode:1, title:"Ice Age (2002)", source:{ provider:"youtube", url:"https://youtu.be/tlmt0L5hFDc?si=xI0MTYpwIQlK0PIt", orientation:"landscape" } },
+          { episode:2, title:"Ice Age: The Meltdown (2006)", source:{ provider:"youtube", url:"https://youtu.be/j3DuBxuwvw0?si=t1x6HRFD60Nyq7n4", orientation:"landscape" } },
+          { episode:3, title:"Ice Age: Dawn of the Dinosaurs (2009)", source:{ provider:"youtube", url:"https://youtu.be/WaO1ZJNSXRQ?si=VxfAsJ-Rgs1qUDCQ", orientation:"landscape" } },
+          { episode:4, title:"Ice Age: Continental Drift (2012)", source:{ provider:"youtube", url:"https://youtu.be/UUdD5rdRYvQ?si=t9JHO1ecQABm9owF", orientation:"landscape" } },
+          { episode:5, title:"Ice Age: Collision Course (2016)", source:{ provider:"youtube", url:"https://youtu.be/L8s-pSt75Jo?si=Wv2TNar1CLitB-hc", orientation:"landscape" } },
+          { episode:6, title:"The Ice Age Adventures of Buck Wild (2022)", source:{ provider:"youtube", url:"https://youtu.be/7UdO-fG-18o?si=c9w2krHdAjv0S4Ds", orientation:"landscape" } },
+          { episode:7, title:"Ice Age: Boiling Point (2027)", comingSoon:true, source:null }
+        ]
+      }
+    ]
+  }
+];
+
+/* =========================================================
+   STATE / HELPERS
+========================================================= */
+
+const state = {
+  view:"home",
+  featuredIndex:0,
+  genre:"All",
+  query:"",
+  currentId:null,
+  season:1,
+  episode:1,
+  theme:localStorage.getItem("karaku-theme") || "dark"
+};
+
+document.documentElement.dataset.theme = state.theme;
+
+const $ = (selector,root=document) => root.querySelector(selector);
+const $$ = (selector,root=document) => [...root.querySelectorAll(selector)];
+
+function esc(value){
+  return String(value ?? "").replace(/[&<>"']/g,char=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[char]));
+}
+
+function cssUrl(url){
+  return String(url ?? "")
+    .replace(/\\/g,"\\\\")
+    .replace(/"/g,'\\"');
+}
+
+function artworkUrl(item){
+  if(item?.poster){
+    return item.poster;
+  }
+
+  const source = firstEpisode(item)?.source;
+
+  if(source?.thumbnail){
+    return source.thumbnail;
+  }
+
+  if(source?.provider === "youtube"){
+    const id = youtubeId(source.url);
+
+    if(id){
+      return `https://i.ytimg.com/vi/${encodeURIComponent(id)}/hqdefault.jpg`;
+    }
+  }
+
+  return "";
+}
+
+function artStyle(item){
+  const image = artworkUrl(item);
+
+  if(image){
+    return `background-image:url("${cssUrl(image)}")`;
+  }
+
+  /*
+    Facebook share links and TikTok links do not expose a reliable thumbnail
+    URL to plain browser JavaScript. Use item.poster or source.thumbnail for
+    those providers. Until one is supplied, use a neutral fallback instead
+    of the old random-looking color artwork.
+  */
+  return `
+    background-image:
+      linear-gradient(135deg,rgba(34,211,238,.08),transparent 42%),
+      linear-gradient(145deg,#171c29,#090b12 72%)
+  `;
+}
+
+function heroArtworkUrl(item){
+  if(item?.poster){
+    return item.poster;
+  }
+
+  const source = firstEpisode(item)?.source;
+  return source?.thumbnail || "";
+}
+
+function heroFallbackStyle(item){
+  const hue = Number.isFinite(Number(item?.hue)) ? Number(item.hue) : 250;
+  const hue2 = (hue + 55) % 360;
+
+  return `
+    background-image:
+      radial-gradient(circle at 72% 22%,hsla(${hue},82%,58%,.34),transparent 30%),
+      radial-gradient(circle at 28% 65%,hsla(${hue2},72%,52%,.18),transparent 34%),
+      linear-gradient(135deg,hsl(${hue},34%,18%),#090b12 72%)
+  `;
+}
+
+function heroArtMarkup(item){
+  const image = heroArtworkUrl(item);
+
+  return image
+    ? `<div class="hero-art"><img src="${esc(image)}" alt="${esc(item.title)} poster"></div>`
+    : `<div class="hero-art" style="${heroFallbackStyle(item)}"></div>`;
+}
+
+function cardArtMarkup(item){
+  const image = artworkUrl(item);
+
+  return image
+    ? `<div class="card-art"><img src="${esc(image)}" alt="${esc(item.title)} poster" loading="lazy"></div>`
+    : `<div class="card-art" style="${artStyle(item)}"></div>`;
+}
+
+function currentItem(){
+  return catalog.find(item=>item.id === state.currentId) || null;
+}
+
+function selectedSeason(item){
+  return item?.seasons?.find(season=>season.season === state.season)
+    || item?.seasons?.[0]
+    || null;
+}
+
+function selectedEpisode(item){
+  const season = selectedSeason(item);
+
+  return season?.episodes?.find(episode=>episode.episode === state.episode)
+    || season?.episodes?.[0]
+    || null;
+}
+
+function firstEpisode(item){
+  return item?.seasons?.[0]?.episodes?.[0] || null;
+}
+
+function availableGenres(cat){
+  const seen = new Set();
+
+  catalog
+    .filter(item=>item.cat === cat)
+    .forEach(item=>item.genres.forEach(genre=>seen.add(genre)));
+
+  return [...seen];
+}
+
+function searchMatches(item){
+  const query = state.query.trim().toLowerCase();
+
+  if(!query) return true;
+
+  const haystack = [
+    item.title,
+    item.summary,
+    item.genres.join(" "),
+    LABEL[item.cat],
+    item.year,
+    item.rating
+  ].join(" ").toLowerCase();
+
+  return haystack.includes(query);
+}
+
+/* =========================================================
+   CARD / HOME RENDERING
+========================================================= */
+
+function cardMarkup(item){
+  return `
+    <article
+      class="media-card"
+      tabindex="0"
+      role="button"
+      aria-label="View details for ${esc(item.title)}"
+      data-card-id="${esc(item.id)}"
+    >
+      ${cardArtMarkup(item)}
+
+      <div class="card-top">
+        ${item.flags?.includes("n") ? '<span class="badge accent">New</span>' : ""}
+        ${item.flags?.includes("t") ? '<span class="badge">Trending</span>' : ""}
+        <span class="badge">${esc(LABEL[item.cat])}</span>
+      </div>
+
+      <div class="card-info">
+        <h3>${esc(item.title)}</h3>
+        <p>${esc(item.genres.join(" / "))} · ${esc(item.duration)}</p>
+      </div>
+    </article>
+  `;
+}
+
+function railMarkup(title,items){
+  if(!items.length) return "";
+
+  return `
+    <section class="content-section">
+      <div class="section-heading">
+        <h2>${esc(title)}</h2>
+        <p>${items.length} title${items.length === 1 ? "" : "s"}</p>
+      </div>
+
+      <div class="rail-shell">
+        <button class="rail-nav prev" type="button" data-rail-direction="-1" aria-label="Scroll ${esc(title)} left">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+        </button>
+
+        <div class="card-rail" tabindex="0" aria-label="${esc(title)} carousel">
+          ${items.map(cardMarkup).join("")}
+        </div>
+
+        <button class="rail-nav next" type="button" data-rail-direction="1" aria-label="Scroll ${esc(title)} right">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+        </button>
+      </div>
+    </section>
+  `;
+}
+
+const FEATURED_IDS = ["d1","d2","d3","a7","m8"];
+let featuredTimer = null;
+
+function featuredItems(){
+  return FEATURED_IDS
+    .map(id=>catalog.find(item=>item.id === id))
+    .filter(Boolean)
+    .slice(0,5);
+}
+
+function featuredItem(){
+  const items = featuredItems();
+
+  if(!items.length){
+    return catalog.find(item=>item.flags?.includes("t")) || catalog[0];
+  }
+
+  state.featuredIndex = ((state.featuredIndex % items.length) + items.length) % items.length;
+  return items[state.featuredIndex];
+}
+
+function featuredControlsMarkup(items){
+  if(items.length <= 1) return "";
+
+  return `
+    <div class="featured-controls" aria-label="Featured titles controls">
+      <button class="featured-arrow" type="button" data-feature-step="-1" aria-label="Previous featured title">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+      </button>
+
+      <div class="featured-dots" aria-label="Choose featured title">
+        ${items.map((entry,index)=>`
+          <button
+            class="featured-dot ${index === state.featuredIndex ? "active" : ""}"
+            type="button"
+            data-feature-index="${index}"
+            aria-label="Show featured title ${index + 1}: ${esc(entry.title)}"
+            aria-pressed="${index === state.featuredIndex ? "true" : "false"}"
+          ></button>
+        `).join("")}
+      </div>
+
+      <button class="featured-arrow" type="button" data-feature-step="1" aria-label="Next featured title">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+      </button>
+    </div>
+  `;
+}
+
+function heroContentMarkup(item,items){
+  return `
+    ${heroArtMarkup(item)}
+    <div class="hero-glow"></div>
+    ${featuredControlsMarkup(items)}
+
+    <div class="hero-copy">
+      <span class="eyebrow">${esc(LABEL[item.cat])} · Featured</span>
+
+      <h1>${esc(item.title)}</h1>
+
+      <div class="meta-row">
+        ${item.year ? `<span>${esc(item.year)}</span><span class="meta-dot"></span>` : ""}
+        <span>${esc(item.duration)}</span>
+        <span class="meta-dot"></span>
+        <span>${esc(item.genres.join(" / "))}</span>
+        ${item.rating ? `<span class="meta-dot"></span><span>${esc(item.rating)}</span>` : ""}
+      </div>
+
+      <p class="hero-summary">${esc(item.summary)}</p>
+
+      <div class="hero-actions">
+        <button class="action-btn primary" type="button" data-details-id="${esc(item.id)}">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 5v14l11-7z"></path>
+          </svg>
+          Browse Episodes
+        </button>
+
+        <button class="action-btn secondary" type="button" data-details-id="${esc(item.id)}">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 10v6M12 7h.01"></path>
+          </svg>
+          More Info
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function heroMarkup(){
+  const items = featuredItems();
+  const item = featuredItem();
+
+  if(!item) return "";
+
+  return `
+    <section class="featured-wrap">
+      <section class="hero" id="featuredHero">
+        ${heroContentMarkup(item,items)}
+      </section>
+    </section>
+  `;
+}
+
+let featuredTransitionTimer = null;
+let featuredTransitioning = false;
+
+function setFeaturedIndex(index){
+  const items = featuredItems();
+  if(!items.length) return;
+
+  const nextIndex = ((index % items.length) + items.length) % items.length;
+  const hero = $("#featuredHero");
+
+  if(!hero){
+    state.featuredIndex = nextIndex;
+    return;
+  }
+
+  if(featuredTransitioning || nextIndex === state.featuredIndex) return;
+  featuredTransitioning = true;
+  hero.classList.remove("featured-entering");
+  hero.classList.add("featured-leaving");
+
+  if(featuredTransitionTimer) clearTimeout(featuredTransitionTimer);
+
+  featuredTransitionTimer = setTimeout(()=>{
+    state.featuredIndex = nextIndex;
+    hero.innerHTML = heroContentMarkup(items[state.featuredIndex],items);
+    hero.classList.remove("featured-leaving");
+    hero.classList.add("featured-entering");
+
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        hero.classList.remove("featured-entering");
+        featuredTransitioning = false;
+      });
+    });
+  },360);
+}
+
+function stepFeatured(direction=1){
+  setFeaturedIndex(state.featuredIndex + direction);
+}
+
+function restartFeaturedRotation(){
+  if(featuredTimer){
+    clearInterval(featuredTimer);
+    featuredTimer = null;
+  }
+
+  if(state.view !== "home" || state.query.trim()) return;
+
+  featuredTimer = setInterval(()=>{
+    if(document.hidden) return;
+    if($("#detailsModal")?.classList.contains("open")) return;
+    if($("#playerOverlay")?.classList.contains("open")) return;
+    stepFeatured(1);
+  },8000);
+}
+
+function currentMonthlyReleases(items){
+  const now = new Date();
+  const currentMonth = now.getMonth() + 1;
+  const currentYear = now.getFullYear();
+
+  return items.filter(item=>
+    Number(item.releaseMonth) === currentMonth &&
+    Number(item.releaseYear) === currentYear
+  );
+}
+
+function newReleasesMarkup(items){
+  const releases = currentMonthlyReleases(items);
+
+  if(releases.length){
+    return railMarkup("New Releases",releases);
+  }
+
+  return `
+    <section class="content-section">
+      <div class="section-heading">
+        <h2>New Releases</h2>
+        <p>0 titles</p>
+      </div>
+      <div class="empty-state new-release-empty">No new releases within this month.</div>
+    </section>
+  `;
+}
+
+function renderHome(){
+  const items = catalog.filter(searchMatches);
+
+  return `
+    ${heroMarkup()}
+    ${railMarkup("Trending Now",items.filter(item=>item.flags?.includes("t")))}
+    ${newReleasesMarkup(items)}
+    ${railMarkup("AI Drama",items.filter(item=>item.cat === "drama"))}
+    ${railMarkup("Anime",items.filter(item=>item.cat === "anime"))}
+    ${railMarkup("Movies",items.filter(item=>item.cat === "movie"))}
+  `;
+}
+
+function renderGrid(title,subtitle,items,cat=null){
+  const genres = cat ? availableGenres(cat) : [];
+  const filtered = state.genre === "All"
+    ? items
+    : items.filter(item=>item.genres.includes(state.genre));
+
+  return `
+    <section class="grid-page">
+      <span class="page-kicker">${cat ? esc(LABEL[cat]) : "KARAKU"}</span>
+      <h1 class="page-title">${esc(title)}</h1>
+      <p class="page-subtitle">${esc(subtitle)}</p>
+
+      ${
+        cat
+          ? `
+            <div class="genre-chips">
+              ${["All",...genres].map(genre=>`
+                <button
+                  class="genre-chip ${state.genre === genre ? "active" : ""}"
+                  type="button"
+                  data-genre="${esc(genre)}"
+                >
+                  ${esc(genre)}
+                </button>
+              `).join("")}
+            </div>
+          `
+          : '<div style="height:22px"></div>'
+      }
+
+      ${
+        filtered.length
+          ? `<div class="cards-grid">${filtered.map(cardMarkup).join("")}</div>`
+          : '<div class="empty-state">No titles found.</div>'
+      }
+    </section>
+  `;
+}
+
+function syncNavIndicator(){
+  const nav = $("#mainNav");
+  const indicator = $("#navIndicator");
+  const active = $("#mainNav .nav-btn.active");
+
+  if(!nav || !indicator || !active || window.innerWidth <= 1000){
+    if(indicator) indicator.style.opacity = "0";
+    return;
+  }
+
+  const navRect = nav.getBoundingClientRect();
+  const buttonRect = active.getBoundingClientRect();
+  const inset = 12;
+  const targetWidth = Math.max(12,buttonRect.width - inset * 2);
+  const targetX = buttonRect.left - navRect.left + inset;
+
+  if(!indicator.dataset.ready){
+    indicator.style.transition = "none";
+    indicator.style.width = `${targetWidth}px`;
+    indicator.style.transform = `translate3d(${targetX}px,0,0)`;
+    indicator.style.opacity = "1";
+
+    requestAnimationFrame(()=>{
+      indicator.style.transition = "";
+      indicator.dataset.ready = "true";
+    });
+    return;
+  }
+
+  indicator.style.width = `${targetWidth}px`;
+  indicator.style.transform = `translate3d(${targetX}px,0,0)`;
+  indicator.style.opacity = "1";
+}
+
+function updateRailControls(rail){
+  const shell = rail?.closest(".rail-shell");
+  if(!shell) return;
+
+  const previous = $(".rail-nav.prev",shell);
+  const next = $(".rail-nav.next",shell);
+  const maxScroll = Math.max(0,rail.scrollWidth - rail.clientWidth);
+
+  if(previous) previous.disabled = rail.scrollLeft <= 4;
+  if(next) next.disabled = rail.scrollLeft >= maxScroll - 4;
+}
+
+function initRails(){
+  $$(".card-rail").forEach(rail=>{
+    const update = ()=>updateRailControls(rail);
+    rail.addEventListener("scroll",update,{passive:true});
+    requestAnimationFrame(update);
+  });
+}
+
+function renderApp(){
+  $$("#mainNav .nav-btn").forEach(button=>{
+    button.classList.toggle("active",button.dataset.view === state.view);
+  });
+
+  requestAnimationFrame(syncNavIndicator);
+
+  const searched = catalog.filter(searchMatches);
+  let html = "";
+
+  if(state.query.trim()){
+    html = renderGrid(
+      "Search Results",
+      `Found ${searched.length} matching title${searched.length === 1 ? "" : "s"}.`,
+      searched
+    );
+  }
+  else if(state.view === "drama"){
+    html = renderGrid(
+      "AI Drama",
+      "AI-generated series and short dramas. Use the genre filters to browse only the genres currently available in the catalog.",
+      catalog.filter(item=>item.cat === "drama"),
+      "drama"
+    );
+  }
+  else if(state.view === "anime"){
+    html = renderGrid(
+      "Anime",
+      "Browse anime series and shorts. Select a title first, then choose a season and episode from its details modal.",
+      catalog.filter(item=>item.cat === "anime"),
+      "anime"
+    );
+  }
+  else if(state.view === "movie"){
+    html = renderGrid(
+      "Movies",
+      "Browse the feature-style titles currently available in the catalog and filter by their available genres.",
+      catalog.filter(item=>item.cat === "movie"),
+      "movie"
+    );
+  }
+  else if(state.view === "new"){
+    const sorted = [...catalog].sort((a,b)=>{
+      const newDifference = Number(Boolean(b.flags?.includes("n"))) - Number(Boolean(a.flags?.includes("n")));
+      if(newDifference) return newDifference;
+
+      return Number(Boolean(b.flags?.includes("t"))) - Number(Boolean(a.flags?.includes("t")));
+    });
+
+    html = renderGrid(
+      "New & Popular",
+      "Fresh releases and trending titles from across KARAKU.",
+      sorted
+    );
+  }
+  else{
+    html = renderHome();
+  }
+
+  $("#app").innerHTML = html;
+  initRails();
+  restartFeaturedRotation();
+}
+
+/* =========================================================
+   DETAILS MODAL
+========================================================= */
+
+function detailsMarkup(item){
+  const seasons = item.seasons || [];
+
+  return `
+    <div class="modal-visual" style="${artStyle(item)}">
+      ${artworkUrl(item) ? `<img class="modal-visual-image" src="${esc(artworkUrl(item))}" alt="" aria-hidden="true" onerror="this.hidden=true">` : ""}
+      <div class="modal-title-area">
+        <span class="eyebrow">${esc(LABEL[item.cat])}</span>
+        <h2 id="modalTitle">${esc(item.title)}</h2>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-meta">
+        ${item.year ? `<span class="meta-pill">${esc(item.year)}</span>` : ""}
+        <span class="meta-pill">${esc(item.duration)}</span>
+        <span class="meta-pill">${esc(item.genres.join(" / "))}</span>
+        ${item.rating ? `<span class="meta-pill">${esc(item.rating)}</span>` : ""}
+        ${item.trailer ? `<span class="meta-pill">Trailer: ${esc(item.trailer)}</span>` : ""}
+      </div>
+
+      <section class="summary-block">
+        <div class="summary-label">Summary</div>
+        <p class="summary-text">${esc(item.summary)}</p>
+      </section>
+
+      <div class="seasons-wrap">
+        ${seasons.map(season=>`
+          <section class="season-block">
+            <div class="season-title-row">
+              <h3>${item.collection ? "Movies" : (item.cat === "movie" ? "Movie" : `Season ${season.season}`)}</h3>
+              <span>${season.episodes.length} ${item.collection ? `film${season.episodes.length === 1 ? "" : "s"}` : `episode${season.episodes.length === 1 ? "" : "s"}`}</span>
+            </div>
+
+            <div class="episode-grid">
+              ${season.episodes.map(episode=>`
+                <button
+                  class="episode-btn ${
+                    state.season === season.season && state.episode === episode.episode
+                      ? "active"
+                      : ""
+                  } ${episode.comingSoon ? "coming-soon" : ""}"
+                  type="button"
+                  data-season="${season.season}"
+                  data-episode="${episode.episode}"
+                  title="${esc(episode.title)}"
+                  aria-label="${esc(episode.title)}${episode.comingSoon ? " - Coming Soon" : ""}"
+                  ${episode.comingSoon ? "disabled" : ""}
+                >
+                  ${item.collection
+                    ? `<span class="collection-film-number">${episode.episode}</span><span class="collection-film-title">${esc(episode.title)}</span>${episode.comingSoon ? '<span class="coming-soon-label">Coming Soon...</span>' : ''}`
+                    : episode.comingSoon
+                      ? `<span class="episode-coming-text">Episode ${episode.episode}<small>Coming Soon...</small></span>`
+                      : episode.episode}
+                </button>
+              `).join("")}
+            </div>
+          </section>
+        `).join("")}
+
+      </div>
+    </div>
+  `;
+}
+
+function openDetails(id){
+  const item = catalog.find(entry=>entry.id === id);
+  if(!item) return;
+
+  state.currentId = item.id;
+  state.season = item.seasons?.[0]?.season || 1;
+  state.episode = item.seasons?.[0]?.episodes?.[0]?.episode || 1;
+
+  $("#detailsContent").innerHTML = detailsMarkup(item);
+  $("#detailsModal").classList.add("open");
+  $("#detailsModal").setAttribute("aria-hidden","false");
+  document.body.classList.add("modal-open");
+
+  requestAnimationFrame(()=>{
+    $("#detailsModal").scrollTop = 0;
+  });
+}
+
+function refreshDetails(){
+  const item = currentItem();
+  if(!item) return;
+
+  $("#detailsContent").innerHTML = detailsMarkup(item);
+}
+
+function closeDetails(){
+  if($("#playerOverlay").classList.contains("open")){
+    closePlayer();
+  }
+
+  $("#detailsModal").classList.remove("open");
+  $("#detailsModal").setAttribute("aria-hidden","true");
+  document.body.classList.remove("modal-open");
+
+  state.currentId = null;
+}
+
+/* =========================================================
+   VIDEO PROVIDER HELPERS
+========================================================= */
+
+function youtubeId(url){
+  const value = String(url || "").trim();
+
+  if(/^[\w-]{11}$/.test(value)){
+    return value;
+  }
+
+  try{
+    const parsed = new URL(value);
+
+    if(parsed.hostname.includes("youtu.be")){
+      return parsed.pathname.split("/").filter(Boolean)[0] || "";
+    }
+
+    if(parsed.searchParams.get("v")){
+      return parsed.searchParams.get("v");
+    }
+
+    const pathMatch = parsed.pathname.match(/\/(?:embed|shorts|live)\/([^/?]+)/);
+    return pathMatch?.[1] || "";
+  }
+  catch{
+    return "";
+  }
+}
+
+function tiktokId(url){
+  const value = String(url || "").trim();
+
+  if(/^\d+$/.test(value)){
+    return value;
+  }
+
+  return value.match(/\/video\/(\d+)/)?.[1] || "";
+}
+
+function isFacebookPlaceholder(url){
+  return !url || /REPLACE_WITH/i.test(url);
+}
+
+function isFacebookShareUrl(url){
+  return /facebook\.com\/share\//i.test(String(url || ""));
+}
+
+function playerErrorMarkup(title,message,url=""){
+  return `
+    <div class="player-error">
+      <h2>${esc(title)}</h2>
+      <p>${esc(message)}</p>
+      ${url ? `<code>${esc(url)}</code>` : ""}
+      ${
+        url
+          ? `<a class="source-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Open Original Video</a>`
+          : ""
+      }
+    </div>
+  `;
+}
+
+function playerMarkup(source,title){
+  const provider = source?.provider;
+  const orientation = source?.orientation === "portrait" ? "portrait" : "landscape";
+
+  if(provider === "youtube"){
+    const id = youtubeId(source.url);
+
+    if(!id){
+      return playerErrorMarkup(
+        title,
+        "This YouTube source is not a valid video URL or ID.",
+        source.url
+      );
+    }
+
+    return `
+      <iframe
+        id="socialPlayer"
+        class="player-frame ${orientation}"
+        src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&controls=1&fs=1&playsinline=1&rel=0"
+        title="${esc(title)}"
+        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+        allowfullscreen
+        loading="eager"
+      ></iframe>
+    `;
+  }
+
+  if(provider === "tiktok"){
+    const id = tiktokId(source.url);
+
+    if(!id){
+      return playerErrorMarkup(
+        title,
+        "This TikTok source is not a valid public TikTok video URL.",
+        source.url
+      );
+    }
+
+    return `
+      <iframe
+        id="socialPlayer"
+        class="player-frame portrait"
+        src="https://www.tiktok.com/player/v1/${encodeURIComponent(id)}?autoplay=1&controls=1&description=0&music_info=0&rel=0"
+        title="${esc(title)}"
+        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+        allowfullscreen
+        loading="eager"
+      ></iframe>
+    `;
+  }
+
+  if(provider === "facebook"){
+    if(isFacebookPlaceholder(source.url)){
+      return playerErrorMarkup(
+        title,
+        "Replace the sample Facebook URL with a real public Facebook video permalink."
+      );
+    }
+
+    /*
+      Send the supplied Facebook URL to Facebook's official video plugin.
+      This now attempts playback even when the catalog contains a /share/v/
+      URL instead of blocking it in KARAKU first. Facebook still decides
+      whether that public post is embeddable.
+    */
+    const src =
+      `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(source.url)}` +
+      `&show_text=false&autoplay=true&width=1280`;
+
+    return `
+      <iframe
+        id="socialPlayer"
+        class="player-frame landscape"
+        src="${src}"
+        title="${esc(title)}"
+        scrolling="no"
+        frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share; fullscreen"
+        allowfullscreen
+        loading="eager"
+      ></iframe>
+    `;
+  }
+
+  if(provider === "mp4"){
+    if(!source.url){
+      return playerErrorMarkup(
+        title,
+        "No direct video URL was provided for this episode."
+      );
+    }
+
+    return `
+      <video
+        id="nativePlayer"
+        class="native-video"
+        src="${esc(source.url)}"
+        controls
+        autoplay
+        playsinline
+        preload="metadata"
+      ></video>
+    `;
+  }
+
+  return playerErrorMarkup(
+    title,
+    "This episode does not have a supported video source."
+  );
+}
+
+/* =========================================================
+   PLAYER OPEN / CLOSE
+========================================================= */
+
+function openPlayer(){
+  const item = currentItem();
+  const episode = selectedEpisode(item);
+
+  if(!item || !episode) return;
+
+  $("#playerTitle").textContent = item.title;
+  $("#playerEpisodeLabel").textContent =
+    item.collection
+      ? episode.title
+      : item.cat === "movie"
+        ? "Movie"
+        : `Season ${state.season} · Episode ${state.episode}`;
+
+  $("#playerShell").innerHTML = playerMarkup(episode.source,item.title);
+
+  $("#playerOverlay").classList.add("open");
+  $("#playerOverlay").setAttribute("aria-hidden","false");
+
+  /*
+    Because openPlayer() is called directly from the episode button click,
+    browsers that allow fullscreen should treat this as a user-initiated
+    request.
+  */
+  const overlay = $("#playerOverlay");
+
+  if(overlay.requestFullscreen && !document.fullscreenElement){
+    overlay.requestFullscreen().catch(()=>{});
+  }
+}
+
+function closePlayer(){
+  const overlay = $("#playerOverlay");
+
+  overlay.classList.remove("open");
+  overlay.setAttribute("aria-hidden","true");
+  $("#playerShell").innerHTML = "";
+
+  if(document.fullscreenElement){
+    document.exitFullscreen().catch(()=>{});
+  }
+}
+
+/* =========================================================
+   GLOBAL EVENTS
+========================================================= */
+
+$("#themeBtn").addEventListener("click",()=>{
+  state.theme = state.theme === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = state.theme;
+  localStorage.setItem("karaku-theme",state.theme);
+});
+
+$("#menuBtn").addEventListener("click",()=>{
+  $("#mainNav").classList.toggle("open");
+});
+
+$("#searchInput").addEventListener("input",event=>{
+  state.query = event.target.value;
+  renderApp();
+});
+
+$("#detailsClose").addEventListener("click",closeDetails);
+$("#playerClose").addEventListener("click",closePlayer);
+
+$("#detailsModal").addEventListener("click",event=>{
+  if(event.target === $("#detailsModal")){
+    closeDetails();
+  }
+});
+
+document.addEventListener("click",event=>{
+  const viewButton = event.target.closest("[data-view]");
+
+  if(viewButton){
+    event.preventDefault();
+
+    state.view = viewButton.dataset.view;
+    state.genre = "All";
+    state.query = "";
+
+    $("#searchInput").value = "";
+    $("#mainNav").classList.remove("open");
+
+    renderApp();
+    window.scrollTo({top:0,behavior:"smooth"});
+    return;
+  }
+
+  const featureStepButton = event.target.closest("[data-feature-step]");
+
+  if(featureStepButton){
+    stepFeatured(Number(featureStepButton.dataset.featureStep) || 1);
+    restartFeaturedRotation();
+    return;
+  }
+
+  const featureDotButton = event.target.closest("[data-feature-index]");
+
+  if(featureDotButton){
+    setFeaturedIndex(Number(featureDotButton.dataset.featureIndex) || 0);
+    restartFeaturedRotation();
+    return;
+  }
+
+  const railButton = event.target.closest("[data-rail-direction]");
+
+  if(railButton){
+    const rail = $(".card-rail",railButton.closest(".rail-shell"));
+
+    if(rail){
+      const direction = Number(railButton.dataset.railDirection) || 1;
+      const amount = Math.max(260,rail.clientWidth * .86);
+      rail.scrollBy({left:direction * amount,behavior:"smooth"});
+    }
+
+    return;
+  }
+
+  const genreButton = event.target.closest("[data-genre]");
+
+  if(genreButton){
+    state.genre = genreButton.dataset.genre;
+    renderApp();
+    return;
+  }
+
+  const detailsButton = event.target.closest("[data-details-id]");
+
+  if(detailsButton){
+    openDetails(detailsButton.dataset.detailsId);
+    return;
+  }
+
+  const card = event.target.closest(".media-card[data-card-id]");
+
+  if(card){
+    openDetails(card.dataset.cardId);
+    return;
+  }
+
+  const episodeButton = event.target.closest(".episode-btn[data-season][data-episode]");
+
+  if(episodeButton){
+    state.season = Number(episodeButton.dataset.season);
+    state.episode = Number(episodeButton.dataset.episode);
+
+    refreshDetails();
+    openPlayer();
+    return;
+  }
+});
+
+document.addEventListener("keydown",event=>{
+  if(event.key === "Escape"){
+    if($("#playerOverlay").classList.contains("open")){
+      closePlayer();
+      return;
+    }
+
+    if($("#detailsModal").classList.contains("open")){
+      closeDetails();
+      return;
+    }
+  }
+
+  const focused = document.activeElement;
+
+  if(
+    (event.key === "Enter" || event.key === " ") &&
+    focused?.classList?.contains("media-card")
+  ){
+    event.preventDefault();
+    openDetails(focused.dataset.cardId);
+  }
+});
+
+window.addEventListener("resize",()=>{
+  syncNavIndicator();
+  $$(".card-rail").forEach(updateRailControls);
+});
+
+renderApp();
+requestAnimationFrame(syncNavIndicator);
+</script>
+</body>
+</html>
