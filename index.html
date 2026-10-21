@@ -1278,9 +1278,9 @@ main{min-height:50vh;padding-bottom:64px}
   .site-header{padding-left:clamp(14px,3vw,28px);padding-right:clamp(14px,3vw,28px);gap:10px}
 
   .desktop-nav{
-    position:fixed;
-    z-index:58;
-    top:var(--header-h);
+    position:absolute;
+    z-index:5;
+    top:100%;
     left:0;right:0;
     display:none;
     flex-direction:column;
@@ -1289,7 +1289,8 @@ main{min-height:50vh;padding-bottom:64px}
     padding:10px var(--page-pad) 15px;
     border:0;
     border-bottom:1px solid var(--line-strong);
-    border-radius:0;
+    border-radius:0 0 24px 24px;
+    box-shadow:0 24px 50px rgba(0,0,0,.35);
     background:var(--glass);
     backdrop-filter:blur(20px);
     -webkit-backdrop-filter:blur(20px);
@@ -1348,7 +1349,7 @@ main{min-height:50vh;padding-bottom:64px}
   .header-icon{width:38px;height:38px}
   .search-box{display:block;grid-column:1 / -1;grid-row:2;width:100%}
   .search-box input{height:38px}
-  .desktop-nav{top:var(--header-h);max-height:calc(100dvh - var(--header-h));overflow-y:auto}
+  .desktop-nav{max-height:calc(100dvh - var(--header-h));overflow-y:auto}
 
   .featured-wrap{padding-top:var(--header-h)}
 
@@ -1475,9 +1476,9 @@ main{min-height:50vh;padding-bottom:64px}
 @media (max-height:520px) and (orientation:landscape){
   :root{--header-h:58px}
   .site-header{height:var(--header-h);display:flex;padding:0 12px}
-  .search-box{display:none}
+  .search-box{display:block;width:min(240px,34vw)}
+  .search-box input{height:38px}
   .header-spacer{display:block}
-  .desktop-nav{top:var(--header-h)}
   .featured-wrap{padding-top:var(--header-h)}
   .hero{height:calc(100dvh - var(--header-h));min-height:340px;max-height:none;padding:54px 22px 22px}
   .hero-copy{width:min(610px,72vw);max-height:100%}
@@ -3160,6 +3161,16 @@ $("#detailsModal").addEventListener("click",event=>{
 });
 
 document.addEventListener("click",event=>{
+  /* Close the mobile/tablet menu when clicking anywhere outside it. */
+  const navEl = $("#mainNav");
+  if(
+    navEl?.classList.contains("open") &&
+    !event.target.closest("#mainNav") &&
+    !event.target.closest("#menuBtn")
+  ){
+    navEl.classList.remove("open");
+  }
+
   const viewButton = event.target.closest("[data-view]");
 
   if(viewButton){
@@ -3282,6 +3293,11 @@ document.addEventListener("click",event=>{
 
 document.addEventListener("keydown",event=>{
   if(event.key === "Escape"){
+    if($("#mainNav")?.classList.contains("open")){
+      $("#mainNav").classList.remove("open");
+      return;
+    }
+
     if($("#previewStatusModal")?.classList.contains("open")){
       closePreviewStatus();
       return;
@@ -3310,6 +3326,7 @@ document.addEventListener("keydown",event=>{
 });
 
 window.addEventListener("resize",()=>{
+  if(window.innerWidth > 1000) $("#mainNav")?.classList.remove("open");
   syncNavIndicator();
   $$(".card-rail").forEach(updateRailControls);
 });
