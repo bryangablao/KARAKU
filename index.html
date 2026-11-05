@@ -1733,6 +1733,24 @@ function makeSeasons(counts,provider,url,orientation){
   }));
 }
 
+function makeAnimeSeasons(specs){
+  return specs.map((spec,seasonIndex)=>{
+    const config = typeof spec === "number" ? {count:spec} : spec;
+
+    return {
+      season:seasonIndex + 1,
+      label:config.label || `Season ${seasonIndex + 1}`,
+      note:config.note || "",
+      episodes:Array.from({length:config.count},(_,episodeIndex)=>({
+        episode:episodeIndex + 1,
+        title:`Episode ${episodeIndex + 1}`,
+        sourcePending:true,
+        source:null
+      }))
+    };
+  });
+}
+
 const catalog = [
   {
     id:"d1",
@@ -1955,161 +1973,279 @@ const catalog = [
     }]
   },
   {
-    id:"a7",
-    title:"I Got a Cheat Skill in Another World and Became Unrivaled in the Real World",
+    id:"a1",
+    title:"As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World",
     cat:"anime",
-    genres:["Action","Adventure","Fantasy"],
+    genres:["Reincarnation","Isekai","Fantasy","Adventure","Magic","Political","Strategy"],
     year:"",
-    duration:"24 minutes per episode",
+    duration:"30 released episodes",
+    hue:215,
+    summary:"After living an ordinary life in Japan, a man is reincarnated into a fantasy world as Ars Louvent, the young son of a noble family. Unlike other people who possess powerful magic or combat abilities, Ars is born with a unique Appraisal Skill that allows him to see the abilities, talents, and potential of other people. Recognizing that his kingdom is facing political instability and an uncertain future, he begins searching for talented individuals who can help him strengthen his territory. By gathering powerful warriors, intelligent strategists, and gifted mages, Ars slowly builds a team capable of changing the future of his world.",
+    poster:"image/anime/reincarnated-aristocrat.jpg",
+    seasons:makeAnimeSeasons([
+      {count:12,label:"Season 1"},
+      {count:12,label:"Season 2"},
+      {count:6,label:"Season 3",note:"Ongoing"}
+    ])
+  },
+  {
+    id:"a2",
+    title:"By the Grace of the Gods",
+    cat:"anime",
+    genres:["Reincarnation","Isekai","Fantasy","Adventure","Magic","Slice of Life","Comedy"],
+    year:"",
+    duration:"24 episodes",
+    hue:150,
+    summary:"After suffering from a difficult life filled with exhaustion and loneliness, Ryouma Takebayashi dies and is given another chance at life by three powerful gods. Reincarnated as a young boy in a magical world, he spends several years living peacefully in a forest while studying magic and discovering the incredible abilities of slimes. Unlike ordinary adventurers, Ryouma develops a special understanding of these creatures and learns how to use them for cleaning, crafting, combat, and other useful activities. Eventually, he leaves the forest and begins exploring human society, making friends, opening businesses, and enjoying the peaceful life he never had in his previous existence.",
+    poster:"image/anime/grace-of-gods.jpg",
+    seasons:makeAnimeSeasons([12,12])
+  },
+  {
+    id:"a3",
+    title:"Death March to the Parallel World",
+    cat:"anime",
+    genres:["Isekai","Fantasy","Adventure","Magic","Harem","Comedy","Action"],
+    year:"",
+    duration:"12 episodes",
+    hue:285,
+    summary:"Ichirou Suzuki is an exhausted programmer who spends most of his time working on games. One day, after falling asleep, he suddenly finds himself transported into a fantasy world that resembles the games he has been developing. Using the name Satou, he discovers that he possesses extremely high-level abilities after activating a powerful attack that defeats an entire group of enemies. With his overwhelming strength, he begins traveling across the world, exploring different kingdoms, discovering ancient secrets, and meeting various companions. Although he has enough power to defeat almost anything, Satou prefers a peaceful journey filled with adventure, sightseeing, and helping the people he encounters.",
+    poster:"image/anime/death-march.jpg",
+    seasons:makeAnimeSeasons([12])
+  },
+  {
+    id:"a4",
+    title:"I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too",
+    cat:"anime",
+    genres:["Isekai","Fantasy","Reincarnation","Action","Adventure","Magic","School","Romance"],
+    year:"",
+    duration:"13 episodes + 1 special",
     rating:"PG-13 - Teens 13 or older",
     hue:205,
-    flags:"n",
-    releaseMonth:10,
-    releaseYear:2026,
-    summary:"Follows Yūya Tenjou, a bullied high school student who discovers a portal to a fantasy world named Argena after his grandfather's death. In this world, he gains powerful abilities that enhance his physical and social standing on Earth. The series explores his journey as he navigates both realms, using his newfound skills to defeat powerful enemies and improve his life. It has been adapted into a manga and anime, with a second season set to premiere in January 2027.",
+    summary:"Yuya Tenjou is a young man who has spent most of his life being bullied and rejected because of his appearance. His life changes when he discovers a mysterious door inside his grandfather's house that leads to another world. After entering this world, he discovers powerful weapons, rare items, magical abilities, and a system that allows him to grow stronger through defeating monsters. His newfound abilities dramatically transform not only his appearance but also his physical strength and confidence in the real world. As he continues traveling between both worlds, Yuya becomes involved in dangerous encounters, meets powerful allies, and discovers that his extraordinary abilities may be connected to something much greater.",
     poster:"image/anime/Cheat-Skill-in-Another-World.jpg",
     seasons:[
       {
         season:1,
+        label:"Season 1",
         episodes:[
-          {
-            episode:1,
-            title:"Episode 1",
-            source:{
-              provider:"facebook",
-              url:"https://www.facebook.com/share/v/14HjfRBYbCh/",
-              orientation:"landscape"
-            }
-          },
-          {
-            episode:2,
-            title:"Episode 2",
-            source:{
-              provider:"facebook",
-              url:"https://www.facebook.com/share/v/1CQCdhao2s/",
-              orientation:"landscape"
-            }
-          },
-          {
-            episode:3,
-            title:"Episode 3",
-            source:{
-              provider:"facebook",
-              url:"https://www.facebook.com/share/v/17GuXJx8mX/",
-              orientation:"landscape"
-            }
-          },
-          {
-            episode:4,
-            title:"Episode 4",
-            source:{
-              provider:"facebook",
-              url:"https://www.facebook.com/share/v/16kV1cB3U9/",
-              orientation:"landscape"
-            }
-          },
-          {
-            episode:5,
-            title:"Episode 5",
-            source:{
-              provider:"facebook",
-              url:"https://www.facebook.com/share/v/19bxGaZ74j/",
-              orientation:"landscape"
-            }
-          },
-          {
-            episode:6,
-            title:"Episode 6",
-            source:{
-              provider:"facebook",
-              url:"https://www.facebook.com/share/v/1CTxFSKcSs/",
-              orientation:"landscape"
-            }
-          },
-          {
-            episode:7,
-            title:"Episode 7",
-            source:{
-              provider:"facebook",
-              url:"https://www.facebook.com/share/v/1B4fVjtAks/",
-              orientation:"landscape"
-            }
-          },
-          {
-            episode:8,
-            title:"Episode 8",
-            source:{
-              provider:"facebook",
-              url:"https://www.facebook.com/share/v/1FJicKuUL3/",
-              orientation:"landscape"
-            }
-          },
-          {
-            episode:9,
-            title:"Episode 9",
-            source:{
-              provider:"facebook",
-              url:"https://www.facebook.com/share/v/1HJDRqbe5z/",
-              orientation:"landscape"
-            }
-          },
-          {
-            episode:10,
-            title:"Episode 10",
-            source:{
-              provider:"facebook",
-              url:"https://www.facebook.com/share/v/16qxF3qV3G/",
-              orientation:"landscape"
-            }
-          },
-          {
-            episode:11,
-            title:"Episode 11",
-            source:{
-              provider:"facebook",
-              url:"https://www.facebook.com/share/v/172SJuLtXf/",
-              orientation:"landscape"
-            }
-          },
-          {
-            episode:12,
-            title:"Episode 12",
-            source:{
-              provider:"facebook",
-              url:"https://www.facebook.com/share/v/1B3YqRRTTj/",
-              orientation:"landscape"
-            }
-          },
-          {
-            episode:13,
-            title:"Episode 13",
-            source:{
-              provider:"facebook",
-              url:"https://www.facebook.com/share/v/1ApXXtqbAg/",
-              orientation:"landscape"
-            }
-          }
+          { episode:1, title:"Episode 1", source:{ provider:"facebook", url:"https://www.facebook.com/share/v/14HjfRBYbCh/", orientation:"landscape" } },
+          { episode:2, title:"Episode 2", source:{ provider:"facebook", url:"https://www.facebook.com/share/v/1CQCdhao2s/", orientation:"landscape" } },
+          { episode:3, title:"Episode 3", source:{ provider:"facebook", url:"https://www.facebook.com/share/v/17GuXJx8mX/", orientation:"landscape" } },
+          { episode:4, title:"Episode 4", source:{ provider:"facebook", url:"https://www.facebook.com/share/v/16kV1cB3U9/", orientation:"landscape" } },
+          { episode:5, title:"Episode 5", source:{ provider:"facebook", url:"https://www.facebook.com/share/v/19bxGaZ74j/", orientation:"landscape" } },
+          { episode:6, title:"Episode 6", source:{ provider:"facebook", url:"https://www.facebook.com/share/v/1CTxFSKcSs/", orientation:"landscape" } },
+          { episode:7, title:"Episode 7", source:{ provider:"facebook", url:"https://www.facebook.com/share/v/1B4fVjtAks/", orientation:"landscape" } },
+          { episode:8, title:"Episode 8", source:{ provider:"facebook", url:"https://www.facebook.com/share/v/1FJicKuUL3/", orientation:"landscape" } },
+          { episode:9, title:"Episode 9", source:{ provider:"facebook", url:"https://www.facebook.com/share/v/1HJDRqbe5z/", orientation:"landscape" } },
+          { episode:10, title:"Episode 10", source:{ provider:"facebook", url:"https://www.facebook.com/share/v/16qxF3qV3G/", orientation:"landscape" } },
+          { episode:11, title:"Episode 11", source:{ provider:"facebook", url:"https://www.facebook.com/share/v/172SJuLtXf/", orientation:"landscape" } },
+          { episode:12, title:"Episode 12", source:{ provider:"facebook", url:"https://www.facebook.com/share/v/1B3YqRRTTj/", orientation:"landscape" } },
+          { episode:13, title:"Episode 13", source:{ provider:"facebook", url:"https://www.facebook.com/share/v/1ApXXtqbAg/", orientation:"landscape" } }
+        ]
+      },
+      {
+        season:2,
+        label:"Special",
+        episodes:[
+          { episode:1, title:"Special", comingSoon:true, source:null }
         ]
       }
     ]
   },
-
+  {
+    id:"a5",
+    title:"I’ve Been Killing Slimes for 300 Years and Maxed Out My Level",
+    cat:"anime",
+    genres:["Reincarnation","Isekai","Fantasy","Adventure","Magic","Comedy","Slice of Life"],
+    year:"",
+    duration:"24 episodes",
+    hue:325,
+    summary:"Azusa Aizawa is an overworked office employee who dies from exhaustion after spending years working herself to the point of collapse. Given another chance at life, she is reincarnated as an immortal witch in a fantasy world and decides that she will spend her new existence enjoying a peaceful and relaxing lifestyle. To earn money without putting herself in danger, she spends her days defeating weak slimes near her home. However, after doing this consistently for 300 years, she unknowingly reaches the maximum level and becomes one of the strongest beings in the entire world. Her peaceful routine is eventually interrupted when powerful and unusual characters begin appearing at her doorstep, eventually turning her quiet home into a lively family full of adventures.",
+    poster:"image/anime/killing-slimes-for-300years.jpg",
+    seasons:makeAnimeSeasons([12,12])
+  },
+  {
+    id:"a6",
+    title:"In Another World with my Smartphone",
+    cat:"anime",
+    genres:["Isekai","Fantasy","Adventure","Magic","Harem","Romance","Comedy"],
+    year:"",
+    duration:"24 episodes",
+    hue:195,
+    summary:"Touya Mochizuki accidentally dies after being struck by lightning due to a mistake made by God. To make up for the unfortunate accident, God offers him the opportunity to reincarnate into a magical fantasy world while granting him enhanced physical abilities and the ability to use nearly every type of magic. Touya also receives permission to bring his smartphone with him, allowing him to use its functions in a world where modern technology does not exist. During his travels, he meets several beautiful companions, discovers ancient magical technology, and becomes involved in political conflicts between kingdoms. As his abilities continue growing, he gradually becomes connected to powerful mysteries that could affect the entire world.",
+    poster:"image/anime/another-world-with-smartphone.jpg",
+    seasons:makeAnimeSeasons([12,12])
+  },
+  {
+    id:"a7",
+    title:"Knight's & Magic",
+    cat:"anime",
+    genres:["Reincarnation","Isekai","Fantasy","Mecha","Magic","Action","Adventure"],
+    year:"",
+    duration:"13 episodes",
+    hue:225,
+    summary:"Tsubasa Kurata is a talented programmer and passionate mecha enthusiast who dies in an accident and is reincarnated as Ernesti Echevalier in a world where giant magical robots called Silhouette Knights protect humanity from dangerous monsters. Retaining his memories and knowledge from his previous life, Ernesti becomes fascinated by the technology behind these enormous machines. Despite being young, he possesses extraordinary magical abilities and a brilliant understanding of engineering, allowing him to improve existing machines and develop entirely new designs. His dream is to create and pilot the ultimate giant robot, but achieving that goal requires him to overcome military challenges, dangerous enemies, and the limitations of the technology in his new world.",
+    poster:"image/anime/knights-and-magic.jpg",
+    seasons:makeAnimeSeasons([13])
+  },
   {
     id:"a8",
+    title:"Mushoku Tensei: Jobless Reincarnation",
+    cat:"anime",
+    genres:["Reincarnation","Isekai","Fantasy","Adventure","Magic","Drama","Action","Romance"],
+    year:"",
+    duration:"48 episodes",
+    hue:35,
+    summary:"After living a miserable life filled with regret, failure, and isolation, an unemployed man dies and is reincarnated as Rudeus Greyrat in a world of swords and magic. Determined not to waste his second chance, Rudeus begins learning magic at an incredibly young age and quickly discovers that he possesses extraordinary magical talent. As he grows older, he meets important companions, studies under powerful teachers, and experiences adventures that gradually shape his personality. However, his journey is far from easy, as he must face dangerous monsters, political conflicts, personal failures, and devastating events that challenge everything he has learned. The story follows his journey from childhood to adulthood as he attempts to live a meaningful life without repeating the mistakes of his previous existence.",
+    poster:"image/anime/jobless-reincarnation.jpg",
+    seasons:makeAnimeSeasons([23,25])
+  },
+  {
+    id:"a9",
+    title:"My Unique Skill Makes Me OP Even at Level 1",
+    cat:"anime",
+    genres:["Isekai","Fantasy","Adventure","Magic","Action","Comedy","Harem"],
+    year:"",
+    duration:"12 episodes",
+    hue:95,
+    summary:"Ryota Sato suddenly finds himself transported into a mysterious fantasy world where everything revolves around defeating monsters and collecting valuable items. Unlike ordinary adventurers, Ryota discovers that his level is permanently stuck at Level 1, meaning he cannot increase his level no matter how many monsters he defeats. However, his unique ability allows him to obtain extremely rare and powerful item drops that would normally be impossible for someone of his level. By using these unusual abilities, he finds creative ways to overcome powerful enemies and gradually builds a comfortable life for himself. Along the way, he meets several companions and discovers that being stuck at the lowest level does not necessarily mean being weak.",
+    poster:"image/anime/unique-skill-makes-me-OPlevel1.jpg",
+    seasons:makeAnimeSeasons([12])
+  },
+  {
+    id:"a10",
+    title:"Parallel World Pharmacy",
+    cat:"anime",
+    genres:["Reincarnation","Isekai","Fantasy","Magic","Medical","Adventure","Drama"],
+    year:"",
+    duration:"12 episodes",
+    hue:175,
+    summary:"Kanji Yakutani is a brilliant medical researcher who dedicates his life to developing treatments for diseases, but his obsession with medicine eventually leads to his death from overwork. He is reincarnated as Farma de Médicis, the young son of a prestigious family of royal pharmacists in a world where medical knowledge is limited and many people suffer from preventable diseases. Farma discovers that he possesses extraordinary divine abilities, including the power to create substances and identify illnesses with incredible accuracy. Using his modern medical knowledge and magical powers, he challenges outdated medical practices and works to make effective healthcare available to ordinary people. His ultimate goal is to establish a pharmacy that can save lives regardless of a person's wealth or social position.",
+    poster:"image/anime/parallel-world-pharmacy.jpg",
+    seasons:makeAnimeSeasons([12])
+  },
+  {
+    id:"a11",
+    title:"Re:Zero − Starting Life in Another World",
+    cat:"anime",
+    genres:["Isekai","Fantasy","Adventure","Time Loop","Psychological","Drama","Romance","Action","Thriller"],
+    year:"",
+    duration:"85 episodes",
+    hue:265,
+    summary:"Subaru Natsuki is an ordinary young man who suddenly finds himself transported into a mysterious fantasy world. Shortly after arriving, he discovers that he possesses a terrifying ability known as Return by Death, which allows him to return to a previous point in time whenever he dies. Although this ability gives him the opportunity to change the future, Subaru must personally experience every painful death and remember the suffering that comes with each failed attempt. As he becomes involved with Emilia and other important characters, he encounters deadly enemies, mysterious organizations, political conflicts, and supernatural forces. Despite having no overwhelming combat abilities, Subaru relies on determination, intelligence, and the knowledge gained from previous timelines to protect the people he cares about.",
+    poster:"image/anime/re-zero.jpg",
+    seasons:makeAnimeSeasons([25,25,16,19])
+  },
+  {
+    id:"a12",
+    title:"That Time I Got Reincarnated as a Slime",
+    cat:"anime",
+    genres:["Reincarnation","Isekai","Fantasy","Adventure","Magic","Action","Comedy","Kingdom Building"],
+    year:"",
+    duration:"96 episodes",
+    hue:200,
+    summary:"Satoru Mikami is an ordinary office worker who dies after being attacked while protecting his friend. Instead of disappearing completely, he is reincarnated in a fantasy world as a slime named Rimuru Tempest, gaining unusual abilities that allow him to absorb creatures, copy their powers, and analyze almost anything he encounters. During his journey, Rimuru befriends powerful monsters and gradually establishes a nation where different races can live together peacefully. What begins as a small settlement eventually grows into a powerful country that attracts the attention of kingdoms, demon lords, and ancient supernatural beings. As Rimuru becomes stronger, he must balance his dream of creating a peaceful world with the responsibility of protecting his people from enemies who threaten their existence.",
+    poster:"image/anime/reincarnated-slime.jpg",
+    seasons:makeAnimeSeasons([24,24,24,24])
+  },
+  {
+    id:"a13",
+    title:"The 8th Son? Are You Kidding Me?",
+    cat:"anime",
+    genres:["Reincarnation","Isekai","Fantasy","Adventure","Magic","Action","Harem","Romance"],
+    year:"",
+    duration:"12 episodes",
+    hue:45,
+    summary:"Shingo Ichinomiya is an ordinary Japanese office worker who falls asleep after a long day and wakes up in the body of Wendelin von Benno Baumeister, an eight-year-old boy living in a fantasy world. He discovers that he belongs to a poor noble family where being the eighth son gives him very little chance of inheriting land or wealth. However, Wendelin possesses an extraordinary talent for magic, which allows him to become a powerful mage despite his difficult circumstances. Determined to escape poverty and build a better future, he begins training, exploring the world, and forming relationships with influential individuals. His magical abilities eventually bring him fame, fortune, and responsibilities that go far beyond his original expectations.",
+    poster:"image/anime/8th-son.jpg",
+    seasons:makeAnimeSeasons([12])
+  },
+  {
+    id:"a14",
+    title:"The Eminence in Shadow",
+    cat:"anime",
+    genres:["Reincarnation","Isekai","Fantasy","Action","Magic","Comedy","Martial Arts","Dark Fantasy"],
+    year:"",
+    duration:"32 episodes",
+    hue:280,
+    summary:"From childhood, Cid Kagenou has dreamed of becoming an immensely powerful individual who secretly controls events from the shadows rather than becoming a famous hero. After dying in his previous life, he reincarnates into a fantasy world where magic exists and begins training obsessively to achieve his dream. He creates a fictional organization called Shadow Garden and invents a story about an evil cult secretly controlling the world. However, what Cid believes is nothing more than an elaborate fantasy turns out to be completely real. As his organization grows and fights increasingly dangerous enemies, Cid continues pretending that everything is part of his personal role-playing fantasy, completely unaware that he has become the mastermind of an actual secret war.",
+    poster:"image/anime/eminence-in-shadow.jpg",
+    seasons:makeAnimeSeasons([20,12])
+  },
+  {
+    id:"a15",
+    title:"The Misfit of Demon King Academy",
+    cat:"anime",
+    genres:["Reincarnation","Fantasy","Magic","Action","School","Supernatural","Demon","Comedy"],
+    year:"",
+    duration:"37 episodes",
+    hue:350,
+    summary:"Anos Voldigoad is the legendary Demon King who once possessed enough power to bring an end to a devastating war between humans, spirits, and demons. After sacrificing himself to establish peace, he reincarnates 2,000 years into the future, expecting to find a world where his legacy is remembered. Instead, he discovers that history has been distorted, his achievements have been forgotten, and his descendants have become considerably weaker. To understand what happened, Anos enrolls in the Demon King Academy, where students are evaluated based on their magical abilities. Despite being labeled a complete misfit by the academy, his overwhelming power and extraordinary magical knowledge repeatedly prove that no ordinary measurement can determine his true strength.",
+    poster:"image/anime/misfit-demon-king.jpg",
+    seasons:makeAnimeSeasons([13,24])
+  },
+  {
+    id:"a16",
+    title:"The Rising of the Shield Hero",
+    cat:"anime",
+    genres:["Isekai","Fantasy","Adventure","Action","Magic","Drama","Revenge","Kingdom Building"],
+    year:"",
+    duration:"62 episodes",
+    hue:32,
+    summary:"Naofumi Iwatani is summoned from modern Japan into a fantasy kingdom alongside three other individuals, each chosen to become one of the Four Cardinal Heroes. While the others receive powerful offensive weapons, Naofumi is assigned the legendary Shield, a defensive weapon that prevents him from using conventional attacks. His situation becomes even worse when he is falsely accused of a serious crime and abandoned by nearly everyone in the kingdom. Betrayed and treated as an enemy, Naofumi loses his trust in others but eventually begins rebuilding his life with the help of loyal companions. As he grows stronger, he must defend the world against mysterious Waves of Calamity, uncover political conspiracies, and prove that even a hero without offensive power can become essential to saving humanity.",
+    poster:"image/anime/shield-hero.jpg",
+    seasons:makeAnimeSeasons([25,13,12,12])
+  },
+  {
+    id:"a17",
+    title:"The Strongest Sage with the Weakest Crest",
+    cat:"anime",
+    genres:["Reincarnation","Fantasy","Magic","Action","Adventure","School","Supernatural"],
+    year:"",
+    duration:"12 episodes",
+    hue:235,
+    summary:"In a world where magical ability is determined by the crest a person is born with, Gaius becomes known as the strongest sage of his era. Despite possessing extraordinary knowledge and magical power, he realizes that his crest limits his potential in certain areas. Determined to overcome this limitation, he reincarnates thousands of years into the future in the hope of obtaining a more suitable crest. However, when he awakens, he discovers that the world has changed dramatically and that magical knowledge has declined over time. The crest that was once considered the weakest is now regarded as the strongest, while his new crest is unfairly underestimated. Using his experience and overwhelming magical understanding, he sets out to demonstrate the true power of his abilities.",
+    poster:"image/anime/strongest-sage-weakest-crest.jpg",
+    seasons:makeAnimeSeasons([12])
+  },
+  {
+    id:"a18",
+    title:"The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat",
+    cat:"anime",
+    genres:["Reincarnation","Isekai","Fantasy","Action","Adventure","Magic","Assassination","Romance"],
+    year:"",
+    duration:"12 episodes",
+    hue:10,
+    summary:"The world's greatest assassin is betrayed and killed after spending his entire life serving a secret organization. Instead of allowing him to disappear, a goddess offers him a chance to reincarnate into another world, but gives him a special mission: he must eliminate the hero who will eventually bring destruction to the world. Reborn as Lugh Tuatha Dé, the son of a prestigious family of assassins, he receives the opportunity to combine his previous life's experience with powerful magic and advanced assassination techniques. Under the guidance of his family, he begins developing weapons, gathering intelligence, and training himself to become even more dangerous. Unlike ordinary heroes who seek fame and recognition, Lugh approaches his mission strategically, carefully preparing for the threat that awaits him in the future.",
+    poster:"image/anime/finest-assasin.jpg",
+    seasons:makeAnimeSeasons([12])
+  },
+  {
+    id:"a19",
+    title:"Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord",
+    cat:"anime",
+    genres:["Reincarnation","Isekai","Fantasy","Magic","Action","Comedy","School","Villainess"],
+    year:"",
+    duration:"12 episodes",
+    hue:270,
+    summary:"Yumiella Dolkness is reincarnated into the world of an otome game as a hidden boss character who is supposed to become one of the most dangerous enemies in the story. Remembering her previous life, she initially wants to avoid the original storyline and live peacefully without attracting unnecessary attention. However, her love for grinding and leveling up causes her to reach Level 99 before the main events of the game even begin. When she enrolls in the royal academy, her overwhelming level makes everyone suspicious and terrified, with many people mistakenly believing that she is the Demon Lord. Despite her incredible power, Yumiella is socially awkward and simply wants to enjoy her life while trying to convince everyone that she is not an evil villain.",
+    poster:"image/anime/villainess-level99.jpg",
+    seasons:makeAnimeSeasons([12])
+  },
+  {
+    id:"a20",
     title:"Wise Man's Grandchild",
     cat:"anime",
-    genres:["Action","Comedy","Fantasy","Romance","Isekai"],
+    genres:["Reincarnation","Isekai","Fantasy","Magic","Action","Adventure","Romance","School","Comedy"],
     year:"",
-    duration:"23 minutes per episode",
+    duration:"12 episodes",
     hue:42,
-    flags:"n",
-    releaseMonth:10,
-    releaseYear:2026,
-    summary:"In the kingdom of Earlshide, Merlin Wolford was once regarded as a national hero, hailed for both his power and achievements. Preferring a quiet life however, he secludes himself deep in the rural woods, dedicating his time to raising an orphan that he saved. This orphan is Shin, a normal salaryman in modern-day Japan who was reincarnated into Merlin's world while still retaining his past memories. As the years pass, Shin displays unparalleled talent in both magic casting and martial arts, much to Merlin's constant amazement. On his 15th birthday, however, it becomes apparent that Shin only developed his combat skills and nothing else, leaving him with blatant social awkwardness, a lack of common sense, and a middling sense of responsibility. As a result, Shin enrolls in the kingdom's Magic Academy to hone his skills and mature among other teenagers. However, living a normal life is impossible, as he is established as a local celebrity almost as soon as he arrives.",
+    summary:"An ordinary Japanese man dies in an accident and is reincarnated into a magical world as Shin Wolford, an orphan who is rescued and raised by Merlin Wolford, a legendary hero known as the Sage. Growing up under Merlin's guidance, Shin learns powerful magic and develops extraordinary abilities by combining his previous life's scientific knowledge with the magical principles of his new world. Although he becomes incredibly powerful, his isolated upbringing leaves him unfamiliar with ordinary social interactions and modern customs. When he enrolls in a prestigious magic academy, he begins making friends, joining battles, and discovering the responsibilities that come with his strength. His journey focuses on friendship, magical development, romance, and confronting dangerous enemies who threaten the kingdom.",
     poster:"image/anime/Wise-Mans-Grandchild.jpg",
     seasons:[
       {
         season:1,
+        label:"Season 1",
         episodes:[
           { episode:1, title:"Episode 1", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/1379882522568720", orientation:"landscape" } },
           { episode:2, title:"Episode 2", source:{ provider:"facebook", url:"https://www.facebook.com/100095094938057/videos/103845136129904", orientation:"landscape" } },
@@ -2480,7 +2616,7 @@ function railMarkup(title,items,{divider=false}={}){
   `;
 }
 
-const FEATURED_IDS = ["d1","d2","d3","a7","m8"];
+const FEATURED_IDS = ["d1","d2","d3","a4","m8"];
 let featuredTimer = null;
 
 function featuredItems(){
@@ -2891,8 +3027,8 @@ function detailsMarkup(item){
         ${seasons.map(season=>`
           <section class="season-block">
             <div class="season-title-row">
-              <h3>${item.collection ? "Movies" : item.cat === "drama" ? "Episodes" : (item.cat === "movie" ? "Movie" : `Season ${season.season}`)}</h3>
-              <span>${season.episodes.length} ${item.collection ? `film${season.episodes.length === 1 ? "" : "s"}` : `episode${season.episodes.length === 1 ? "" : "s"}`}</span>
+              <h3>${item.collection ? "Movies" : item.cat === "drama" ? "Episodes" : (item.cat === "movie" ? "Movie" : (season.label || `Season ${season.season}`))}</h3>
+              <span>${season.episodes.length} ${item.collection ? `film${season.episodes.length === 1 ? "" : "s"}` : `episode${season.episodes.length === 1 ? "" : "s"}`}${season.note ? ` · ${esc(season.note)}` : ""}</span>
             </div>
 
             <div class="episode-grid ${item.cat === "drama" ? "ai-drama-list" : ""}">
@@ -2902,19 +3038,21 @@ function detailsMarkup(item){
                     !episode.comingSoon && state.season === season.season && state.episode === episode.episode
                       ? "active"
                       : ""
-                  } ${episode.comingSoon ? "coming-soon" : ""}"
+                  } ${episode.comingSoon || episode.sourcePending ? "coming-soon" : ""}"
                   type="button"
                   data-season="${season.season}"
                   data-episode="${episode.episode}"
                   title="${esc(episode.title)}"
-                  aria-label="${esc(episode.title)}${episode.comingSoon ? " - Coming Soon" : ""}"
-                  ${episode.comingSoon ? "disabled" : ""}
+                  aria-label="${esc(episode.title)}${episode.comingSoon ? " - Coming Soon" : episode.sourcePending ? " - Video source not added" : ""}"
+                  ${episode.comingSoon || episode.sourcePending ? "disabled" : ""}
                 >
                   ${listStyleEpisodes
-                    ? `<span class="collection-film-number">${episode.episode}</span><span class="collection-film-title">${esc(episode.title)}</span>${episode.comingSoon ? '<span class="coming-soon-label">Coming Soon...</span>' : ''}`
+                    ? `<span class="collection-film-number">${episode.episode}</span><span class="collection-film-title">${esc(episode.title)}</span>${episode.comingSoon ? '<span class="coming-soon-label">Coming Soon...</span>' : episode.sourcePending ? '<span class="coming-soon-label">Video source not added</span>' : ''}`
                     : episode.comingSoon
                       ? `<span class="episode-coming-text">Episode ${episode.episode}<small>Coming Soon...</small></span>`
-                      : episode.episode}
+                      : episode.sourcePending
+                        ? `<span class="episode-coming-text">Episode ${episode.episode}<small>Video source not added</small></span>`
+                        : episode.episode}
                 </button>
               `).join("")}
             </div>
