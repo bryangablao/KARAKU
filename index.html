@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -126,11 +127,11 @@ img{max-width:100%;display:block}
   position:fixed;
   z-index:60;
   top:0;left:0;right:0;
-  height:var(--header-h);
+  height:calc(var(--header-h) + env(safe-area-inset-top,0px));
   display:flex;
   align-items:center;
   gap:18px;
-  padding:0 var(--page-pad);
+  padding:env(safe-area-inset-top,0px) var(--page-pad) 0;
   background:var(--glass);
   border-bottom:1px solid var(--line);
   backdrop-filter:blur(22px) saturate(160%);
@@ -174,7 +175,8 @@ img{max-width:100%;display:block}
   padding:4px;
   border:1px solid var(--line);
   border-radius:999px;
-  background:color-mix(in srgb,var(--surface) 70%,transparent);
+  background:var(--surface);
+  border-color:var(--line-strong);
 }
 
 .nav-btn{
@@ -208,9 +210,27 @@ img{max-width:100%;display:block}
   will-change:transform,width;
 }
 
+/* MANHUA: a standalone link that leaves this page, styled apart from the view buttons */
+.nav-manhua{
+  display:inline-flex;
+  align-items:center;
+  margin-left:4px;
+  padding:9px 16px;
+  border-radius:999px;
+  background:var(--gradient);
+  color:#fff;
+  font-size:.8rem;
+  font-weight:800;
+  letter-spacing:.14em;
+  box-shadow:0 6px 18px rgba(255,77,109,.35);
+  transition:transform .2s ease,filter .2s ease,box-shadow .2s ease;
+}
+
+.nav-manhua:hover{transform:translateY(-1px);filter:brightness(1.08);box-shadow:0 10px 24px rgba(255,100,80,.45)}
+
 .header-spacer{flex:1}
 
-.search-box{position:relative;width:min(310px,26vw)}
+.search-box{position:relative;width:min(260px,22vw)}
 
 .search-box input{
   width:100%;
@@ -229,7 +249,10 @@ img{max-width:100%;display:block}
   box-shadow:0 0 0 4px rgba(255,77,109,.16);
 }
 
-.search-box input::placeholder{color:var(--muted)}
+.search-box input::placeholder{color:var(--muted);opacity:1}
+.search-box input{-webkit-appearance:none;appearance:none;text-overflow:ellipsis}
+.search-box input::-webkit-search-cancel-button,
+.search-box input::-webkit-search-decoration{-webkit-appearance:none;appearance:none;display:none}
 
 .search-box svg{
   position:absolute;
@@ -757,12 +780,16 @@ main{min-height:50vh;padding-bottom:64px}
 
 .page-subtitle{max-width:760px;margin-top:10px;color:var(--muted);line-height:1.68}
 
-.genre-chips{display:flex;flex-wrap:wrap;gap:8px;padding:24px 0 20px}
+.genre-chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:24px 0 20px}
 
 .genre-chip{
   flex:0 0 auto;
-  min-height:38px;
-  padding:0 16px;
+  width:auto;
+  min-height:36px;
+  padding:0 15px;
+  text-align:center;
+  white-space:nowrap;
+  line-height:1;
   border:1px solid var(--line);
   border-radius:999px;
   background:var(--surface);
@@ -1303,6 +1330,9 @@ main{min-height:50vh;padding-bottom:64px}
   font-size:.76rem;
 }
 
+.footer-credit{color:var(--accent-2);font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-color:transparent;transition:text-decoration-color .2s ease,color .2s ease}
+.footer-credit:hover{color:var(--accent);text-decoration-color:currentColor}
+
 .footer-status{display:inline-flex;align-items:center;gap:8px}
 
 .footer-status::before{
@@ -1311,6 +1341,172 @@ main{min-height:50vh;padding-bottom:64px}
   border-radius:50%;
   background:#34d399;
   box-shadow:0 0 12px rgba(52,211,153,.6);
+}
+
+/* =========================================================
+   HOME EXTRAS: stats, explore tiles, mood finder, genre cloud
+========================================================= */
+.home-block{margin:34px 0}
+.home-inner{max-width:1600px;padding:0 var(--page-pad)}
+.home-block .section-heading + .home-inner{margin-top:16px}
+
+.stat-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+
+.stat-tile{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  padding:18px 20px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--surface);
+}
+
+.stat-tile strong{
+  font-family:var(--font-display);
+  font-weight:800;
+  font-size:clamp(1.7rem,3vw,2.4rem);
+  line-height:1;
+  letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;
+  background:var(--gradient);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.stat-tile span{color:var(--muted);font-size:.8rem;font-weight:600}
+
+.explore-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+
+.explore-tile{
+  position:relative;
+  min-height:210px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  gap:6px;
+  padding:22px;
+  overflow:hidden;
+  border:1px solid var(--line-strong);
+  border-radius:var(--radius);
+  background-size:cover;
+  background-position:center;
+  color:#fff;
+  transition:transform .3s var(--ease),border-color .3s ease,box-shadow .3s ease;
+}
+
+.explore-tile:hover{transform:translateY(-5px);border-color:var(--accent);box-shadow:var(--shadow)}
+
+.explore-kicker{color:var(--accent-2);font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.explore-tile h3{font-family:var(--font-display);font-weight:800;font-size:1.6rem;letter-spacing:-.02em}
+.explore-tile p{max-width:34ch;color:#dcd6e0;font-size:.84rem;line-height:1.55}
+.explore-count{margin-top:6px;color:var(--accent-2);font-size:.8rem;font-weight:700}
+.explore-tile:hover .see-more-arrow{transform:translateX(3px)}
+
+.mood-panel{
+  padding:clamp(16px,3vw,28px);
+  border:1px solid var(--line);
+  border-radius:calc(var(--radius) + 6px);
+  background:var(--gradient-soft),var(--surface);
+  background:linear-gradient(135deg,rgba(255,77,109,.12),rgba(255,180,84,.06)),var(--surface);
+}
+
+.mood-lead{max-width:62ch;color:var(--muted);font-size:.9rem;line-height:1.65}
+
+.mood-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-top:16px}
+.mood-chips{flex:1 1 100%;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;min-width:0}
+
+.mood-chip{
+  width:100%;
+  min-width:0;
+  min-height:40px;
+  padding:6px 10px;
+  text-align:center;
+  line-height:1.2;
+  border:1px solid var(--line-strong);
+  border-radius:999px;
+  background:var(--bg-soft);
+  color:var(--muted);
+  font-size:.82rem;
+  font-weight:600;
+  white-space:nowrap;
+  transition:color .2s ease,border-color .2s ease,transform .2s ease,background .2s ease;
+}
+
+.mood-chip{white-space:normal}
+.mood-chip:hover{color:var(--text);border-color:var(--accent);transform:translateY(-1px)}
+
+.mood-chip.active{
+  border-color:transparent;
+  color:#fff;
+  background:var(--gradient);
+  box-shadow:0 8px 22px rgba(255,77,109,.3);
+}
+
+.mood-surprise{min-height:40px;padding:0 18px;font-size:.84rem}
+.mood-surprise svg{width:17px;height:17px}
+
+.mood-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px}
+.mood-count{min-width:0;margin:0;color:var(--accent-2);font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+
+.mood-panel .card-rail{padding:14px 2px 18px}
+.mood-panel .rail-nav.prev{left:-8px}
+.mood-panel .rail-nav.next{right:-8px}
+
+.cloud{display:flex;flex-wrap:wrap;gap:8px}
+
+.cloud-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  min-height:36px;
+  padding:0 8px 0 15px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--surface);
+  color:var(--text);
+  font-size:.82rem;
+  font-weight:600;
+  white-space:nowrap;
+  transition:border-color .2s ease,transform .2s ease,background .2s ease;
+}
+
+.cloud-chip span{
+  min-width:24px;
+  padding:3px 7px;
+  border-radius:999px;
+  background:var(--surface-2);
+  color:var(--muted);
+  font-size:.7rem;
+  text-align:center;
+  font-variant-numeric:tabular-nums;
+}
+
+.cloud-chip:hover{border-color:var(--accent);transform:translateY(-1px);background:var(--surface-2)}
+
+@media (max-width:1000px){
+  .stat-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .explore-grid{grid-template-columns:1fr}
+  .explore-tile{min-height:170px}
+  .mood-chips{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+@media (max-width:700px){
+  .home-block{margin:24px 0}
+  .home-inner{padding:0 16px}
+  .stat-tile{padding:14px 16px}
+  .mood-panel{padding:16px 14px}
+  .mood-lead{font-size:.84rem;line-height:1.55}
+  .mood-row{flex-direction:column;align-items:stretch;gap:12px;margin-top:14px}
+  .mood-surprise{flex:0 0 auto;width:auto;min-height:36px;padding:0 14px;font-size:.78rem}
+  .mood-toolbar{margin-top:14px;gap:10px}
+  .mood-panel{min-width:0;overflow:hidden}
+  .mood-row,.mood-lead{min-width:0;overflow-wrap:anywhere}
+  .mood-chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0;padding:0}
+  .mood-chip{min-width:0;width:100%;min-height:36px;padding:6px 10px;font-size:.78rem;line-height:1.2;white-space:normal;text-align:center}
+  .mood-count{margin:0;font-size:.68rem;letter-spacing:.06em;line-height:1.35;overflow-wrap:anywhere}
+  .mood-panel .rail-nav{display:none}
 }
 
 /* View transition */
@@ -1338,7 +1534,7 @@ main{min-height:50vh;padding-bottom:64px}
   :root{--page-pad:clamp(24px,3vw,42px)}
   .site-header{gap:13px}
   .nav-btn{padding-inline:11px;font-size:.82rem}
-  .search-box{width:min(250px,22vw)}
+  .search-box{width:min(220px,20vw)}
   .hero{height:clamp(520px,68vh,650px)}
   .hero-copy{width:min(610px,54vw)}
   .hero h1{font-size:clamp(2.2rem,4.6vw,4.15rem)}
@@ -1362,17 +1558,18 @@ main{min-height:50vh;padding-bottom:64px}
     border-bottom:1px solid var(--line-strong);
     border-radius:0 0 24px 24px;
     box-shadow:0 24px 50px rgba(0,0,0,.35);
-    background:var(--glass);
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
+    background:var(--bg-soft);
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
   }
 
   .desktop-nav.open{display:flex}
   .nav-btn{text-align:left;border-radius:12px;padding:12px 14px}
+  .nav-manhua{margin:6px 0 0;padding:13px 14px;border-radius:12px;justify-content:flex-start}
   .nav-btn.active{background:var(--gradient-soft)}
   .nav-btn.active::after,.nav-indicator{display:none}
   .mobile-menu-btn{display:grid}
-  .search-box{width:min(300px,40vw)}
+  .search-box{width:min(240px,34vw)}
 
   .hero{
     height:clamp(500px,70svh,670px);
@@ -1398,28 +1595,26 @@ main{min-height:50vh;padding-bottom:64px}
 }
 
 @media (max-width:700px){
-  :root{--header-h:108px;--page-pad:16px}
+  :root{--header-h:64px;--page-pad:16px}
   body{font-size:15px}
 
   .site-header{
-    height:var(--header-h);
-    display:grid;
-    grid-template-columns:minmax(0,1fr) auto auto;
-    grid-template-rows:54px 44px;
-    gap:4px 8px;
-    padding:5px 12px 7px;
+    height:calc(var(--header-h) + env(safe-area-inset-top,0px));
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:env(safe-area-inset-top,0px) 12px 0;
     min-width:0;
   }
 
-  .brand{grid-column:1;grid-row:1;min-width:0;font-size:.95rem;letter-spacing:.1em}
+  .brand{flex:0 0 auto;min-width:0;font-size:.9rem;letter-spacing:.08em}
   .brand img{width:30px;height:30px}
-  .brand span{display:block;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .brand span{display:block;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .header-spacer{display:none}
-  #themeBtn{grid-column:2;grid-row:1}
-  #menuBtn{grid-column:3;grid-row:1}
-  .header-icon{width:38px;height:38px}
-  .search-box{display:block;grid-column:1 / -1;grid-row:2;width:100%}
-  .search-box input{height:38px}
+  .header-icon{flex:0 0 auto;width:38px;height:38px}
+  .search-box{display:block;flex:1 1 0;width:auto;min-width:0;max-width:200px;margin-left:auto}
+  .search-box input{height:36px;font-size:16px;padding:0 34px 0 14px}
+  .search-box svg{right:12px;width:17px;height:17px}
   .desktop-nav{max-height:calc(100dvh - var(--header-h));overflow-y:auto}
 
   .featured-wrap{padding-top:var(--header-h)}
@@ -1470,7 +1665,7 @@ main{min-height:50vh;padding-bottom:64px}
   .page-title{font-size:clamp(1.7rem,8vw,2.4rem)}
   .page-subtitle{font-size:.88rem}
   .genre-chips{padding:17px 0 14px;gap:7px}
-  .genre-chip{min-height:34px;padding:0 13px;font-size:.78rem}
+  .genre-chip{min-height:32px;padding:0 13px;font-size:.78rem}
   .cards-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .cards-grid .media-card{min-width:0;aspect-ratio:4/3}
   .card-top{top:7px;left:7px;right:7px}
@@ -1510,9 +1705,9 @@ main{min-height:50vh;padding-bottom:64px}
 }
 
 @media (max-width:480px){
-  :root{--header-h:106px}
-  .site-header{padding-inline:10px}
-  .brand span{max-width:115px;font-size:.84rem}
+  :root{--header-h:62px}
+  .site-header{padding-inline:10px;gap:6px}
+  .brand span{max-width:90px;font-size:.78rem}
   .hero{min-height:480px;padding-inline:13px;padding-bottom:22px}
   .featured-controls{transform:translateX(-50%) scale(.92);transform-origin:top center}
   .hero.featured-leaving .featured-controls,
@@ -1530,8 +1725,8 @@ main{min-height:50vh;padding-bottom:64px}
 }
 
 @media (max-width:360px){
-  :root{--header-h:104px}
-  .brand span{max-width:82px;font-size:.78rem}
+  :root{--header-h:60px}
+  .brand span{display:none}
   .header-icon{width:34px;height:34px}
   .featured-controls{padding:4px}
   .featured-arrow{width:31px;height:31px}
@@ -1546,7 +1741,7 @@ main{min-height:50vh;padding-bottom:64px}
 
 @media (max-height:520px) and (orientation:landscape){
   :root{--header-h:58px}
-  .site-header{height:var(--header-h);display:flex;padding:0 12px}
+  .site-header{height:calc(var(--header-h) + env(safe-area-inset-top,0px));display:flex;padding:env(safe-area-inset-top,0px) 12px 0}
   .search-box{display:block;width:min(240px,34vw)}
   .search-box input{height:38px}
   .header-spacer{display:block}
@@ -1586,6 +1781,7 @@ main{min-height:50vh;padding-bottom:64px}
     <button class="nav-btn" data-view="drama">AI Drama</button>
     <button class="nav-btn" data-view="anime">Anime</button>
     <button class="nav-btn" data-view="movie">Movies</button>
+    <a class="nav-manhua" href="manhua.html">MANHUA</a>
     <span class="nav-indicator" id="navIndicator" aria-hidden="true"></span>
   </nav>
 
@@ -1651,8 +1847,8 @@ main{min-height:50vh;padding-bottom:64px}
   </div>
 
   <div class="footer-bottom">
-    <span>© 2026 Accxs Creations. All rights reserved.</span>
-    <span class="footer-status">KARAKU streaming interface</span>
+    <span>© 2026 <a class="footer-credit" href="https://bryangablao.github.io/Accxs-Creations" target="_blank" rel="noopener noreferrer">Accxs Creations</a>. All rights reserved.</span>
+    <span class="footer-status" id="phClock" role="timer" aria-label="Philippine Standard Time">Philippine Standard Time || --:--:-- || --/--/---- || ---</span>
   </div>
 </footer>
 
@@ -2307,6 +2503,8 @@ const state = {
   currentId:null,
   season:1,
   episode:1,
+  mood:"epic",
+  genreFilter:"",
   theme:localStorage.getItem("karaku-theme") || "dark"
 };
 
@@ -2584,7 +2782,7 @@ function cardMarkup(item){
   `;
 }
 
-function railMarkup(title,items,{divider=false}={}){
+function railMarkup(title,items,{divider=false,seeMore=true}={}){
   if(!items.length) return "";
 
   const targetView = railTargetView(title);
@@ -2594,9 +2792,9 @@ function railMarkup(title,items,{divider=false}={}){
     <section class="content-section">
       <div class="section-heading">
         <h2>${esc(title)}</h2>
-        <a class="section-see-more" href="#" data-view="${esc(targetView)}" aria-label="See more ${esc(title)}">
+        ${seeMore ? `<a class="section-see-more" href="#" data-view="${esc(targetView)}" aria-label="See more ${esc(title)}">
           See more <span class="see-more-arrow" aria-hidden="true">›</span>
-        </a>
+        </a>` : ""}
       </div>
 
       <div class="rail-shell">
@@ -2777,7 +2975,7 @@ function restartFeaturedRotation(){
     featuredTimer = null;
   }
 
-  if(state.view !== "home" || state.query.trim()) return;
+  if(state.view !== "home" || state.query.trim() || state.genreFilter) return;
 
   featuredTimer = setInterval(()=>{
     if(document.hidden) return;
@@ -2824,16 +3022,287 @@ function newReleasesMarkup(items){
   `;
 }
 
+/* ---------- Home: stats, explore tiles, mood finder, recent, genre cloud ---------- */
+
+function isPlayableEpisode(episode){
+  return Boolean(episode && !episode.comingSoon && !episode.sourcePending && episode.source);
+}
+
+function homeStatsMarkup(){
+  const genres = new Set();
+  let ready = 0;
+  let soon = 0;
+
+  catalog.forEach(item=>{
+    item.genres.forEach(genre=>genres.add(genre));
+    (item.seasons || []).forEach(season=>{
+      season.episodes.forEach(episode=>{
+        if(isPlayableEpisode(episode)) ready += 1;
+        else if(episode.comingSoon) soon += 1;
+      });
+    });
+  });
+
+  const stats = [
+    [catalog.length,"Titles in the catalog"],
+    [genres.size,"Genres to explore"],
+    [ready,"Episodes ready to watch"],
+    [soon,"Episodes coming soon"]
+  ];
+
+  return `
+    <section class="content-section home-block">
+      <div class="home-inner">
+        <div class="stat-strip">
+          ${stats.map(([number,label])=>`
+            <div class="stat-tile">
+              <strong data-count="${number}">${number}</strong>
+              <span>${esc(label)}</span>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+const EXPLORE_TILES = [
+  {cat:"drama",view:"drama",title:"AI Drama",blurb:"Original AI-generated short series, 15 minutes an episode."},
+  {cat:"anime",view:"anime",title:"Anime",blurb:"Isekai, reincarnation and fantasy series, season by season."},
+  {cat:"movie",view:"movie",title:"Movies",blurb:"Feature films and full movie collections in one place."}
+];
+
+function exploreTileStyle(cat){
+  const first = catalog.find(item=>item.cat === cat);
+  const hue = Number.isFinite(Number(first?.hue)) ? Number(first.hue) : 250;
+  const fallback = `linear-gradient(135deg,hsl(${hue},38%,22%),#0a090e 80%)`;
+  const overlay = "linear-gradient(0deg,rgba(8,6,12,.92) 8%,rgba(8,6,12,.45) 60%,rgba(8,6,12,.25) 100%)";
+  const poster = first?.poster ? `,url("${cssUrl(first.poster)}")` : "";
+  return `background-image:${overlay}${poster},${fallback}`;
+}
+
+function homeExploreMarkup(){
+  return `
+    <section class="content-section home-block">
+      <div class="section-heading"><h2>Explore KARAKU</h2></div>
+      <div class="home-inner">
+        <div class="explore-grid">
+          ${EXPLORE_TILES.map(tile=>{
+            const count = catalog.filter(item=>item.cat === tile.cat).length;
+            return `
+              <a class="explore-tile" href="#" data-view="${tile.view}" style="${exploreTileStyle(tile.cat)}">
+                <span class="explore-kicker">Browse</span>
+                <h3>${esc(tile.title)}</h3>
+                <p>${esc(tile.blurb)}</p>
+                <span class="explore-count">${count} title${count === 1 ? "" : "s"} <span class="see-more-arrow" aria-hidden="true">›</span></span>
+              </a>
+            `;
+          }).join("")}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+const MOODS = [
+  {id:"epic",label:"Epic fantasy",genres:["Fantasy","Magic","Adventure","Kingdom Building"]},
+  {id:"action",label:"Action-packed",genres:["Action","Martial Arts","Mecha"]},
+  {id:"mind",label:"Mind-bending",genres:["Sci-Fi","Mystery","Time Loop","Psychological","Thriller"]},
+  {id:"romance",label:"Romantic",genres:["Romance","Harem"]},
+  {id:"chill",label:"Cozy and light",genres:["Slice of Life","Comedy","Family"]},
+  {id:"dark",label:"Dark and intense",genres:["Horror","Dark Fantasy","Post-Apocalyptic","Revenge","Crime","Drama"]}
+];
+
+function moodMatches(moodId){
+  const mood = MOODS.find(entry=>entry.id === moodId) || MOODS[0];
+
+  return catalog
+    .map(item=>({item,score:item.genres.filter(genre=>mood.genres.includes(genre)).length}))
+    .filter(entry=>entry.score > 0)
+    .sort((a,b)=>b.score - a.score)
+    .map(entry=>entry.item)
+    .slice(0,10);
+}
+
+function moodResultsMarkup(){
+  const items = moodMatches(state.mood);
+
+  return `
+    <div class="rail-shell">
+      <button class="rail-nav prev" type="button" data-rail-direction="-1" aria-label="Scroll matches left">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+      </button>
+
+      <div class="card-rail" tabindex="0" aria-label="Titles that match your mood">
+        ${items.map(cardMarkup).join("")}
+      </div>
+
+      <button class="rail-nav next" type="button" data-rail-direction="1" aria-label="Scroll matches right">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+      </button>
+    </div>
+  `;
+}
+
+function moodCountText(){
+  const mood = MOODS.find(entry=>entry.id === state.mood) || MOODS[0];
+  const total = moodMatches(state.mood).length;
+  return `${total} title${total === 1 ? "" : "s"} for "${mood.label}"`;
+}
+
+function homeMoodMarkup(){
+  return `
+    <section class="content-section home-block">
+      <div class="section-heading"><h2>Find Your Next Watch</h2></div>
+      <div class="home-inner">
+        <div class="mood-panel">
+          <p class="mood-lead">Pick a mood and the list below reorders around it, or let KARAKU choose for you.</p>
+
+          <div class="mood-row">
+            <div class="mood-chips" role="group" aria-label="Choose a mood">
+              ${MOODS.map(mood=>`
+                <button
+                  class="mood-chip ${mood.id === state.mood ? "active" : ""}"
+                  type="button"
+                  data-mood="${mood.id}"
+                  aria-pressed="${mood.id === state.mood ? "true" : "false"}"
+                >${esc(mood.label)}</button>
+              `).join("")}
+            </div>
+          </div>
+
+          <div class="mood-toolbar">
+            <div class="mood-count" id="moodCount" aria-live="polite">${esc(moodCountText())}</div>
+
+            <button class="action-btn primary mood-surprise" type="button" data-surprise>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"></path></svg>
+              Surprise Me
+            </button>
+          </div>
+          <div id="moodResults">${moodResultsMarkup()}</div>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function updateMoodResults(){
+  const box = $("#moodResults");
+  const count = $("#moodCount");
+  if(!box) return;
+
+  box.innerHTML = moodResultsMarkup();
+  if(count) count.textContent = moodCountText();
+
+  $$(".card-rail",box).forEach(rail=>{
+    rail.addEventListener("scroll",()=>updateRailControls(rail),{passive:true});
+    requestAnimationFrame(()=>updateRailControls(rail));
+  });
+}
+
+const RECENT_KEY = "karaku-recent";
+
+function getRecent(){
+  try{
+    const value = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
+    return Array.isArray(value) ? value : [];
+  }
+  catch{
+    return [];
+  }
+}
+
+function pushRecent(id){
+  try{
+    const list = [id,...getRecent().filter(entry=>entry !== id)].slice(0,10);
+    localStorage.setItem(RECENT_KEY,JSON.stringify(list));
+  }
+  catch{}
+}
+
+function recentMarkup(){
+  const items = getRecent()
+    .map(id=>catalog.find(item=>item.id === id))
+    .filter(Boolean);
+
+  return items.length ? railMarkup("Recently Viewed",items,{seeMore:false}) : "";
+}
+
+function refreshRecent(){
+  const slot = $("#recentSlot");
+  if(!slot) return;
+
+  slot.innerHTML = recentMarkup();
+
+  $$(".card-rail",slot).forEach(rail=>{
+    rail.addEventListener("scroll",()=>updateRailControls(rail),{passive:true});
+    requestAnimationFrame(()=>updateRailControls(rail));
+  });
+}
+
+function homeGenreCloudMarkup(){
+  const counts = {};
+  catalog.forEach(item=>item.genres.forEach(genre=>{ counts[genre] = (counts[genre] || 0) + 1; }));
+
+  const list = Object.entries(counts)
+    .sort((a,b)=>b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0,24);
+
+  return `
+    ${categoryDividerMarkup()}
+    <section class="content-section home-block">
+      <div class="section-heading"><h2>Browse by Genre</h2></div>
+      <div class="home-inner">
+        <div class="cloud" role="group" aria-label="Browse titles by genre">
+          ${list.map(([genre,count])=>`
+            <button class="cloud-chip" type="button" data-home-genre="${esc(genre)}">
+              ${esc(genre)}<span>${count}</span>
+            </button>
+          `).join("")}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function animateCounters(){
+  const elements = $$("[data-count]");
+  if(!elements.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const start = performance.now();
+  const duration = 900;
+
+  elements.forEach(element=>{ element.textContent = "0"; });
+
+  function step(now){
+    const progress = Math.min(1,(now - start) / duration);
+    const eased = 1 - Math.pow(1 - progress,3);
+
+    elements.forEach(element=>{
+      element.textContent = String(Math.round(Number(element.dataset.count) * eased));
+    });
+
+    if(progress < 1) requestAnimationFrame(step);
+  }
+
+  requestAnimationFrame(step);
+}
+
 function renderHome(){
   const items = catalog.filter(searchMatches);
 
   return `
     ${heroMarkup()}
+    ${homeStatsMarkup()}
+    ${homeExploreMarkup()}
     ${railMarkup("Trending Now",items.filter(item=>item.flags?.includes("t")))}
     ${newReleasesMarkup(items)}
+    ${homeMoodMarkup()}
+    <div id="recentSlot">${recentMarkup()}</div>
     ${railMarkup("AI Drama",items.filter(item=>item.cat === "drama"),{divider:true})}
     ${railMarkup("Anime",items.filter(item=>item.cat === "anime"),{divider:true})}
     ${railMarkup("Movies",items.filter(item=>item.cat === "movie"),{divider:true})}
+    ${homeGenreCloudMarkup()}
   `;
 }
 
@@ -2947,6 +3416,15 @@ function renderApp(){
       searched
     );
   }
+  else if(state.genreFilter){
+    const genreItems = catalog.filter(item=>item.genres.includes(state.genreFilter));
+
+    html = renderGrid(
+      `${state.genreFilter} Titles`,
+      `Found ${genreItems.length} title${genreItems.length === 1 ? "" : "s"} tagged ${state.genreFilter}. Choose Home to go back.`,
+      genreItems
+    );
+  }
   else if(state.view === "drama"){
     html = renderGrid(
       "AI Drama",
@@ -2990,6 +3468,7 @@ function renderApp(){
   $("#app").innerHTML = html;
   initRails();
   restartFeaturedRotation();
+  animateCounters();
 }
 
 /* =========================================================
@@ -3071,6 +3550,7 @@ function openDetails(id){
   state.currentId = item.id;
   state.season = item.seasons?.[0]?.season || 1;
   state.episode = item.seasons?.[0]?.episodes?.[0]?.episode || 1;
+  pushRecent(item.id);
 
   $("#detailsContent").innerHTML = detailsMarkup(item);
   $("#detailsModal").classList.add("open");
@@ -3099,6 +3579,7 @@ function closeDetails(){
   document.body.classList.remove("modal-open");
 
   state.currentId = null;
+  refreshRecent();
 }
 
 /* =========================================================
@@ -3439,6 +3920,7 @@ $("#menuBtn").addEventListener("click",()=>{
 
 $("#searchInput").addEventListener("input",event=>{
   state.query = event.target.value;
+  state.genreFilter = "";
   renderApp();
 });
 
@@ -3483,10 +3965,44 @@ document.addEventListener("click",event=>{
 
     state.view = viewButton.dataset.view;
     state.genre = "All";
+    state.genreFilter = "";
     state.query = "";
 
     $("#searchInput").value = "";
     $("#mainNav").classList.remove("open");
+
+    renderApp();
+    window.scrollTo({top:0,behavior:"smooth"});
+    return;
+  }
+
+  const moodButton = event.target.closest("[data-mood]");
+
+  if(moodButton){
+    state.mood = moodButton.dataset.mood;
+
+    $$(".mood-chip").forEach(chip=>{
+      const on = chip.dataset.mood === state.mood;
+      chip.classList.toggle("active",on);
+      chip.setAttribute("aria-pressed",String(on));
+    });
+
+    updateMoodResults();
+    return;
+  }
+
+  if(event.target.closest("[data-surprise]")){
+    const pick = catalog[Math.floor(Math.random() * catalog.length)];
+    if(pick) openDetails(pick.id);
+    return;
+  }
+
+  const homeGenreButton = event.target.closest("[data-home-genre]");
+
+  if(homeGenreButton){
+    state.genreFilter = homeGenreButton.dataset.homeGenre;
+    state.query = "";
+    $("#searchInput").value = "";
 
     renderApp();
     window.scrollTo({top:0,behavior:"smooth"});
@@ -3642,8 +4158,32 @@ window.addEventListener("resize",()=>{
   $$(".card-rail").forEach(updateRailControls);
 });
 
+/* Philippine Standard Time clock (Asia/Manila, UTC+8): hh:mm:ss || mm/dd/yyyy || Weekday */
+(function(){
+  const el = document.getElementById("phClock");
+  if(!el) return;
+
+  const fmt = new Intl.DateTimeFormat("en-US",{
+    timeZone:"Asia/Manila",
+    hourCycle:"h23",
+    hour:"2-digit",minute:"2-digit",second:"2-digit",
+    month:"2-digit",day:"2-digit",year:"numeric",
+    weekday:"long"
+  });
+
+  function tick(){
+    const p = {};
+    fmt.formatToParts(new Date()).forEach(part=>{ p[part.type] = part.value; });
+    el.textContent = `Philippine Standard Time || ${p.hour}:${p.minute}:${p.second} || ${p.month}/${p.day}/${p.year} || ${p.weekday}`;
+  }
+
+  tick();
+  setInterval(tick,1000);
+})();
+
 renderApp();
 requestAnimationFrame(syncNavIndicator);
 </script>
 </body>
 </html>
+</body></html>
