@@ -1399,9 +1399,10 @@ main{min-height:50vh;padding-bottom:64px}
 .explore-tile:hover{transform:translateY(-5px);border-color:var(--accent);box-shadow:var(--shadow)}
 
 .explore-kicker{color:var(--accent-2);font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
-.explore-tile h3{font-family:var(--font-display);font-weight:800;font-size:1.6rem;letter-spacing:-.02em}
-.explore-tile p{max-width:34ch;color:#dcd6e0;font-size:.84rem;line-height:1.55}
-.explore-count{margin-top:6px;color:var(--accent-2);font-size:.8rem;font-weight:700}
+.explore-kicker{color:#fff;opacity:.85}
+.explore-tile h3{font-family:var(--font-display);font-weight:800;font-size:1.6rem;letter-spacing:-.02em;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.35)}
+.explore-tile p{max-width:34ch;color:#fff;opacity:.92;font-size:.84rem;line-height:1.55}
+.explore-count{margin-top:6px;color:#fff;font-size:.8rem;font-weight:700}
 .explore-tile:hover .see-more-arrow{transform:translateX(3px)}
 
 .mood-panel{
@@ -3092,9 +3093,13 @@ const EXPLORE_TILES = [
 
 function exploreTileStyle(cat){
   const first = catalog.find(item=>item.cat === cat);
-  const hue = Number.isFinite(Number(first?.hue)) ? Number(first.hue) : 250;
-  const fallback = `linear-gradient(135deg,hsl(${hue},38%,22%),#0a090e 80%)`;
-  const overlay = "linear-gradient(0deg,rgba(8,6,12,.92) 8%,rgba(8,6,12,.45) 60%,rgba(8,6,12,.25) 100%)";
+  const themes = {
+    drama:"linear-gradient(135deg,#ff4d6d 0%,#c2185b 55%,#5b1a6e 100%)",
+    anime:"linear-gradient(135deg,#7c5cff 0%,#c2415c 60%,#ff7a45 100%)",
+    movie:"linear-gradient(135deg,#ff7a45 0%,#d94a63 55%,#7c5cff 100%)"
+  };
+  const fallback = themes[cat] || "var(--gradient)";
+  const overlay = "linear-gradient(0deg,rgba(18,8,24,.78) 6%,rgba(18,8,24,.30) 62%,rgba(18,8,24,.05) 100%)";
   const poster = first?.poster ? `,url("${cssUrl(first.poster)}")` : "";
   return `background-image:${overlay}${poster},${fallback}`;
 }
