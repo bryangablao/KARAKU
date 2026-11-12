@@ -1,107 +1,119 @@
-# 🎬 KARAKU
+# KARAKU
 
-**KARAKU** is a free website for watching videos and movies and reading stories, including anime, AI dramas, movies, and manhua, with no ads and no user accounts.
+**Stream the Synthetic Imagination.** KARAKU is a streaming-style website for AI dramas, anime, movies and a manhua reading library, all in one self-contained `index.html`. No build step, no framework, no backend.
 
-🔗 **Visit KARAKU:** https://bryangablao.github.io/KARAKU/
+Made by [Accxs Creations](https://bryangablao.github.io/Accxs-Creations).
 
----
-
-## 📖 Overview
-
-KARAKU is an entertainment website that puts different kinds of content in one place. Browse the catalog, pick something that catches your eye, and start watching or reading right away. There is nothing to sign up for and no data to hand over.
-
-## 🎯 Purpose
-
-The goal of KARAKU is to give people a simple, safe, and free place to enjoy entertainment:
-
-- **Watch and read in one place** – videos, movies, and stories on a single website
-- **No ads** – nothing interrupting what you are watching or reading
-- **No accounts needed** – open the site and start right away
-- **Privacy friendly** – no personal data is needed to use it
-- **Free for everyone** – no payment and no subscription
-
-## 📚 What You Can Enjoy
-
-- 🎌 **Anime** – animated series and shows
-- 🤖 **AI Dramas** – dramas created with AI
-- 🎥 **Movies** – films to watch anytime
-- 📖 **Manhua** – stories and comics to read
-- 📝 **Stories** – reading content alongside the videos
-
-## ✨ Features
-
-- 🆓 **100% free** – no cost to use
-- 🚫 **Ad-free experience** – no ads and no pop-ups
-- 🔒 **Safe and private** – no user accounts and no personal data required
-- 🎞️ **Streaming-style catalog** – a clean layout to browse everything easily
-- ⭐ **Featured section** – highlighted titles on the home page
-- 🔍 **Details view** – see more information about a title before you start
-- ▶️ **Built-in player** – watch directly on the website
-- 📱 **Responsive design** – works on phones, tablets, and computers
-
-## 🚀 How to Use
-
-1. Open https://bryangablao.github.io/KARAKU/
-2. Browse the catalog or the featured titles
-3. Select a title to see its details
-4. Press play to watch, or open it to read
-5. Come back any time. No login is needed.
-
-## 🌐 Compatibility
-
-KARAKU works on modern browsers, including:
-
-- Google Chrome
-- Microsoft Edge
-- Mozilla Firefox
-- Safari
-- Mobile browsers on Android and iOS
-
-## ❓ FAQ
-
-**Is KARAKU free?**
-Yes. It is completely free to use.
-
-**Are there ads?**
-No. KARAKU has no ads.
-
-**Do I need to create an account?**
-No. There are no user accounts.
-
-**Does KARAKU collect my personal data?**
-No. No account or personal data is needed to use the website.
-
-**Can I use it on my phone?**
-Yes. The website is designed to work on mobile devices as well as computers.
-
-## 🛠️ Tech Stack
-
-- **HTML** – page structure
-- **CSS** – styling and responsive layout
-- **JavaScript** – catalog, details view, and player
-- **GitHub Pages** – free hosting for the live website
-
-## 🗺️ Roadmap
-
-- [ ] Add more anime, AI dramas, movies, and manhua
-- [ ] Add search and category filters
-- [ ] Add a dark and light theme option
-- [ ] Improve the reading experience for manhua and stories
-- [ ] Add new releases and recommendations
-
-## 💬 Feedback and Suggestions
-
-Found a bug or have a title you would like to see? Open an [issue](https://github.com/bryangablao/KARAKU/issues) on this repository and share your feedback.
-
-## 🏢 About Accxs-Creations
-
-KARAKU is created by **Accxs-Creations**, a company that creates websites. Accxs-Creations designs and builds modern, easy-to-use websites and web apps, from streaming and entertainment platforms to games and social apps.
-
-## 👤 Author
-
-**Bryan Gutierrez Ablao**
-GitHub: [@bryangablao](https://github.com/bryangablao)
+> **GitHub short description** (paste into the repo's *About* box):
+> A single-file streaming-style site for AI dramas, anime, movies and manhua, with dark/light themes and no build step.
 
 ---
 
-⭐ If you enjoy KARAKU, consider giving the repository a star!
+## Sections
+
+| Section | Link | What it is |
+|---|---|---|
+| **KARAKU \| CINEMA** | `index.html` | AI Drama, Anime and Movies: featured hero, rails, search, details modal, season/episode lists and a full-screen player |
+| **KARAKU \| MANHUA** | `index.html#/manhua` | Manhua library: portrait covers, genre filters, Completed and New & Popular views, chapter lists |
+| **Terms of Service** | `index.html#/terms` | Legal page |
+| **Privacy Policy** | `index.html#/privacy` | Legal page |
+
+The legal pages' Back button returns to the page you came from (Cinema or Manhua).
+
+## Features
+
+- One file, zero dependencies. Only Google Fonts are loaded from the web.
+- Dark and light theme, saved in the browser and shared by every section.
+- Live search, genre filters and auto-rotating featured hero.
+- Details modal first, then a full-screen player. Embeds can be YouTube, Facebook, TikTok or Google Drive.
+- Fully responsive, with a mobile menu.
+- Matching Cinema and Manhua headers and footers, with a live Philippine Standard Time (UTC+8) clock.
+- Manhua and legal pages run in isolated shadow roots, so their styles and scripts never clash with the main site.
+
+## Project structure
+
+```
+index.html            the whole site (Cinema + Manhua + Terms + Privacy)
+image/
+  letter-k.png        logo / favicon
+  aidrama/            AI drama posters
+  anime/              anime posters
+  movies/             movie posters
+  manhua/             manhua covers (portrait, 2:3 works best)
+```
+
+Poster paths are set per title in the catalogs. If an image is missing, a colored fallback cover with the title is shown.
+
+## Run locally
+
+Open `index.html` in a browser. To test hash links and embeds the way they behave online, serve the folder instead:
+
+```bash
+python3 -m http.server 8000
+# then visit http://localhost:8000
+```
+
+## Deploy to GitHub Pages
+
+1. Push `index.html` and the `image/` folder to your repository.
+2. Go to **Settings, Pages**.
+3. Choose **Deploy from a branch**, select `main` and `/ (root)`, then save.
+4. Your site will be live at `https://<username>.github.io/<repo>/`.
+
+Legal pages are reachable at `/#/terms` and `/#/privacy`. Use those URLs wherever a service asks for a Terms or Privacy Policy link.
+
+## Adding content
+
+Everything is data in the `<script>` blocks of `index.html`.
+
+### Add a Cinema title
+
+Find `const catalog = [` (the first one) and copy an existing block:
+
+```js
+{
+  id:"d9",                       // unique id
+  title:"My Title",
+  cat:"drama",                   // "drama" | "anime" | "movie"
+  genres:["Romance","Drama"],
+  duration:"15 minutes per episode",
+  hue:330,                       // color of the fallback cover (0-360)
+  flags:"n",                     // "n" = New, "t" = Trending
+  releaseMonth:10, releaseYear:2026,
+  summary:"...",
+  poster:"image/aidrama/my-title.jpg",
+  seasons:[{ season:1, episodes:[ /* episode objects with a source */ ] }]
+}
+```
+
+To feature a title in the home hero, add its id to `FEATURED_IDS`.
+
+### Add a manhua
+
+Find the second `const catalog = [` (the one under **HOW TO ADD A MANHUA**) and copy a block:
+
+```js
+{
+  id:"mh13", title:"My Manhua",
+  genres:["Action","Fantasy"],
+  status:"Ongoing",              // or "Completed"
+  chapters:12,
+  chapterUrl:"https://example.com/my-manhua/chapter-{n}",   // {n} = chapter number; "" = Coming Soon
+  hue:200, flags:"nt",           // "n" = New, "t" = Trending
+  releaseMonth:10, releaseYear:2026,
+  poster:"image/manhua/my-manhua.jpg",
+  summary:"..."
+}
+```
+
+New titles stay in **New** for their release month and the month after.
+
+## Notes
+
+- Videos and chapters are hosted by third-party providers and remain subject to their own terms. KARAKU only links or embeds them.
+- The Terms and Privacy pages are practical website templates, not legal advice. Review them before launch, and update the Contact sections once you have a support email.
+- Theme and recently viewed items are stored in the browser's local storage. If storage is blocked, the site still works and simply doesn't remember them.
+
+## License
+
+© 2026 Accxs Creations. All rights reserved. Add a license file here if you want to open-source the code.
