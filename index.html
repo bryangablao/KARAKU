@@ -2063,6 +2063,16 @@ html[data-theme="light"] .brand-tag.cinema .brand-word{color:#5a4bd6}
 @media (max-width:480px){.footer-status .clk-sep{display:none}.footer-status .clk-zone{flex-basis:100%}}
 /* ---- merged sections (manhua + legal live inside shadow roots) ---- */
 #karakuSite[hidden],#manhuaHost[hidden],#legalHost[hidden]{display:none !important}
+
+/* nav stays on one row, including the KARAKU | MANHUA / CINEMA pill */
+.desktop-nav{flex-wrap:nowrap}
+.nav-btn,.nav-manhua{white-space:nowrap;flex:none}
+@media (min-width:1001px) and (max-width:1240px){
+  .nav-manhua{padding:8px 12px;letter-spacing:.08em;font-size:.76rem}
+  .search-box{width:min(150px,13vw)}
+  .nav-btn{padding-inline:9px;font-size:.8rem}
+  .site-header{gap:10px}
+}
 </style>
 </head>
 
@@ -2791,6 +2801,38 @@ body{font-size:15px}
 .footer-status .clk-sep{display:none}
 .footer-status .clk-zone{flex-basis:100%}
 }
+.series-line{margin:-4px 0 16px;color:var(--muted);font-size:.84rem;font-weight:600;letter-spacing:.02em}
+
+/* nav stays on one row, including the KARAKU | MANHUA / CINEMA pill */
+.desktop-nav{flex-wrap:nowrap}
+.nav-btn,.nav-karaku{white-space:nowrap;flex:none}
+@media (min-width:1001px) and (max-width:1240px){
+  .nav-karaku{padding:8px 12px;letter-spacing:.08em;font-size:.76rem}
+  .search-box{width:min(150px,13vw)}
+  .nav-btn{padding-inline:9px;font-size:.8rem}
+  .site-header{gap:10px}
+}
+
+/* volumes: fold / unfold list in the details panel */
+.vol-tools{display:flex;gap:8px;margin:-4px 0 14px}
+.vol-tool{height:34px;padding:0 14px;border-radius:999px;border:1px solid var(--line-strong);background:var(--surface);font-size:.74rem;font-weight:700;transition:border-color .2s ease,background .2s ease}
+.vol-tool:hover{border-color:var(--accent);background:var(--surface-2)}
+.vol-list{display:grid;gap:10px}
+.vol{border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+.vol[open]{border-color:var(--line-strong)}
+.vol summary{list-style:none;display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;user-select:none}
+.vol summary::-webkit-details-marker{display:none}
+.vol-no{flex:none;min-width:50px;height:30px;padding:0 10px;display:grid;place-items:center;border-radius:9px;background:var(--gradient);color:#fff;font-family:var(--font-display);font-weight:800;font-size:.7rem;letter-spacing:.08em}
+.vol.soon .vol-no{background:var(--surface-2);color:var(--muted)}
+.vol-name{flex:1;min-width:0;font-family:var(--font-display);font-weight:700;font-size:.92rem;overflow-wrap:anywhere}
+.vol.soon .vol-name{color:var(--muted);font-weight:600}
+.vol-count{flex:none;padding:4px 10px;border:1px solid var(--line);border-radius:999px;font-size:.7rem;font-weight:700;color:var(--muted);white-space:nowrap}
+.vol-count.live{color:var(--accent-2);border-color:rgba(255,180,84,.4)}
+.vol-chev{flex:none;width:17px;height:17px;fill:none;stroke:var(--muted);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s ease}
+.vol[open] .vol-chev{transform:rotate(180deg)}
+.vol-grid{grid-template-columns:repeat(auto-fill,minmax(52px,1fr));padding:14px 16px 16px;border-top:1px solid var(--line)}
+@media (max-width:560px){.vol-count{display:none}.vol summary{padding:12px}}
+.summary-paragraph + .summary-paragraph{margin-top:10px}
 </style>
 
 
@@ -2853,9 +2895,9 @@ body{font-size:15px}
 
     <div class="footer-col">
       <h4>Genres</h4>
-      <a href="#" data-genre-link="Action">Action</a>
+      <a href="#" data-genre-link="Apocalypse">Apocalypse</a>
+      <a href="#" data-genre-link="Survival">Survival</a>
       <a href="#" data-genre-link="Fantasy">Fantasy</a>
-      <a href="#" data-genre-link="Romance">Romance</a>
       <p>More genres coming soon.</p>
     </div>
 
@@ -5304,10 +5346,14 @@ function initManhua(host,root){
      id          unique id ("mh13")
      title       display title
      genres      list of genres (filter chips are built automatically)
-     status      "Ongoing" or "Completed"
+     status      "In Progress", "Ongoing" or "Completed"
      author      optional
      year        optional
      chapters    number of chapters you have
+     volumes / perVolume / releasedByVolume / volumeTitles
+                 optional: lists every volume (fold/unfold) with its chapter buttons
+     bookUrl     optional: the title's own book page (e.g. "manhua/MY_BOOK.html").
+                 When set, "Start Reading" and every chapter button open that page.
      chapterUrl  link pattern for chapters, {n} = chapter number
                  e.g. "https://example.com/my-manhua/chapter-{n}"
                  leave "" and chapters show as "Coming Soon"
@@ -5323,100 +5369,17 @@ const MANHUA_LABEL = "Manhua";
 
 const catalog = [
   {
-    id:"mh1", title:"Battle Through the Heavens",
-    genres:["Action","Fantasy","Martial Arts"],
-    status:"Ongoing", author:"", year:"", chapters:12, chapterUrl:"",
-    hue:18, flags:"nt", releaseMonth:10, releaseYear:2026,
-    poster:"image/manhua/Battle-Through-the-Heavens.jpg",
-    summary:"Once hailed as the clan's brightest genius, a young fighter suddenly loses his power and becomes the subject of ridicule. Just as hope fades, a mysterious presence awakens within him and points toward a path few have ever walked. Through alchemy, rival sects, and brutal trials, he sets out to reclaim his name and climb to the very top of the martial world."
-  },
-  {
-    id:"mh2", title:"Soul Land",
-    genres:["Fantasy","Action","Romance"],
-    status:"Ongoing", author:"", year:"", chapters:10, chapterUrl:"",
-    hue:200, flags:"t", releaseMonth:10, releaseYear:2026,
-    poster:"image/manhua/Soul-Land.jpg",
-    summary:"A disciple who betrays his sect's forbidden techniques is reborn into a world where people awaken spirits and battle with them. Starting with a humble, overlooked spirit, he trains at an academy, forms unbreakable bonds, and proves that talent is only the beginning of strength."
-  },
-  {
-    id:"mh3", title:"Tales of Demons and Gods",
-    genres:["Action","Fantasy","Reincarnation"],
-    status:"Ongoing", author:"", year:"", chapters:9, chapterUrl:"",
-    hue:275, flags:"nt", releaseMonth:10, releaseYear:2026,
-    poster:"image/manhua/Tales-of-Demons-and-Gods.jpg",
-    summary:"A legendary spirit master wakes up years in the past, back in the body of his teenage self, with every memory of the war that destroyed his world. Armed with knowledge of what is coming, he resolves to change the fate of his city, his friends, and the entire continent."
-  },
-  {
-    id:"mh4", title:"Martial Peak",
-    genres:["Martial Arts","Action","Adventure"],
-    status:"Ongoing", author:"", year:"", chapters:11, chapterUrl:"",
-    hue:12, flags:"t", releaseMonth:10, releaseYear:2026,
-    poster:"image/manhua/Martial-Peak.jpg",
-    summary:"A sect errand boy stumbles upon a strange black book that changes everything. With stubborn effort and a lot of luck, he pushes past every limit set for him, facing ruthless experts, hidden ruins, and a long road toward the peak of martial arts."
-  },
-  {
-    id:"mh5", title:"Perfect World",
-    genres:["Adventure","Fantasy","Action"],
-    status:"Ongoing", author:"", year:"", chapters:8, chapterUrl:"",
-    hue:155, flags:"n", releaseMonth:10, releaseYear:2026,
-    poster:"image/manhua/Perfect-World.jpg",
-    summary:"Raised in a small village, a boy grows up with legends of ancient beasts and forgotten powers. When he steps beyond its borders, he discovers a vast world of rival clans and sacred lands, and a mystery tied to his own origin."
-  },
-  {
-    id:"mh6", title:"Heaven Official's Blessing",
-    genres:["Romance","Fantasy","Drama"],
-    status:"Ongoing", author:"", year:"", chapters:10, chapterUrl:"",
-    hue:345, flags:"nt", releaseMonth:10, releaseYear:2026,
-    poster:"image/manhua/Heaven-Officials-Blessing.jpg",
-    summary:"A fallen god, exiled from the heavens for the third time, wanders the mortal world collecting scrap and hoping for a quiet life. A chance meeting with a powerful and mysterious ghost king draws him into old secrets, new dangers, and a bond that will rewrite both of their fates."
-  },
-  {
-    id:"mh7", title:"Grandmaster of Demonic Cultivation",
-    genres:["Fantasy","Mystery","Romance"],
-    status:"Completed", author:"", year:"", chapters:14, chapterUrl:"",
-    hue:260, flags:"t", releaseMonth:10, releaseYear:2026,
-    poster:"image/manhua/Grandmaster-of-Demonic-Cultivation.jpg",
-    summary:"Hated and destroyed for walking a forbidden path, a brilliant cultivator is summoned back to life years later in a stranger's body. In a world that has moved on without him, he unravels the truth behind his own death alongside a composed and unforgettable companion."
-  },
-  {
-    id:"mh8", title:"Against the Gods",
-    genres:["Action","Fantasy","Adventure"],
-    status:"Ongoing", author:"", year:"", chapters:8, chapterUrl:"",
-    hue:5, flags:"", releaseMonth:0, releaseYear:0,
-    poster:"image/manhua/Against-the-Gods.jpg",
-    summary:"Betrayed and left for dead, a young man receives a second chance through a mysterious relic. Driven by revenge and the will to protect those he loves, he grows stronger with every battle and defies a world that believes power belongs only to the chosen."
-  },
-  {
-    id:"mh9", title:"The Great Ruler",
-    genres:["Action","Fantasy","Adventure"],
-    status:"Ongoing", author:"", year:"", chapters:9, chapterUrl:"",
-    hue:225, flags:"", releaseMonth:0, releaseYear:0,
-    poster:"image/manhua/The-Great-Ruler.jpg",
-    summary:"In a land where spirit power decides everything, a gifted youth fights to restore his family's fallen glory. Through mighty tournaments and hidden dangers, he works toward a destiny far larger than anyone, including himself, expected."
-  },
-  {
-    id:"mh10", title:"The Daily Life of the Immortal King",
-    genres:["Comedy","Fantasy","Martial Arts"],
-    status:"Ongoing", author:"", year:"", chapters:10, chapterUrl:"",
-    hue:42, flags:"n", releaseMonth:10, releaseYear:2026,
-    poster:"image/manhua/Daily-Life-of-the-Immortal-King.jpg",
-    summary:"He is far stronger than anyone realizes, but all he wants is a normal school life. Every time he tries to blend in, his overwhelming power and laid-back attitude cause misunderstandings that leave everyone around him in awe."
-  },
-  {
-    id:"mh11", title:"Release That Witch",
-    genres:["Fantasy","Isekai","Adventure"],
-    status:"Ongoing", author:"", year:"", chapters:7, chapterUrl:"",
-    hue:310, flags:"", releaseMonth:0, releaseYear:0,
-    poster:"image/manhua/Release-That-Witch.jpg",
-    summary:"A modern engineer wakes up as a prince of a struggling medieval kingdom, where women with magical powers are persecuted as witches. Using science and ingenuity, he gathers them under his banner and starts building a new age."
-  },
-  {
-    id:"mh12", title:"Your Next Manhua Here",
-    genres:["Fantasy","Drama"],
-    status:"Ongoing", author:"", year:"", chapters:0, chapterUrl:"",
-    hue:175, flags:"", releaseMonth:0, releaseYear:0,
-    poster:"",
-    summary:"This is a placeholder entry showing how a title without a cover image looks. Replace it with a real manhua by editing the catalog at the top of the script."
+    id:"mh1", title:"The Gluttonous Emperor",
+    genres:["Apocalypse","Regressed","Survival","Fantasy","Action","Kingdom Building","Horror"],
+    status:"In Progress", author:"", year:"2026", chapters:7, chapterUrl:"",
+    bookUrl:"manhua/THE_GLUTTONOUS_EMPEROR.html",
+    series:"12-Volume Series (12 Chapters per Volume)", released:"10/04/2026",
+    volumes:12, perVolume:12,                 /* shows every volume as a fold/unfold list */
+    releasedByVolume:[7],                     /* chapters released in Volume I, II, III... */
+    volumeTitles:["THE BEGINNING OF THE END"],/* names; others show "Coming soon..." */
+    hue:352, flags:"n", releaseMonth:10, releaseYear:2026,
+    poster:"image/manhua/The Gluttonous Emperor.png",
+    summary:"Betrayed by the woman he loved and abandoned to die in a frozen apocalypse, Elias Veyron gets a second chance at life when he mysteriously regresses 30 days before the world's destruction.\n\nArmed with memories of the future and a mysterious system, he awakens Seven Deadly Sins: Gluttony, a terrifying ability that allows him to devour enemies, absorb their energy, and evolve beyond human limits.\n\nAs civilization collapses and mutated zombies, powerful monsters, and ruthless survivors emerge, Elias prepares to build his own empire. But the apocalypse hides secrets far greater than humanity's survival.\n\nIn a world where the strong devour the weak, he will rise from the ashes, consume everything in his path, and become the one existence even monsters will fear.\n\nThis time, he won't lose everything. This time, he will devour the world."
   }
 ];
 
@@ -5458,8 +5421,13 @@ function chapterLabel(item){
   return item.chapters ? `${item.chapters} chapter${item.chapters===1?"":"s"}` : "Coming soon";
 }
 
-function chapterLink(item,n){
+function chapterLink(item,n,v=1){
+  if(item.bookUrl) return item.bookUrl + "#v" + v + "-c" + n;
   return item.chapterUrl ? item.chapterUrl.replace("{n}",n) : "";
+}
+/* the title's own page opens in the same tab; outside links open in a new one */
+function linkTarget(item){
+  return item.bookUrl ? "" : ' target="_blank" rel="noopener noreferrer"';
 }
 
 /* Cover: colored fallback (always present) + image on top if it loads */
@@ -5536,7 +5504,7 @@ function railMarkup(title,items,{divider=false}={}){
 }
 
 /* ---------- Featured hero ---------- */
-const FEATURED_IDS = ["mh1","mh6","mh3","mh2","mh7"];
+const FEATURED_IDS = ["mh1"];
 let featuredTimer = null, featuredTransitionTimer = null, featuredTransitioning = false;
 
 function featuredItems(){
@@ -5601,7 +5569,7 @@ function heroContentMarkup(item,items){
           View Details
         </button>
         ${hasChapters && chapterLink(item,1)
-          ? `<a class="action-btn secondary" href="${esc(chapterLink(item,1))}" target="_blank" rel="noopener noreferrer">Start Reading</a>`
+          ? `<a class="action-btn secondary" href="${esc(chapterLink(item,1))}"${linkTarget(item)}>Start Reading</a>`
           : `<button class="action-btn secondary" type="button" disabled>Reading Soon</button>`}
       </div>
     </div>
@@ -5763,12 +5731,46 @@ function renderApp(){
    DETAILS MODAL
 ========================================================= */
 function summaryMarkup(item){
-  const text = String(item.summary||"").replace(/\s+/g," ").trim();
-  const collapse = text.length>330;
+  const paras = String(item.summary||"").split(/\n\s*\n/).map(t=>t.replace(/\s+/g," ").trim()).filter(Boolean);
+  const collapse = paras.join(" ").length>330;
   return `
-    <div class="summary-content ${collapse?"is-collapsed":""}"><p class="summary-paragraph">${esc(text)}</p></div>
+    <div class="summary-content ${collapse?"is-collapsed":""}">${paras.map(t=>`<p class="summary-paragraph">${esc(t)}</p>`).join("")}</div>
     ${collapse ? '<button class="summary-toggle" type="button" data-summary-toggle aria-expanded="false">See more</button>' : ""}
   `;
+}
+
+const ROMAN = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX"];
+
+function volumesMarkup(item){
+  const V = item.volumes, P = item.perVolume || 12, rel = item.releasedByVolume || [];
+  const pad = n => String(n).padStart(2,"0");
+  const list = Array.from({length:V},(_,v)=>{
+    const released = Math.min(rel[v]||0,P);
+    const name = (item.volumeTitles||[])[v] || "Coming soon...";
+    const roman = ROMAN[v] || String(v+1);
+    const buttons = Array.from({length:P},(_,c)=>{
+      const n = c+1, url = n<=released ? chapterLink(item,n,v+1) : "";
+      return url
+        ? `<a class="chapter-btn" href="${esc(url)}"${linkTarget(item)} title="Volume ${roman}, Chapter ${n}">${pad(n)}</a>`
+        : `<span class="chapter-btn soon" title="Volume ${roman}, Chapter ${n} - coming soon">${pad(n)}</span>`;
+    }).join("");
+    return `
+      <details class="vol ${released?"":"soon"}" ${v===0?"open":""}>
+        <summary>
+          <span class="vol-no">VOL ${roman}</span>
+          <span class="vol-name">Volume ${roman}: ${esc(name)}</span>
+          <span class="vol-count ${released?"live":""}">${released ? `${released} / ${P} released` : "Coming soon"}</span>
+          <svg class="vol-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+        </summary>
+        <div class="chapter-grid vol-grid">${buttons}</div>
+      </details>`;
+  }).join("");
+  return `
+    <div class="vol-tools">
+      <button type="button" class="vol-tool" data-vol-all="open">Expand all</button>
+      <button type="button" class="vol-tool" data-vol-all="close">Collapse all</button>
+    </div>
+    <div class="vol-list">${list}</div>`;
 }
 
 function detailsMarkup(item){
@@ -5779,7 +5781,7 @@ function detailsMarkup(item){
     ? Array.from({length:item.chapters},(_,i)=>{
         const n = i+1, url = chapterLink(item,n);
         return url
-          ? `<a class="chapter-btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer" title="Chapter ${n}">${n}</a>`
+          ? `<a class="chapter-btn" href="${esc(url)}"${linkTarget(item)} title="Chapter ${n}">${n}</a>`
           : `<span class="chapter-btn soon" title="Chapter ${n} - coming soon">${n}</span>`;
       }).join("")
     : "";
@@ -5799,18 +5801,21 @@ function detailsMarkup(item){
         </div>
 
         <div class="book-facts">
+          ${item.released ? `<div class="fact"><span>Released</span><strong>${esc(item.released)}</strong></div>` : ""}
           <div class="fact"><span>Chapters</span><strong>${item.chapters || "—"}</strong></div>
           <div class="fact"><span>Status</span><strong>${esc(item.status)}</strong></div>
           ${item.author ? `<div class="fact"><span>Author</span><strong>${esc(item.author)}</strong></div>` : ""}
           ${item.year ? `<div class="fact"><span>Year</span><strong>${esc(item.year)}</strong></div>` : ""}
         </div>
 
+        ${item.series ? `<p class="series-line">${esc(item.series)}</p>` : ""}
+
         <div class="book-actions">
           ${first
-            ? `<a class="action-btn primary" href="${esc(first)}" target="_blank" rel="noopener noreferrer">Start Reading</a>`
+            ? `<a class="action-btn primary" href="${esc(first)}"${linkTarget(item)}>Start Reading</a>`
             : `<span class="action-btn primary disabled">Reading Soon</span>`}
           ${last && item.chapters>1
-            ? `<a class="action-btn secondary" href="${esc(last)}" target="_blank" rel="noopener noreferrer">Latest Chapter</a>`
+            ? `<a class="action-btn secondary" href="${esc(last)}"${linkTarget(item)}>Latest Chapter</a>`
             : ""}
         </div>
       </div>
@@ -5824,13 +5829,15 @@ function detailsMarkup(item){
 
       <div class="chapters-wrap">
         <div class="season-title-row">
-          <h3>Chapters</h3>
-          <span>${esc(chapterLabel(item))}</span>
+          <h3>${item.volumes ? "Volumes &amp; Chapters" : "Chapters"}</h3>
+          <span>${item.volumes ? `${item.volumes} volumes · ${esc(chapterLabel(item))} released` : esc(chapterLabel(item))}</span>
         </div>
-        ${chapters
-          ? `<div class="chapter-grid">${chapters}</div>`
-          : '<div class="chapter-help">No chapters have been added yet. Check back soon.</div>'}
-        ${chapters && !item.chapterUrl
+        ${item.volumes
+          ? volumesMarkup(item)
+          : chapters
+            ? `<div class="chapter-grid">${chapters}</div>`
+            : '<div class="chapter-help">No chapters have been added yet. Check back soon.</div>'}
+        ${chapters && !item.chapterUrl && !item.bookUrl
           ? '<div class="chapter-help">Chapter links are not set for this title yet. Add a <code>chapterUrl</code> pattern in the catalog to make these buttons open the chapters.</div>'
           : ""}
       </div>
@@ -5912,6 +5919,13 @@ root.addEventListener("click",event=>{
 
   const genreBtn = event.target.closest("[data-genre]");
   if(genreBtn){ state.genre = genreBtn.dataset.genre; renderApp(); return; }
+
+  const volAll = event.target.closest("[data-vol-all]");
+  if(volAll){
+    const open = volAll.dataset.volAll==="open";
+    $$("#detailsContent .vol").forEach(d=>{ d.open = open; });
+    return;
+  }
 
   const toggle = event.target.closest("[data-summary-toggle]");
   if(toggle){
