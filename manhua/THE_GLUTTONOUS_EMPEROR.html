@@ -9,7 +9,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=Ma+Shan+Zheng&family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=Ma+Shan+Zheng&family=Cinzel:wght@600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
 <script>
 /* same theme as the rest of KARAKU */
@@ -227,6 +227,157 @@ main{max-width:1180px;margin:0 auto;padding:clamp(28px,4vw,48px) var(--page-pad)
   .v-count{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- hero reading buttons ---------- */
+.read-actions{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px}
+.read-btn{display:inline-flex;align-items:center;gap:9px;height:46px;padding:0 22px;border-radius:999px;border:1px solid var(--line-strong);background:var(--surface);font-weight:800;font-size:.88rem;letter-spacing:.02em;transition:transform .2s var(--ease),border-color .2s ease,filter .2s ease}
+.read-btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.read-btn:hover{transform:translateY(-2px);border-color:var(--accent)}
+.read-btn.primary{color:#fff;border:0;background:var(--gradient);box-shadow:0 12px 30px rgba(255,77,109,.35)}
+.read-btn.primary:hover{filter:brightness(1.08)}
+.read-btn .soon-tag{padding:2px 8px;border-radius:999px;border:1px solid var(--line-strong);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- prologue / epilogue rows ---------- */
+.specials{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:8px;margin-bottom:12px}
+.specials.bottom{margin:12px 0 0}
+.chapter.readable .c-title::after{content:"  ›";color:var(--accent)}
+.chapter.special .c-no{color:var(--accent)}
+
+/* ---------- reader ---------- */
+#reader{display:none;--read-size:18px}
+body.reading #reader{display:block}
+body.reading .book-hero,body.reading main{display:none}
+.progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--gradient);z-index:100;transition:width .1s linear}
+.reader-bar{position:sticky;top:var(--header-h);z-index:40;display:flex;align-items:center;gap:8px;padding:10px var(--page-pad);background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.reader-bar .grow{flex:1}
+.rbtn{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 15px;border-radius:999px;border:1px solid var(--line-strong);background:var(--surface);font-size:.78rem;font-weight:700;transition:border-color .2s ease,background .2s ease}
+.rbtn:hover{border-color:var(--accent);background:var(--surface-2)}
+.rbtn[disabled]{opacity:.45;pointer-events:none}
+.rbtn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.reader-inner{max-width:780px;margin:0 auto;padding:clamp(28px,5vw,56px) var(--page-pad) 90px}
+.r-book{text-align:center;margin-bottom:34px;padding-bottom:30px;border-bottom:1px solid var(--line)}
+.r-book .r-name{font-family:var(--font-display);font-weight:800;font-size:clamp(1.4rem,3.6vw,2rem);letter-spacing:.06em;text-transform:uppercase;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent}
+.r-book .r-genres{margin-top:10px;font-size:.72rem;font-weight:700;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;line-height:1.8}
+.r-book .r-date{margin-top:8px;font-size:.8rem;color:var(--accent-2);font-weight:700}
+.r-epigraph{margin:26px auto 0;max-width:560px;font-style:italic;color:var(--muted);line-height:1.8;font-size:.98rem}
+.r-epigraph p+p{margin-top:2px}
+.r-epigraph p:last-child{color:var(--text);font-style:normal;font-weight:600;margin-top:10px}
+.r-title-wrap{text-align:center;margin-bottom:36px}
+.r-kicker{font-size:.74rem;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-2)}
+.r-title{margin:14px 0 16px;font-family:"Cinzel",Georgia,serif;font-weight:800;font-size:clamp(1.7rem,4.6vw,2.6rem);line-height:1.18;letter-spacing:.02em;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 16px rgba(255,180,84,.25))}
+.r-title-wrap .sec-orn{margin-bottom:0}
+.r-meta{margin-top:12px;font-size:.78rem;color:var(--muted)}
+
+/* ================= story typography ================= */
+#reader{--gold:#ffcf7a;--gold-grad:linear-gradient(180deg,#fff1c9 0%,#ffc86b 55%,#ff9f43 100%);--say:#ffe2b4}
+html[data-theme="light"] #reader{--gold:#a8690a;--gold-grad:linear-gradient(180deg,#c9820f 0%,#9a560a 55%,#7a3a05 100%);--say:#7a3d00}
+.prose{font-family:"Lora",Georgia,"Times New Roman",serif;font-size:var(--read-size);line-height:1.95;color:var(--text);letter-spacing:.005em}
+.prose p{margin:.55em 0}
+.prose p.say{color:var(--say)}
+.prose p.sfx{margin:1.1em 0;text-align:center;font-family:var(--font-display);font-weight:800;font-size:.95em;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);text-shadow:0 0 18px rgba(255,77,109,.55)}
+.prose p.ding{margin:1.1em 0;text-align:center;font-family:var(--font-display);font-weight:800;letter-spacing:.34em;color:#8fa2ff;text-shadow:0 0 20px rgba(124,140,255,.7)}
+html[data-theme="light"] .prose p.ding{color:#4f3fd0;text-shadow:none}
+.prose p.dropcap::first-letter{float:left;font-family:"Cinzel",serif;font-weight:800;font-size:3.8em;line-height:.8;padding:.07em .1em 0 0;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.prose ul{list-style:none;margin:.7em 0 1em;padding:0}
+.prose li{position:relative;padding-left:1.5em;margin:.25em 0;color:var(--muted)}
+.prose li::before{content:"";position:absolute;left:.3em;top:.78em;width:6px;height:6px;background:var(--gold);transform:rotate(45deg)}
+.prose h4{display:flex;align-items:center;gap:10px;margin:2em 0 .6em;font-family:"Cinzel",serif;font-size:.85em;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.prose h4::before{content:"";flex:none;width:7px;height:7px;background:currentColor;transform:rotate(45deg)}
+.prose h4::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,currentColor,transparent);opacity:.5}
+.prose .tag{display:flex;align-items:center;justify-content:center;gap:12px;margin:1.3em 0 .8em;font-family:var(--font-display);font-size:.72em;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+.prose .tag::before,.prose .tag::after{content:"";width:38px;height:1px;background:currentColor;opacity:.55}
+
+/* ornaments */
+.ln{flex:1;height:1px;min-width:12px;background:linear-gradient(90deg,transparent,currentColor)}
+.ln.r{background:linear-gradient(270deg,transparent,currentColor)}
+.zig{flex:none;width:44px;height:14px}
+.zig.r,.orn.r{transform:scaleX(-1)}
+.dm{flex:none;width:8px;height:8px;background:currentColor;transform:rotate(45deg);box-shadow:0 0 10px currentColor}
+.dm.sm{width:5px;height:5px}
+.wing{flex:none;width:92px;height:28px}
+.wheat{flex:none;width:24px;height:38px}
+.wheat.l{transform:rotate(-16deg)}
+.wheat.r{transform:rotate(16deg)}
+.sec-orn,.fleuron,.sys-foot,.sys-head,.te-top,.te-bot{display:flex;align-items:center;gap:10px}
+
+/* chapter / section headings */
+.sec{margin:3.4em 0 1.6em;text-align:center}
+.sec-orn{max-width:380px;margin:0 auto;color:var(--gold)}
+.sec h3{margin:.6em 0 0;font-family:"Cinzel",Georgia,serif;font-weight:700;font-size:1.6em;line-height:1.25;letter-spacing:.03em;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fleuron{max-width:280px;margin:2.6em auto;color:var(--gold)}
+
+/* the end */
+.the-end{margin:4.5em 0 1em;text-align:center;color:var(--gold)}
+.te-top{max-width:560px;margin:0 auto}
+.te-top .wing{width:120px;height:36px}
+.te-text{margin:16px 0 6px;font-family:"Cinzel",serif;font-weight:800;font-size:1.55em;letter-spacing:.34em;padding-left:.34em;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(255,180,84,.4))}
+.te-sub{font-family:"Lora",serif;font-style:italic;font-size:.9em;letter-spacing:.08em;color:var(--muted)}
+.te-bot{justify-content:center;gap:16px;margin-top:14px}
+.te-bot .wheat{width:30px;height:46px}
+
+/* ================= system windows ================= */
+.sys{--oc:#9bb0ff;--oc-rgb:124,140,255;position:relative;margin:1.9em 0;padding:22px 26px 16px;border-radius:16px;font-family:var(--font-body);font-size:.88em;line-height:1.6;color:var(--text);
+  border:1px solid rgba(var(--oc-rgb),.42);
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0 1px,transparent 1px 4px),linear-gradient(165deg,rgba(var(--oc-rgb),.17),rgba(var(--oc-rgb),.04) 60%,rgba(var(--oc-rgb),.1));
+  box-shadow:0 0 0 1px rgba(var(--oc-rgb),.08) inset,0 0 30px rgba(var(--oc-rgb),.2),0 18px 38px rgba(0,0,0,.28)}
+.sys.red{--oc:#ff8da1;--oc-rgb:255,77,109}
+.sys.gold{--oc:#ffcf7a;--oc-rgb:255,180,84}
+html[data-theme="light"] .sys{--oc:#4f3fd0;--oc-rgb:90,75,214;background:linear-gradient(165deg,rgba(var(--oc-rgb),.1),rgba(var(--oc-rgb),.02) 60%,rgba(var(--oc-rgb),.06));box-shadow:0 0 0 1px rgba(var(--oc-rgb),.08) inset,0 12px 30px rgba(60,50,120,.14)}
+html[data-theme="light"] .sys.red{--oc:#c42a49;--oc-rgb:196,42,73}
+html[data-theme="light"] .sys.gold{--oc:#a8690a;--oc-rgb:184,115,10}
+.sys::before{content:"";position:absolute;left:22px;right:22px;top:-1px;height:2px;background:linear-gradient(90deg,transparent,var(--oc),transparent);background-size:220% 100%;animation:sysSweep 6s linear infinite;opacity:.9}
+.sys::after{content:"";position:absolute;left:22px;right:22px;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--oc),transparent);opacity:.6}
+@keyframes sysSweep{from{background-position:120% 0}to{background-position:-120% 0}}
+.cn{position:absolute;width:18px;height:18px;border:2px solid var(--oc);opacity:.95;pointer-events:none}
+.cn::after{content:"";position:absolute;width:6px;height:6px;background:var(--oc);transform:rotate(45deg);box-shadow:0 0 8px var(--oc)}
+.cn.tl{top:-2px;left:-2px;border-right:0;border-bottom:0;border-top-left-radius:16px}
+.cn.tl::after{top:-4px;left:-4px}
+.cn.tr{top:-2px;right:-2px;border-left:0;border-bottom:0;border-top-right-radius:16px}
+.cn.tr::after{top:-4px;right:-4px}
+.cn.bl{bottom:-2px;left:-2px;border-right:0;border-top:0;border-bottom-left-radius:16px}
+.cn.bl::after{bottom:-4px;left:-4px}
+.cn.br{bottom:-2px;right:-2px;border-left:0;border-top:0;border-bottom-right-radius:16px}
+.cn.br::after{bottom:-4px;right:-4px}
+.sys-head{color:var(--oc);margin:0 0 8px;justify-content:center}
+.sys-title{flex:0 1 auto;min-width:0;max-width:68%;text-align:center;font-family:"Cinzel",var(--font-display),serif;font-weight:700;font-size:1.14em;line-height:1.3;letter-spacing:.14em;text-transform:uppercase;color:var(--oc);text-shadow:0 0 20px rgba(var(--oc-rgb),.65)}
+html[data-theme="light"] .sys-title{text-shadow:none}
+.sys-tagline{margin:-2px 0 12px;text-align:center;font-size:.78em;font-weight:700;letter-spacing:.34em;text-transform:uppercase;color:var(--text);opacity:.85}
+.sys-sub{display:flex;align-items:center;gap:12px;margin:1.2em 0 .5em;font-family:"Cinzel",serif;font-weight:700;font-size:.84em;letter-spacing:.2em;text-transform:uppercase;color:var(--oc)}
+.sys-sub::before{content:"";flex:none;width:6px;height:6px;background:currentColor;transform:rotate(45deg)}
+.sys-sub::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,currentColor,transparent);opacity:.6}
+.sys p{margin:.32em 0}
+.sys .tag{justify-content:center;margin:.1em 0 .8em;color:var(--oc);letter-spacing:.2em}
+.kvs{display:grid;grid-template-columns:minmax(0,max-content) 1fr;gap:6px 20px;margin:.45em 0}
+.kvs .k{display:flex;align-items:baseline;gap:8px;font-size:.8em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--oc)}
+.kvs .k::before{content:"";flex:none;width:5px;height:5px;background:currentColor;transform:rotate(45deg);translate:0 -1px}
+.kvs .v{color:var(--text)}
+.kv-label{display:flex;align-items:center;gap:10px;margin:1em 0 .3em;font-size:.76em;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--oc)}
+.kv-label::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(var(--oc-rgb),.65),transparent)}
+.tbl-wrap{overflow-x:auto;margin:.9em 0}
+.sys table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid rgba(var(--oc-rgb),.38);border-radius:10px;overflow:hidden}
+.sys th{padding:9px 14px;text-align:left;font-size:.74em;letter-spacing:.18em;text-transform:uppercase;background:rgba(var(--oc-rgb),.2);color:var(--oc)}
+.sys td{padding:8px 14px;border-top:1px solid rgba(var(--oc-rgb),.2)}
+.sys tbody tr:nth-child(even){background:rgba(var(--oc-rgb),.07)}
+.sys-foot{margin:14px auto 0;max-width:320px;color:var(--oc);opacity:.85}
+@media (max-width:600px){
+  .sys{padding:20px 15px 13px}
+  .sys-head .ln,.sys-head .zig{display:none}
+  .sys-head{gap:6px}
+  .wing{width:40px;height:16px}
+  .sys-head .wheat{width:17px;height:28px}
+  .sys-title{max-width:none;font-size:.92em;letter-spacing:.08em;overflow-wrap:anywhere}
+  .kvs{grid-template-columns:1fr;gap:1px 0}
+  .kvs .v{padding:0 0 6px 13px}
+  .te-text{font-size:1.2em;letter-spacing:.22em}
+  .te-top .wing{width:70px;height:24px}
+}
+.r-nav{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;margin-top:56px;padding-top:26px;border-top:1px solid var(--line)}
+.r-soon{padding:46px 20px;text-align:center;border:1px dashed var(--line-strong);border-radius:16px;color:var(--muted);line-height:1.8}
+.r-soon strong{display:block;font-family:var(--font-display);font-size:1.3rem;color:var(--text);margin-bottom:6px}
+@media (max-width:760px){
+  .reader-bar{padding:8px 12px;gap:6px}
+  .rbtn{padding:0 11px}.rbtn .lbl{display:none}
+}
 </style>
 </head>
 <body>
@@ -266,6 +417,15 @@ main{max-width:1180px;margin:0 auto;padding:clamp(28px,4vw,48px) var(--page-pad)
         <span class="cat">Fantasy</span><span class="cat">Action</span><span class="cat">Kingdom Building</span><span class="cat">Horror</span>
       </div>
 
+      <div class="read-actions">
+        <a class="read-btn primary" href="#prologue" data-read="prologue">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 012-2h12v16H6a2 2 0 00-2 2V5z"></path><path d="M18 19v2H6"></path></svg>
+          Prologue
+        </a>
+        <a class="read-btn" href="#v1-c1" data-read="v1-c1">Start Reading</a>
+        <a class="read-btn" href="#epilogue" data-read="epilogue">Epilogue <span class="soon-tag">Soon</span></a>
+      </div>
+
       <div class="facts">
         <div class="fact"><span>Date Released</span><strong>10/04/2026</strong></div>
         <div class="fact"><span>Status</span><strong>In Progress</strong></div>
@@ -298,8 +458,28 @@ main{max-width:1180px;margin:0 auto;padding:clamp(28px,4vw,48px) var(--page-pad)
     </div>
   </div>
 
+  <div class="specials" id="specTop"></div>
   <div id="volumes"></div>
+  <div class="specials bottom" id="specBottom"></div>
 </main>
+
+
+<div class="progress" id="progress"></div>
+<section id="reader" aria-label="Reader">
+  <div class="reader-bar">
+    <button class="rbtn" id="rBack" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg><span class="lbl">Back to Book</span></button>
+    <span class="grow"></span>
+    <button class="rbtn" id="rPrev" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg><span class="lbl">Previous</span></button>
+    <button class="rbtn" id="rNext" type="button"><span class="lbl">Next</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+    <button class="rbtn" id="fMinus" type="button" aria-label="Smaller text">A−</button>
+    <button class="rbtn" id="fPlus" type="button" aria-label="Larger text">A+</button>
+  </div>
+  <article class="reader-inner">
+    <div id="rHead"></div>
+    <div class="prose" id="rBody"></div>
+    <nav class="r-nav" id="rNav"></nav>
+  </article>
+</section>
 
 <footer class="site-footer">
   <div>© 2026 <a href="https://bryangablao.github.io/Accxs-Creations" target="_blank" rel="noopener noreferrer">Accxs Creations</a>. All rights reserved.</div>
@@ -309,6 +489,2376 @@ main{max-width:1180px;margin:0 auto;padding:clamp(28px,4vw,48px) var(--page-pad)
     <a href="../index.html#/terms">Terms of Service</a>
   </div>
 </footer>
+
+<script type="text/plain" id="src-prologue">
+## The End of a Miserable World
+Snow.
+That was the only thing Elias Veyron could see.
+Endless, merciless, suffocating snow.
+It covered the roads, buried the buildings, swallowed entire neighborhoods, and turned once-thriving cities into frozen graveyards. The world that humanity had known was gone.
+There were no more bustling shopping malls, no more crowded restaurants, no more comfortable homes filled with laughter.
+There was only survival.
+And death.
+Elias sat inside what remained of an abandoned convenience store, his back leaning against a broken refrigerator. His clothes were torn, his boots were barely holding together, and his hands trembled uncontrollably.
+His lips were cracked. His cheeks were sunken. His body had become frighteningly thin.
+A small bottle of water rested beside him.
+It contained barely enough for one more sip.
+He stared at it for several seconds before reluctantly picking it up.
+One sip.
+That was all he allowed himself.
+He had not eaten anything substantial in four days.
+Outside, the wind howled through the empty streets. The temperature had dropped to a level where exposed skin could freeze within minutes.
+The snow apocalypse had been going on for months.
+It had started with something humanity initially dismissed as an unusually severe winter.
+Meteorologists reported abnormal atmospheric disturbances. Countries issued weather warnings. Governments advised people to remain indoors.
+Then the temperature began dropping.
+And it never stopped.
+At first, the temperature reached negative twenty degrees Celsius.
+Then negative forty.
+Then negative sixty.
+Entire power grids collapsed. Transportation systems stopped functioning. Water pipelines froze. Food distribution disappeared.
+Cities became isolated.
+Governments struggled to maintain order.
+Millions died from exposure, starvation, accidents, and violence.
+But the freezing temperatures were only the beginning.
+The dead began returning.
+People who died from the cold, starvation, accidents, and other disasters occasionally reanimated. Their bodies twisted into unnatural forms, their eyes turned bloodshot, and their instincts became nothing more than an insatiable desire to consume living flesh.
+Zombies.
+The world had become a frozen hell populated by the walking dead.
+Elias closed his eyes.
+He remembered when everything had started.
+He remembered how much he had sacrificed.
+He remembered the countless dangerous expeditions he had undertaken just to survive.
+And most painfully, he remembered the people who had taken everything from him.
+His wife.
+And the man she had chosen over him.
+## The Price of Survival
+Three years earlier, Elias Veyron had been an ordinary man.
+He was not particularly wealthy.
+He was not famous.
+He did not possess extraordinary physical abilities.
+He was simply an ordinary individual who worked hard, saved money, and tried to build a comfortable future.
+He had a decent job, a small house, a vehicle, and a modest amount of savings.
+He believed that if he worked hard enough, he could eventually live peacefully.
+Then the first disaster happened.
+It was an unexpected global catastrophe.
+Within a matter of weeks, civilization began collapsing.
+At first, Elias did what everyone else did.
+He went to grocery stores.
+He purchased canned food, bottled water, rice, instant noodles, medicine, batteries, flashlights, hygiene products, and other necessities.
+But the situation deteriorated faster than anyone expected.
+Supermarkets were emptied.
+Gas stations were abandoned.
+Pharmacies were looted.
+People began fighting over basic necessities.
+And as the number of available supplies dwindled, the outside world became increasingly dangerous.
+Elias quickly realized that simply staying inside his house would eventually get him killed.
+He needed more supplies.
+Much more.
+So he started taking risks.
+He drove through deserted highways, abandoned commercial districts, and dangerous residential neighborhoods in search of anything useful.
+Sometimes he traveled alone.
+Sometimes he joined temporary survivor groups.
+He visited warehouses, distribution centers, supermarkets, hardware stores, medical supply facilities, and abandoned commercial buildings.
+Every expedition was dangerous.
+There were occasions when he encountered desperate survivors who were willing to kill for a few bottles of water.
+There were times when he had to hide inside storage rooms while armed gangs searched the buildings.
+Once, he narrowly escaped a group of looters after his vehicle became stuck in a barricaded road.
+Another time, he suffered a deep wound on his arm while escaping from a building surrounded by infected individuals.
+He nearly died during that expedition.
+But he survived.
+And he continued.
+He learned how to ration food, repair generators, maintain vehicles, preserve supplies, reinforce doors, and defend himself.
+He gradually accumulated valuable resources.
+His savings were eventually spent on survival equipment.
+His investments were liquidated.
+His remaining properties were sold.
+Every cent he earned was redirected toward preparing for the next disaster.
+He acquired:
+- Multiple warehouses filled with food and necessities.
+- Several vehicles suitable for dangerous expeditions.
+- Fuel reserves and portable generators.
+- Medical supplies and equipment.
+- Construction materials.
+- Water purification systems.
+- Communication equipment.
+- Tools, protective equipment, and weapons.
+- Various emergency supplies that he carefully organized.
+He even managed to secure an underground shelter.
+It was not luxurious, but it was considerably safer than most surviving locations.
+He reinforced its entrance, installed generators, built storage rooms, and established an independent water system.
+For years, he survived through preparation, determination, and an almost obsessive refusal to give up.
+He had lost friends.
+He had witnessed countless deaths.
+He had experienced hunger, exhaustion, fear, and loneliness.
+But he had survived.
+And throughout all of it, he believed he had someone waiting for him.
+His wife.
+Her name was Vanessa.
+They had been married before the apocalypse.
+Elias had loved her deeply.
+Even when the world became dangerous, he continued prioritizing her safety.
+Whenever he returned from an expedition, he made sure she had enough food.
+Whenever he acquired medicine, he reserved some for her.
+Whenever he encountered something valuable, he thought about whether she might need it.
+He trusted her.
+He believed they were building a future together.
+Unfortunately, he had made one terrible mistake.
+He trusted the wrong person.
+## The Woman Who Stole His World
+Elias eventually noticed that Vanessa had changed.
+She became increasingly distant.
+She frequently complained about their living conditions.
+She criticized his decisions.
+She disliked the fact that he spent most of his time managing supplies and maintaining their shelter.
+Sometimes, she would accuse him of being overly controlling.
+Other times, she would complain that their life was miserable.
+Elias tried to understand.
+He knew survival was difficult.
+He knew the apocalypse had changed everyone.
+He thought perhaps she was simply exhausted.
+He never considered that she was already planning to leave him.
+Then there was another man.
+His name was Marcus.
+Marcus was a member of a survivor group that Elias had occasionally encountered during supply expeditions.
+Unlike Elias, Marcus was physically imposing, charismatic, and extremely aggressive.
+He was the kind of man who believed that strength gave him the right to take whatever he wanted.
+He had gathered several survivors under his command.
+Over time, his group developed into a dangerous gang.
+They controlled several abandoned buildings, raided supply locations, and extorted other survivors.
+Elias disliked Marcus.
+He considered him reckless and untrustworthy.
+But Vanessa seemed to think otherwise.
+She frequently mentioned him.
+She praised his confidence.
+She compared Elias to him.
+Eventually, Elias discovered the truth.
+His wife had been secretly communicating with Marcus.
+And their relationship was not merely friendship.
+They were together.
+The realization shattered him.
+But the betrayal did not end there.
+One evening, Elias returned from a supply expedition.
+He had spent nearly two days traveling through dangerous territory to acquire medical equipment, canned food, and fuel.
+He was exhausted.
+His vehicle was damaged, and he had barely escaped an encounter with a group of armed looters.
+All he wanted was to return to the shelter.
+Instead, he found several armed men waiting for him.
+Marcus stood in the middle of the room.
+Vanessa stood beside him.
+Elias immediately understood that something was wrong.
+"What's going on?"
+Marcus smiled.
+"Welcome home, Elias."
+Elias looked at Vanessa.
+"Who are these people?"
+She avoided his eyes.
+Marcus casually approached a nearby table and picked up a document.
+"Your wife and I have been discussing something."
+Elias frowned.
+"Discussing what?"
+"Your belongings."
+Silence.
+Marcus placed the document on the table.
+"We've decided that you don't need all these supplies anymore."
+Elias stared at him.
+Then he looked at Vanessa.
+"What's he talking about?"
+Vanessa finally raised her head.
+Her expression was cold.
+"Don't make this difficult."
+Elias felt something tighten inside his chest.
+"Vanessa?"
+She sighed.
+"I don't want to spend the rest of my life living like this."
+"Living like what?"
+"Like a prisoner! Always counting food, always worrying about supplies, always listening to your stupid survival plans!"
+Elias stared at her.
+He could barely believe what he was hearing.
+"Everything I did was for us."
+"That's your problem, Elias. You always think you're doing something for everyone."
+He looked at the armed men.
+Then at Marcus.
+Then back at his wife.
+"You're stealing everything?"
+Marcus laughed.
+"Stealing? That's an ugly word. Think of it as a transfer of ownership."
+Elias clenched his fists.
+"Those supplies took years to gather."
+"Then you should have guarded them better."
+Marcus gestured toward his men.
+They began unloading the storage containers.
+Food.
+Water.
+Medical supplies.
+Fuel.
+Tools.
+Weapons.
+Everything.
+They even took his vehicles.
+His emergency equipment.
+His spare generators.
+His remaining valuables.
+His wife had given Marcus access to everything.
+She knew where the supplies were stored.
+She knew where the keys were hidden.
+She knew the security arrangements.
+She knew every detail because Elias had trusted her enough to share everything.
+And now she was using that knowledge against him.
+"Vanessa..."
+His voice became quieter.
+"After everything?"
+She looked away.
+"I've already made my decision."
+Elias felt something inside him break.
+He had risked his life countless times to protect her.
+He had endured hunger so she could eat.
+He had taken dangerous expeditions so she would have medicine.
+He had sacrificed almost everything to build a safe future.
+And she had given it all away.
+Not because she was forced.
+Not because she had no choice.
+But because she wanted someone else.
+Marcus approached him.
+"You're not going to cause trouble, are you?"
+Elias remained silent.
+One of the gang members shoved him.
+He stumbled backward.
+Another struck him in the stomach.
+He fell to his knees.
+Vanessa watched.
+She did not intervene.
+She did not even look concerned.
+Marcus crouched in front of him.
+"Here's some advice. Stop pretending you're important. You're just another survivor."
+Elias looked up.
+For the first time in his life, he hated someone with every fiber of his being.
+Not because Marcus had taken his possessions.
+But because he had taken everything Elias had worked for while standing beside the woman who had promised to stay with him.
+Marcus eventually ordered his men to throw Elias outside.
+They left him with a few personal belongings and the clothes he was wearing.
+The shelter was no longer his.
+The warehouses were no longer his.
+His vehicles were gone.
+His supplies were gone.
+His wife was gone.
+Everything was gone.
+## The Man Who Had Nothing Left
+The following weeks were the worst period of Elias's life.
+He attempted to find shelter.
+He searched abandoned buildings.
+He approached several survivor settlements.
+But nobody wanted a man without supplies.
+Without resources, he had nothing to offer.
+He tried working for other survivors in exchange for food.
+Sometimes he repaired generators.
+Sometimes he helped reinforce barricades.
+Sometimes he carried supplies.
+But the world was becoming increasingly hostile.
+The gangs controlled most of the valuable locations.
+The remaining settlements were overcrowded.
+Food was scarce.
+Medical supplies were almost nonexistent.
+And the weather was becoming unbearable.
+One afternoon, Elias encountered a group of survivors searching an abandoned shopping center.
+He recognized one of them.
+It was a man he had previously helped during a supply expedition.
+Elias approached him.
+"Hey. Do you remember me?"
+The man looked uncomfortable.
+"Elias?"
+"Yeah. I need some help. Just somewhere to stay for a few days. I can work. I can repair equipment or help with supplies."
+The man hesitated.
+Then he shook his head.
+"Sorry."
+"Please. I don't have anywhere else to go."
+"I said I'm sorry."
+The group continued walking.
+Elias remained standing in the snow.
+He watched them disappear.
+He did not chase them.
+He did not shout.
+He simply lowered his head.
+That night, he slept inside an abandoned bus.
+The following morning, he woke up with a fever.
+His remaining food was gone.
+His body was weakening.
+And the temperature continued dropping.
+Days passed.
+Then weeks.
+Elias became a shadow of the man he had once been.
+His hands were permanently bruised.
+His clothes were filthy.
+His body had become painfully thin.
+He began suffering from frostbite.
+Sometimes, he hallucinated.
+He remembered the shelter.
+The warehouses.
+The warm kitchen.
+The generators.
+The neatly organized shelves filled with supplies.
+He remembered the peaceful moments before everything collapsed.
+He remembered Vanessa.
+Sometimes, he wondered whether she regretted what she had done.
+But he knew the answer.
+She probably did not.
+She had chosen Marcus.
+And Marcus had everything Elias had worked for.
+The man had eventually established a powerful gang.
+He controlled resources, weapons, vehicles, and territory.
+He had become one of the most feared figures in their region.
+Vanessa lived comfortably beside him.
+Meanwhile, Elias was slowly dying.
+One evening, Elias heard distant gunshots.
+He was too weak to investigate.
+He curled up inside a partially collapsed building and covered himself with an old blanket.
+His breathing became shallow.
+His vision blurred.
+He could barely move his fingers.
+The snow outside was covering the entrance.
+He knew he would not survive another night.
+He looked toward the ceiling.
+"Is this really how it ends?"
+His voice was barely audible.
+He laughed weakly.
+"What a joke..."
+He had survived the apocalypse.
+He had survived starvation, violence, dangerous expeditions, and countless near-death experiences.
+Yet he was going to die because he had trusted someone.
+His eyes slowly closed.
+He felt the cold creeping through his body.
+His heartbeat weakened.
+His breathing became slower.
+And just when he thought everything was finally over...
+A strange mechanical sound echoed inside his head.
+DING!
+Elias's eyes twitched.
+A blue translucent window appeared before his fading consciousness.
+::: sys
+## UNKNOWN SYSTEM
+## WELCOME, RETURNER!
+Congratulations!
+You have successfully completed an EX-grade unique scenario.
+Your consciousness has been successfully transferred to the past.
+Current Date: June 1
+Apocalypse Countdown: 30 Days
+Regression Status: Successful
+Memory Retention: 100%
+:::
+::: sys
+## NEW TITLE ACQUIRED
+## [The One Who Lost Everything]
+Title Description:
+An individual who experienced the ultimate betrayal and survived until the end of the world.
+Increased mental resistance.
+Increased determination when facing desperate situations.
+Unique ability selection unlocked.
+:::
+Elias stared at the notification.
+"An ability selection?"
+Another window appeared.
+::: sys
+## SPECIAL REWARD
+Three exclusive abilities have been made available.
+Select ONE ability.
+Your selection will become permanent.
+:::
+Three enormous panels appeared before him.
+Each contained an extraordinary power.
+## The Three Divine Abilities
+::: sys
+## FIRST OPTION: 10 COMMANDMENTS – HOPE
+~ DIVINE CLASS · SUPPORT / DEFENSE
+Name: 10 Commandments: HOPE
+Description:
+A divine ability powered by hope. The user gains strength whenever they protect others or refuse to surrender.
+Abilities:
+Hope's Light: Heals minor wounds and restores stamina.
+Unbreakable Will: Resists fear, corruption, and mental attacks.
+Divine Protection: Creates a protective barrier.
+Last Hope: Temporarily increases all physical abilities when near death.
+Miracle Revival: Once in a while, saves the user from a fatal attack.
+Weakness:
+Its power decreases when the user loses hope.
+System Evaluation:
+An exceptional ability suited for protecting allies, surviving dangerous encounters, and supporting a group.
+However, its effectiveness is strongly connected to the user's mental and emotional state.
+:::
+::: sys
+## SECOND OPTION: TIER X – SUMMONER
+~ EXTREMELY RARE · SUMMONING / COMMAND
+Name: TIER X: SUMMONER
+Description:
+An extremely rare ability that allows the user to summon creatures and monsters to fight alongside them.
+Abilities:
+Zombie Summon: Summons basic zombies.
+Monster Contract: Summons stronger monsters after defeating them.
+Elite Summon: Summons elite creatures.
+Army Formation: Commands multiple summoned creatures.
+King's Summoning: Temporarily summons a powerful Mutant Zombie King.
+Weakness:
+Powerful summons consume enormous amounts of mana.
+System Evaluation:
+An exceptional ability for building an army, controlling battlefields, and overwhelming enemies through numbers.
+However, stronger summons require increasingly enormous amounts of mana.
+:::
+::: sys
+## THIRD OPTION: 7 DEADLY SINS – GLUTTONY
+~ FORBIDDEN / UNKNOWN · GROWTH TYPE
+Name: 7 DEADLY SINS: GLUTTONY
+Description:
+A terrifying ability that allows the user to devour enemies, absorb their energy, and grow stronger.
+Unlike ordinary abilities, Gluttony possesses an abnormal evolutionary potential.
+Its growth has no clearly established upper limit.
+Abilities:
+Devour: Eats defeated enemies to gain energy.
+Energy Absorption: Absorbs energy from attacks.
+Predator's Growth: Gains permanent physical improvements through consumption.
+Skill Consumption: Has a chance to acquire an ability from a defeated enemy.
+Endless Hunger: Temporarily enters an enhanced state with increased strength, speed, and regeneration.
+Weakness:
+The user must continuously consume energy.
+Excessive hunger can cause loss of control.
+System Evaluation:
+A highly unstable ability with extraordinary evolutionary potential.
+Its early-stage development is extremely difficult.
+The user may experience abnormal hunger, energy depletion, and temporary loss of rational judgment.
+However, its potential for permanent growth is considered exceptionally high.
+:::
+::: sys warn
+## SYSTEM WARNING
+This ability has an unknown evolutionary ceiling.
+The system cannot accurately calculate its maximum potential.
+The user is advised to exercise extreme caution.
+:::
+## The Decision
+Elias carefully read all three descriptions.
+He did not immediately choose.
+Instead, he sat on the edge of his bed and considered each option.
+"Hope..."
+He looked at the first panel.
+It was undoubtedly a powerful ability.
+Healing, protection, resistance, increased physical abilities, and even revival.
+In a world filled with disasters and zombies, those abilities would be incredibly useful.
+But there was a problem.
+Its strength depended on hope.
+Elias had already experienced what happened when he placed his hope in other people.
+He had once believed that love, trust, and loyalty would be enough to protect his future.
+He had been wrong.
+He shook his head.
+"Not bad. But I don't want my strength depending on something I might lose."
+He moved his attention toward the second option.
+"Summoner..."
+This one was considerably more interesting.
+An army.
+The ability to summon zombies and monsters.
+The possibility of commanding powerful creatures.
+If he could eventually obtain elite monsters and powerful commanders, he could build an entire army without relying entirely on human survivors.
+It was particularly useful for defending his future bunker.
+However, there was a major concern.
+Mana consumption.
+If his summoned creatures required enormous amounts of mana, he would eventually become dependent on a limited resource.
+He also wondered whether he could maintain his army during extended battles.
+"An army is useful, but I don't want to become a walking mana battery."
+His eyes shifted toward the third option.
+Gluttony.
+The description was terrifying.
+Devouring enemies.
+Absorbing energy.
+Consuming abilities.
+Permanent physical improvements.
+An endless hunger that could potentially make him lose control.
+It was dangerous.
+Extremely dangerous.
+But Elias understood something.
+The other two abilities provided powerful tools.
+Gluttony provided something different.
+Growth.
+He could become stronger through the enemies he defeated.
+He could potentially acquire abilities from creatures that possessed unique powers.
+He could absorb energy from attacks.
+His body could continuously evolve.
+And most importantly...
+His growth would not depend entirely on equipment, other people, or an external army.
+He could become his own greatest weapon.
+He imagined the future.
+A world filled with zombies.
+Stronger mutants.
+Monsters with elemental abilities.
+Creatures with extraordinary physical characteristics.
+And perhaps enemies that ordinary humans could never defeat.
+What would happen if he could consume them?
+What if he could absorb their abilities?
+What if he could devour an entire battlefield's worth of powerful enemies?
+A small smile appeared on his face.
+"The hunger problem is annoying."
+He rubbed his chin.
+"But everything else..."
+His eyes narrowed.
+"This has the greatest potential."
+He remembered his previous life.
+He remembered how helpless he had been when Marcus and his gang took everything.
+He remembered how weak he was when he had nothing left.
+Never again.
+He raised his hand toward the third panel.
+"I choose..."
+"7 DEADLY SINS: GLUTTONY."
+DING!
+::: sys
+## ABILITY SELECTION CONFIRMED
+## SUCCESSFULLY ACQUIRED
+7 DEADLY SINS: GLUTTONY
+Current Rank: F
+Evolution: Locked
+Energy Capacity: 100
+Hunger Level: 0%
+Skill Slots: 5
+Evolution Potential: UNKNOWN
+Special Trait: Predator's Growth
+:::
+Elias felt something strange inside his body.
+A faint warmth spread throughout his chest.
+Then he experienced an unfamiliar sensation.
+Hunger.
+Not ordinary hunger.
+It felt as if something deep inside his body had awakened.
+Something that wanted to consume.
+He swallowed.
+"That... feels weird."
+Another notification appeared.
+::: sys
+## GLUTTONY SYSTEM INITIALIZED
+The host has successfully acquired the Gluttony ability.
+Initial functions are now available.
+Warning: Excessive energy depletion may trigger uncontrolled hunger.
+Recommendation: Maintain a sufficient energy reserve.
+:::
+Elias took a deep breath.
+He had made his decision.
+Now came the next reward.
+## The Three Elemental Affinities
+DING!
+The system interface changed.
+Three new panels appeared.
+::: sys
+## ELEMENTAL AFFINITY SELECTION
+Congratulations, Host!
+Your regression reward includes three elemental affinities.
+You may select THREE different elements from the available ten.
+Each affinity grants access to its corresponding elemental magic.
+3 SELECTIONS AVAILABLE
+:::
+Elias looked at the list.
+Ten elements.
+Each offered a different set of abilities.
+He carefully examined every option.
+::: sys
+## 1. FIRE 🔥
+Element: Fire
+Flame Shot – Shoots a small fire projectile.
+Fireball – Launches an explosive ball of fire.
+Fire Wall – Creates a wall of flames.
+Specialty: Destruction, offense, and area damage.
+:::
+::: sys
+## 2. WATER 💧
+Element: Water
+Water Bullet – Shoots compressed water.
+Water Whip – Creates a whip made of water.
+Water Shield – Forms a protective water barrier.
+Specialty: Defense, control, and versatility.
+:::
+::: sys
+## 3. EARTH 🪨
+Element: Earth
+Earth Shot – Fires a stone projectile.
+Earth Wall – Raises a wall of solid earth.
+Earth Spike – Summons sharp spikes from the ground.
+Specialty: Defense, terrain manipulation, and physical attacks.
+:::
+::: sys
+## 4. WIND 🌪️
+Element: Wind
+Wind Blade – Fires a sharp blade of wind.
+Wind Step – Boosts movement speed.
+Wind Tornado – Creates a powerful spinning tornado.
+Specialty: Speed, mobility, and ranged attacks.
+:::
+::: sys
+## 5. DARK 🌑
+Element: Dark
+Dark Bullet – Fires a projectile of dark energy.
+Shadow Bind – Restrains an enemy with shadows.
+Shadow Walk – Allows movement through shadows over a short distance.
+Specialty: Stealth, restraint, assassination, and dark energy.
+:::
+::: sys
+## 6. LIGHT ✨
+Element: Light
+Light Shot – Fires a concentrated light projectile.
+Healing Light – Restores minor injuries.
+Holy Beam – Releases a powerful beam of light.
+Specialty: Healing, purification, and offensive magic.
+:::
+::: sys
+## 7. THUNDER ⚡
+Element: Thunder
+Thunder Shot – Fires a lightning projectile.
+Lightning Dash – Moves forward at incredible speed.
+Thunder Strike – Calls down lightning on a target.
+Specialty: Speed, explosive attacks, and paralysis.
+:::
+::: sys
+## 8. BLOOD 🩸
+Element: Blood
+Blood Bullet – Fires a hardened blood projectile.
+Blood Weapon – Creates a weapon from blood.
+Blood Control – Manipulates the user's own blood.
+Specialty: Manipulation, weapons, and unusual combat techniques.
+:::
+::: sys
+## 9. SPACE 🌌
+Element: Space
+Spatial Inventory – Stores and retrieves objects in a pocket dimension.
+Teleport – Instantly moves to a visible location within range.
+Spatial Slash – Creates a cutting attack using spatial magic.
+Specialty: Storage, transportation, dimensional manipulation, and combat.
+:::
+::: sys
+## 10. ICE ❄️
+Element: Ice
+Ice Shard – Fires sharp ice projectiles.
+Ice Wall – Creates a solid wall of ice.
+Frost Nova – Releases an icy explosion that freezes nearby enemies.
+Specialty: Crowd control, defense, and freezing attacks.
+:::
+## The Three Elements of a Predator
+Elias leaned back.
+Ten choices.
+Only three selections.
+He considered what he actually needed.
+He did not intend to become an ordinary adventurer.
+He wanted to survive the coming catastrophe.
+He needed an ability to gather supplies, defend himself, and eventually fight creatures that would become increasingly powerful.
+His first choice was obvious.
+"Space."
+The moment he selected it, a purple light illuminated the interface.
+Space magic was arguably one of the most valuable abilities for a survivor.
+Spatial Inventory alone could change everything.
+He could store food, water, weapons, medical supplies, construction materials, and countless other objects inside a pocket dimension.
+He would no longer need to worry about carrying everything physically.
+Teleportation would provide an additional escape mechanism.
+And Spatial Slash could become an extremely dangerous offensive technique.
+"That's one."
+His second choice required more consideration.
+He looked at Fire.
+Destruction.
+Explosions.
+Area damage.
+Fire could be used against enemies, but it also had practical applications.
+It could provide heat during extreme weather.
+It could help with cooking.
+It could be useful for clearing certain obstacles and destroying dangerous threats.
+He selected it.
+"Fire."
+The second panel illuminated.
+His final choice was Dark.
+He examined its abilities.
+Dark Bullet offered another offensive option.
+Shadow Bind could restrain enemies.
+But Shadow Walk was particularly interesting.
+An ability that allowed him to move through shadows could be incredibly useful for escaping, infiltrating buildings, avoiding dangerous encounters, and approaching enemies without being detected.
+Space for utility.
+Fire for destruction.
+Dark for stealth and control.
+Together, they formed a balanced combination.
+"Dark."
+DING!
+::: sys
+## ELEMENTAL SELECTION COMPLETE
+## SPACE · FIRE · DARK
+3 ELEMENTS ACQUIRED
+Elemental Affinities:
+Space – Unlocked
+Fire – Unlocked
+Dark – Unlocked
+Available Starting Skills:
+Spatial Inventory
+Teleport
+Spatial Slash
+Flame Shot
+Fireball
+Fire Wall
+Dark Bullet
+Shadow Bind
+Shadow Walk
+All elemental skills initialized at Rank F.
+:::
+Elias stared at the interface.
+Nine skills.
+Three elements.
+One extraordinary ability.
+He had been given an opportunity that most people would never even imagine.
+However, he was not foolish enough to believe that he was already invincible.
+His current physical condition was ordinary.
+His abilities were at their weakest stage.
+His mana reserves were limited.
+And the apocalypse was only thirty days away.
+He needed to prepare.
+Immediately.
+## Thirty Days of Preparation
+Elias looked at his phone again.
+June 1.
+He opened his banking application.
+His available balance appeared.
+He checked his investments.
+His properties.
+His remaining financial assets.
+Everything was still there.
+He was back.
+And he had access to everything he had possessed before the apocalypse.
+A slow smile appeared on his face.
+"Let's see..."
+He opened a notebook.
+Then he began writing.
+Thirty days.
+That was how much time he had to prepare.
+He knew exactly what was coming.
+The coming apocalypse would not be an ordinary disaster.
+It would be a catastrophic chain of natural events that would devastate civilization on a global scale.
+He remembered the sequence.
+First, unusual atmospheric disturbances.
+Then extreme weather.
+Then massive earthquakes and geological disasters.
+Then unprecedented storms, flooding, and widespread infrastructure failures.
+The world would experience simultaneous catastrophes.
+Entire cities would become uninhabitable.
+Millions would die.
+Transportation and communication networks would collapse.
+Electricity and water distribution would fail.
+And after the initial destruction...
+The dead would begin moving.
+He remembered the creatures.
+The zombies.
+The mutants.
+The terrifying beings that eventually developed supernatural abilities.
+Humanity would discover that killing certain mutant zombies could grant extraordinary powers.
+But that discovery would come far too late for most survivors.
+Elias closed his notebook.
+He had no intention of waiting for civilization to collapse before preparing.
+He would use every available resource.
+His bank balance.
+His investments.
+His properties.
+Everything.
+He would turn his entire fortune into survival.
+And if his existing money was insufficient?
+He would obtain additional financing.
+He would apply for legitimate loans from multiple financial institutions where he qualified, calculate the repayment obligations, and use the money to secure as many resources as possible before the collapse.
+It was a tremendous financial risk.
+But he knew what was coming.
+There would be no ordinary economy to return to.
+The world was about to end.
+## The Shopping List of a Future Emperor
+Elias divided his preparations into several categories.
+He would not waste time buying random items.
+Every purchase needed a purpose.
+### FOOD AND WATER
+- Rice, grains, and flour.
+- Canned meat and vegetables.
+- Instant noodles and ready-to-eat meals.
+- Pasta and cooking ingredients.
+- Dried fruits and preserved food.
+- Cooking oil, salt, sugar, and spices.
+- Drinking water.
+- Water filtration equipment.
+- Water purification systems.
+- Emergency food supplies.
+- Long-term food preservation equipment.
+### MEDICAL AND HYGIENE
+- First-aid kits.
+- Surgical and medical supplies.
+- Bandages and disinfectants.
+- Over-the-counter medicines.
+- Prescription medications were legally available.
+- Protective masks and gloves.
+- Soap, shampoo, and toothpaste.
+- Sanitary products.
+- Cleaning equipment.
+- Medical examination tools.
+### TOOLS AND EQUIPMENT
+- Hammers.
+- Drills.
+- Saws.
+- Wrenches.
+- Screwdrivers.
+- Welding equipment.
+- Construction materials.
+- Electrical components.
+- Spare machine parts.
+- Repair equipment.
+- Protective clothing.
+- Heavy-duty boots.
+### ENERGY AND COMMUNICATION
+- Solar panels.
+- Large battery storage systems.
+- Backup generators.
+- Fuel storage systems.
+- Electrical control equipment.
+- Radios.
+- Satellite communication equipment.
+- Emergency lighting.
+- Monitoring systems.
+- Spare electronic components.
+### DEFENSE AND SECURITY
+- Legally acquired firearms where available.
+- Ammunition.
+- Protective equipment.
+- Reinforced doors.
+- Security cameras.
+- Motion sensors.
+- Alarm systems.
+- Reinforced fencing.
+- Emergency barriers.
+- Training equipment.
+He also planned to purchase vehicles.
+Several utility vehicles.
+A heavy-duty truck.
+An off-road vehicle.
+A fuel-efficient vehicle.
+And a few motorcycles for emergency transportation.
+He would not rely on a single vehicle.
+That was one of the mistakes he had learned from his previous life.
+A single breakdown could mean death.
+This time, he would have alternatives.
+## The Hidden Bunker
+There was one thing Elias considered more important than all his supplies.
+A secure location.
+He needed somewhere that could survive the initial catastrophe.
+Somewhere hidden.
+Somewhere defensible.
+Somewhere that would allow him to live independently for years.
+He remembered a property he had encountered during his previous life.
+An abandoned underground facility hidden deep inside a forest.
+It had originally been constructed as a private underground shelter but was never fully completed.
+The property was remote.
+It had a large underground structure, an old access road, and considerable surrounding land.
+Its original owner had abandoned the project years ago.
+Most people did not even know it existed.
+Elias immediately contacted the company responsible for the property.
+He arranged an inspection.
+After verifying the legal ownership, structural condition, and property records, he negotiated a purchase.
+He acquired the land and the underground facility.
+It was expensive.
+But he did not hesitate.
+This would become his new home.
+His fortress.
+His sanctuary.
+His future empire's capital.
+## Renovating the Fortress
+Elias did not want an ordinary bunker.
+He wanted an underground survival complex capable of supporting long-term habitation.
+He hired construction specialists, engineers, electricians, plumbers, and security professionals.
+He divided the facility into several independent sections.
+The design was extensive.
+### THE MAIN FACILITY
+::: sys
+## 1. Inventory Storage Room
+A large storage complex with organized shelves, supply containers, inventory sections, and designated areas for food, water, tools, equipment, and miscellaneous resources.
+:::
+::: sys
+## 2. Kitchen and Dining Hall
+A fully equipped kitchen with multiple cooking stations, refrigeration, food preparation areas, and a large dining space.
+:::
+::: sys
+## 3. Armory
+A heavily secured room containing defensive equipment, protective gear, weapons, ammunition, and maintenance stations.
+:::
+::: sys
+## 4. Training Room
+A training facility with exercise equipment, weights, punching bags, obstacle courses, and physical conditioning equipment.
+:::
+::: sys
+## 5. Vehicle Docking Room
+A reinforced underground garage with parking spaces, maintenance stations, vehicle storage, and equipment for repairs.
+:::
+::: sys
+## 6. Agricultural and Farming Room
+A controlled agricultural area containing hydroponic systems, vegetable cultivation, seed storage, and food production equipment.
+:::
+::: sys
+## 7. Water Processing and Reservoir Room
+A water management facility containing storage tanks, filtration equipment, purification systems, and water distribution infrastructure. The system would be designed for sustainable water production and replenishment.
+:::
+::: sys
+## 8. Power Generation Room
+An independent energy complex with large battery banks, generators, power management systems, renewable energy connections, and backup equipment.
+:::
+::: sys
+## 9. Monitoring and Command Room
+A central control room with multiple surveillance displays, CCTV systems, environmental sensors, communication equipment, and facility monitoring controls.
+:::
+::: sys
+## 10. Laboratory
+A research facility equipped for medical examination, biological observation, equipment testing, and future investigation of the strange mutations appearing after the apocalypse.
+:::
+::: sys
+## 11. Residential Quarters
+Thirteen bedrooms, each equipped with a bed, storage cabinets, lighting, ventilation, and basic personal facilities.
+:::
+::: sys
+## 12. Secret Escape Passage
+A concealed secondary exit that leads to a separate location away from the main entrance.
+:::
+::: sys
+## 13. Special Room
+An isolated, heavily secured room reserved for valuable items, sensitive equipment, and future discoveries related to his Gluttony ability.
+:::
+He also arranged for the bunker to have reinforced structural supports, independent ventilation, redundant power and water systems, fire protection, and emergency communication facilities.
+The surrounding property would be secured and concealed as naturally as possible.
+He did not want his bunker to look like a military installation.
+From the outside, it would resemble an ordinary abandoned forest property.
+Nobody needed to know what existed beneath it.
+Not even the people who eventually became his companions would automatically receive access to every section.
+Elias had learned his lesson.
+Trust would have to be earned.
+## The Woman He Would Never Trust Again
+Several days into his preparations, Elias encountered someone familiar.
+Vanessa.
+He was leaving a commercial district after purchasing several pieces of equipment when he spotted her walking beside a man.
+Marcus.
+The same man.
+The future gang leader.
+Elias stopped.
+For a moment, the memories of his previous life came rushing back.
+The stolen supplies.
+The ruined shelter.
+The cold.
+The humiliation.
+His final days.
+His death.
+He clenched his jaw.
+Vanessa noticed him.
+Her eyes widened slightly.
+Then she smiled.
+"Elias?"
+He remained silent.
+She approached him.
+"What are you doing here?"
+"Shopping."
+She looked at the bags in his vehicle.
+"Still buying random things?"
+Marcus laughed.
+"Some people never change."
+Vanessa crossed her arms.
+"You're always wasting your money on things you don't need. You should learn how to enjoy life."
+Elias looked at her.
+Then at Marcus.
+He remembered exactly what these two would eventually do.
+But this time, he was not the helpless man who had lost everything.
+He was not going to argue.
+He was not going to beg.
+And he certainly was not going to explain his plans.
+Vanessa frowned.
+"Why aren't you answering?"
+Elias calmly opened his vehicle door.
+"Because there's nothing to discuss."
+"What?"
+"We're done."
+Vanessa blinked.
+"What are you talking about?"
+"Our relationship."
+She stared at him.
+"Are you serious?"
+"Completely."
+Marcus laughed.
+"Is that supposed to be a threat?"
+Elias ignored him.
+He looked at Vanessa one last time.
+"I don't want to see you again. Don't contact me. Don't visit my home. Don't interfere with my affairs."
+Vanessa's expression changed.
+"You're being ridiculous."
+"Perhaps."
+He got inside his vehicle.
+Before closing the door, he added:
+"Just remember something. From today onward, we have nothing to do with each other."
+Then he drove away.
+Vanessa watched his vehicle disappear.
+She turned toward Marcus.
+"What's wrong with him?"
+Marcus shrugged.
+"Probably having another financial problem."
+She laughed.
+But something bothered her.
+Elias had never behaved like that before.
+Usually, he would explain himself.
+He would try to make her understand.
+He would apologize even when he was not at fault.
+This time, he had simply walked away.
+She watched the road for another moment.
+"Strange..."
+Marcus placed an arm around her shoulder.
+"Forget him. He's nobody."
+But Vanessa did not completely forget.
+Over the following days, she occasionally saw Elias around the commercial district.
+He visited warehouses.
+He contacted property companies.
+He purchased large quantities of supplies.
+He frequently drove between different industrial areas.
+Sometimes, he disappeared for an entire day.
+She became curious.
+Why was he buying so much?
+Where was he taking everything?
+And why had he suddenly stopped contacting her?
+She eventually attempted to investigate.
+She asked around.
+She checked his usual locations.
+She even tried to discover whether he had purchased another property.
+But Elias was careful.
+He did not disclose his plans.
+He did not explain his purchases.
+And he certainly did not tell her about the bunker.
+To Vanessa, he remained an increasingly mysterious man.
+To Elias, she was already a ghost from a life he had left behind.
+He had no intention of allowing her to become part of his future again.
+## The First Thirty Days
+Time passed.
+June 5.
+June 8.
+June 12.
+June 16.
+June 20.
+Elias spent almost every waking moment preparing.
+His financial accounts were gradually emptied.
+His investments were liquidated.
+His properties were sold where practical.
+He arranged financing, purchased equipment, and coordinated deliveries.
+His warehouses became increasingly crowded.
+His bunker renovations continued.
+The contractors worked in shifts.
+The electrical systems were installed.
+The ventilation was upgraded.
+The water facility was tested.
+The residential rooms were furnished.
+The monitoring room received its surveillance equipment.
+The storage areas were organized.
+And his Spatial Inventory ability began becoming one of his most useful assets.
+At first, he could only store a relatively small quantity of objects.
+But he quickly learned how to operate it.
+He discovered that objects placed inside remained preserved in their original condition.
+Food did not spoil while stored.
+Water did not evaporate.
+Tools did not deteriorate.
+Everything remained exactly as it had been when stored.
+This discovery changed his entire supply strategy.
+He no longer needed to worry about transporting every purchased item physically.
+He could move supplies from warehouses to his bunker without repeatedly filling his vehicles.
+He also discovered that his spatial capacity could gradually expand through mana training.
+The process was slow.
+But it was possible.
+His Fire and Dark affinities also required practice.
+Flame Shot was initially little more than a small flickering projectile.
+Fireball consumed a considerable amount of mana.
+Fire Wall was difficult to maintain.
+Dark Bullet was unstable.
+Shadow Bind required concentration.
+And Shadow Walk was particularly exhausting.
+His Teleportation range was also limited.
+He could only teleport to visible locations within a short distance.
+As for Gluttony...
+That ability was the strangest of all.
+It reacted whenever he consumed certain sources of energy.
+At first, he experimented with small amounts of energy from defeated animals and other suitable biological sources.
+He discovered that consumption could replenish his energy reserves.
+However, the amount of permanent growth depended on the quality of what he consumed.
+Ordinary food could satisfy his physical hunger.
+But it did not necessarily provide the same benefits as consuming an energy-rich target.
+The ability also generated an unusual appetite whenever his energy reserves became depleted.
+He began keeping track of his hunger level.
+He refused to allow the ability to control him.
+He would master Gluttony.
+Not the other way around.
+## The Apocalypse Countdown
+June 25.
+Five days remained.
+The bunker was nearly complete.
+Elias had already transferred the majority of his supplies into storage.
+The generators were operational.
+The water systems were functioning.
+The farming room was prepared.
+The laboratory was equipped.
+The monitoring room was connected to the external CCTV network.
+He inspected every section personally.
+He checked the doors.
+The emergency exits.
+The ventilation.
+The power distribution.
+The communication equipment.
+He even tested the secret escape passage.
+Everything was functioning.
+There were still improvements he wanted to make, but the facility was sufficiently prepared for the initial catastrophe.
+June 27.
+Three days remained.
+Elias made his final major purchases.
+He secured additional medical supplies, batteries, tools, food, water containers, protective equipment, and spare components.
+He also acquired extra seeds and agricultural supplies.
+He did not know how long the apocalypse would last.
+He did not know whether the weather would ever return to normal.
+He did not know whether the mutant zombies would eventually become intelligent enough to threaten fortified locations.
+So he prepared for the worst.
+June 29.
+One day remained.
+Elias entered the bunker.
+He stood inside the main corridor and looked around.
+The lights were functioning.
+The ventilation was circulating.
+The generators were running.
+The storage facilities were full.
+The monitoring system was online.
+He walked into the kitchen and prepared himself a meal.
+For the first time in weeks, he allowed himself to relax.
+He sat down.
+A plate of food rested in front of him.
+He ate slowly.
+Then he looked toward the empty chair opposite him.
+He remembered Vanessa.
+For a moment, he wondered whether she had prepared anything.
+Whether Marcus had secured enough supplies.
+Whether they knew what was coming.
+But the thought disappeared almost immediately.
+It was no longer his responsibility.
+He had warned nobody.
+He had no intention of becoming a hero.
+He had one priority.
+Survive.
+And this time, survive with everything he had worked for.
+## The First Signs
+June 30.
+The day arrived.
+Elias woke up earlier than usual.
+He checked his phone.
+The weather forecast showed unusual atmospheric disturbances.
+Several countries had already reported abnormal temperature fluctuations.
+A news broadcast discussed unusual seismic activity.
+Another report mentioned massive storm systems forming across different regions.
+At first, the presenters attempted to reassure the public.
+They called it an unusual combination of natural phenomena.
+They advised people to remain calm.
+But Elias knew better.
+He had seen this before.
+He walked toward the monitoring room.
+The large surveillance wall displayed multiple camera feeds from different locations around the property.
+He checked the perimeter.
+The forest.
+The access road.
+The secondary exit.
+The power facility.
+The water systems.
+Everything appeared normal.
+Then he opened the global news feed.
+A breaking-news notification appeared.
+::: sys warn
+## BREAKING NEWS
+## GLOBAL WEATHER ANOMALY REPORTED
+International meteorological agencies have reported unprecedented atmospheric disturbances across multiple continents.
+Authorities are investigating rapidly changing temperature patterns and unusual storm formations.
+:::
+Elias leaned forward.
+Another report appeared.
+::: sys warn
+## EMERGENCY REPORT
+## MULTIPLE EARTHQUAKES DETECTED
+Seismic activity has increased across several geological fault zones.
+Several cities have reported structural damage and transportation disruptions.
+:::
+Then another.
+::: sys warn
+## URGENT ALERT
+## SEVERE WEATHER SYSTEMS DEVELOPING
+Unusually powerful storms are forming across multiple regions.
+Residents are advised to seek shelter and prepare emergency supplies.
+:::
+Elias slowly leaned back.
+"It has started."
+He looked at the clock.
+The apocalypse had officially begun.
+## The World Begins To Collapse
+The first hours were chaotic.
+At approximately 9:00 AM, reports of unusual earthquakes began appearing.
+At 10:30 AM, several coastal cities reported massive waves and severe flooding.
+At 11:45 AM, powerful storms began disrupting transportation networks.
+At noon, multiple power grids experienced failures.
+By early afternoon, communication networks started becoming unstable.
+And then the temperature began dropping.
+At first, it was only a few degrees.
+Then ten.
+Then fifteen.
+Within hours, several regions experienced temperatures far below their seasonal averages.
+People began panicking.
+Supermarkets became crowded.
+Gas stations were overwhelmed.
+Hospitals received increasing numbers of injured individuals.
+Road accidents multiplied.
+Emergency services struggled to respond.
+Then came the most terrifying event.
+A large earthquake struck a densely populated metropolitan region.
+Buildings collapsed.
+Roads split apart.
+Bridges were destroyed.
+Thousands of people were trapped beneath the rubble.
+And among the dead...
+Something began moving.
+At first, nobody noticed.
+A body lying beneath the debris suddenly twitched.
+Its fingers moved.
+Its neck twisted unnaturally.
+Then its eyes opened.
+They were blood-red.
+The creature slowly raised its head.
+Its mouth opened.
+A guttural growl escaped its throat.
+It was no longer human.
+The first zombie had appeared.
+And it was not alone.
+## The Nine Stages Of The Undead
+Elias watched the news coverage.
+At first, the reports described the creatures as violent individuals suffering from an unknown infection.
+Then videos began circulating.
+People were attacking other people.
+They were biting them.
+Tearing flesh.
+Ignoring injuries that would normally be fatal.
+The infected were spreading.
+And the dead were rising.
+Elias remembered the classification system that humanity would eventually establish.
+There were nine known categories of undead.
+::: sys
+## 1. Walker Zombie
+~ BASIC UNDEAD
+Slow, basic zombies that attack survivors by biting. They are physically weak individually but dangerous in groups.
+:::
+::: sys
+## 2. Runner Zombie
+~ MOBILE TYPE
+Fast zombies capable of chasing survivors over considerable distances. Their speed makes them extremely dangerous.
+:::
+::: sys
+## 3. Crawler Zombie
+~ AMBUSH TYPE
+Crawls along the ground and attacks survivors' legs. Difficult to notice in darkness, debris, and confined spaces.
+:::
+::: sys
+## 4. Brute Zombie
+~ HEAVY TYPE
+Enormous, durable zombies with devastating physical attacks. They can destroy barricades and heavily damage structures.
+:::
+::: sys
+## 5. Spitter Zombie
+~ RANGED TYPE
+Produces and spits poisonous acid capable of injuring survivors and damaging protective equipment.
+:::
+::: sys
+## 6. Mutant Zombie
+~ MUTATION TYPE
+Stronger undead with enhanced abilities, abnormal physical characteristics, and potentially elemental affinities.
+:::
+::: sys
+## 7. Mutant Zombie Elite
+~ ELITE TYPE
+Advanced mutants possessing greater strength, speed, durability, and more developed supernatural abilities.
+:::
+::: sys
+## 8. Mutant Zombie General
+~ COMMANDER TYPE
+Powerful mutant commanders capable of controlling and coordinating other zombies.
+:::
+::: sys
+## 9. Mutant Zombie King
+~ FINAL BOSS CLASS
+The strongest known category of undead, ruling over mutant zombie territories and commanding terrifying forces.
+:::
+But the most frightening aspect was not their strength.
+It was their ability to evolve.
+Certain mutant zombies could develop elemental affinities.
+Some possessed fire.
+Others controlled ice.
+Some could manipulate darkness, toxins, or other unnatural forces.
+And when a human successfully killed a mutant zombie, something extraordinary could happen.
+The human could receive a mutant power based on the type of mutant they had defeated.
+It was the beginning of humanity's evolution.
+The beginning of the age of abilities.
+But Elias knew that the most terrifying creatures were still waiting.
+The eight Zombie Kings.
+## The Eight Mutant Zombie Kings
+According to the knowledge Elias retained from his previous life, the world would eventually become divided into eight enormous territories.
+Each territory would be dominated by a different Mutant Zombie King.
+These were not ordinary monsters.
+They were rulers.
+Their intelligence, physical capabilities, and supernatural powers would surpass almost everything humanity had encountered.
+Each possessed an army.
+Each controlled a territory.
+And each represented a different form of destruction.
+::: sys warn
+## 1. MUTANT ZOMBIE KING – OVERLORD
+~ THE UNDEAD SOVEREIGN
+The supreme ruler with incredible strength and the ability to command massive zombie armies.
+Specialty: Absolute command, army control, battlefield domination.
+Its territory would eventually become the center of the largest undead kingdom.
+:::
+::: sys warn
+## 2. MUTANT ZOMBIE KING – JUGGERNAUT
+~ THE IMMOVABLE DESTRUCTION
+A heavily armored monster with devastating physical power and extreme durability.
+Specialty: Defense, physical destruction, unstoppable charges.
+Its territory would become a graveyard of destroyed fortresses and military installations.
+:::
+::: sys warn
+## 3. MUTANT ZOMBIE KING – TOXICUS
+~ THE PLAGUE SOVEREIGN
+Controls deadly toxins and spreads poisonous clouds around the battlefield.
+Specialty: Poison, biological corruption, area denial.
+Its territory would be surrounded by poisonous air and mutated creatures.
+:::
+::: sys warn
+## 4. MUTANT ZOMBIE KING – INFERNO
+~ THE FLAME DEVOURER
+A fire-powered mutant that burns everything in its path.
+Specialty: Fire manipulation, explosive attacks, large-scale destruction.
+Its territory would become an enormous burning wasteland.
+:::
+::: sys warn
+## 5. MUTANT ZOMBIE KING – PHANTOM
+~ THE SHADOW EMPEROR
+Uses darkness, stealth, and terrifying supernatural abilities.
+Specialty: Darkness, stealth, concealment, supernatural attacks.
+Its territory would become a place where even experienced survivors would be afraid to travel.
+:::
+::: sys warn
+## 6. MUTANT ZOMBIE KING – DESTROYER
+~ THE FOUR-ARMED CALAMITY
+A four-armed monster with overwhelming attack power.
+Specialty: Multiple attacks, physical devastation, combat dominance.
+Its territory would be filled with destroyed cities and enormous battlefields.
+:::
+::: sys warn
+## 7. MUTANT ZOMBIE KING – FROSTBITE
+~ THE FROZEN SOVEREIGN
+Controls ice and freezes enemies with devastating freezing attacks.
+Specialty: Ice manipulation, freezing, environmental control.
+Its territory would become an enormous frozen kingdom.
+:::
+::: sys warn
+## 8. MUTANT ZOMBIE KING – APOCALYPSE
+~ ULTIMATE BOSS · UNKNOWN EVOLUTION
+The ultimate evolution.
+Possesses all the abilities of the other Zombie Kings and threatens the entire world.
+Specialty: Combined elemental powers, extreme evolution, overwhelming destruction.
+Its territory would become the final nightmare of humanity.
+:::
+Unlike the other kings, Apocalypse would represent a threat to the entire world, not merely a single region.
+Elias knew that defeating these creatures would be almost impossible for ordinary humans.
+But he also knew something they did not.
+Every powerful mutant was potentially another source of evolution for Gluttony.
+The eight kings were not merely enemies.
+They were the greatest possible opportunities for his ability to grow.
+He would eventually hunt them.
+One by one.
+And consume what remained.
+## The First Night Of The Apocalypse
+The clock showed 11:47 PM.
+Elias was sitting inside the monitoring room.
+The lights were dim.
+Several screens displayed external camera feeds.
+The forest was quiet.
+The entrance was secure.
+The generators were running.
+The temperature outside was falling rapidly.
+He watched the news.
+A reporter appeared on the screen.
+Her face was pale.
+Her voice trembled.
+"Authorities are urging everyone to remain indoors. Multiple cities have reported violent incidents involving individuals displaying extremely aggressive behavior..."
+The screen suddenly flickered.
+The broadcast switched to another location.
+A street camera.
+Several people were running.
+A man fell.
+Something attacked him.
+Then another person appeared.
+The camera briefly captured the creature's face.
+Its eyes were red.
+Its mouth was covered in blood.
+The footage disappeared.
+A few seconds later, an emergency notification appeared.
+::: sys warn
+## GLOBAL EMERGENCY ALERT
+## UNKNOWN INFECTED INDIVIDUALS
+Multiple reports indicate that unidentified aggressive individuals are attacking civilians.
+Authorities are requesting that citizens avoid direct contact with infected persons.
+Remain inside secure locations.
+Do not approach suspicious individuals.
+Await further instructions.
+:::
+Elias stared at the screen.
+He slowly leaned back.
+"Thirty days..."
+He looked at the clock again.
+He had known this was coming.
+Yet seeing it happen again still felt surreal.
+He opened another surveillance feed.
+The forest entrance.
+The perimeter.
+The access road.
+Then he noticed something.
+A human figure was standing near the outer fence.
+It was barely visible through the darkness.
+The individual was not moving.
+Elias zoomed in.
+The figure's head tilted.
+Its body twitched.
+Then it slowly approached the camera.
+Elias narrowed his eyes.
+"...Already?"
+The creature raised its face.
+Its mouth opened.
+A low growl echoed through the microphone.
+Elias stared at it.
+The first zombie had reached the forest.
+He stood up.
+His expression changed.
+No more hesitation.
+No more fear.
+He raised his right hand.
+A small translucent blue interface appeared.
+::: sys
+## HOST STATUS
+Name: Elias Veyron
+Title: The One Who Lost Everything
+Ability: 7 Deadly Sins – Gluttony
+Rank: F
+Elemental Affinities: Space · Fire · Dark
+Physical Condition: Healthy
+Mana: 100/100
+Gluttony Energy: 100/100
+Hunger: 0%
+Available Skills: 9
+:::
+::: sys warn
+## [HOSTILE ENTITY DETECTED]
+Target: Unknown Undead
+Classification: Walker Zombie
+Threat Level: Low
+:::
+Elias looked at the notification.
+Then he looked at the camera.
+A faint smile appeared on his face.
+"So..."
+He slowly clenched his fist.
+"The world has finally ended."
+He remembered the man he had been in his previous life.
+The helpless survivor.
+The betrayed husband.
+The man who had lost everything.
+But that man was gone.
+This time, he had a fortress.
+He had supplies.
+He had a supernatural ability.
+He had knowledge of the future.
+And he had a system that could potentially allow him to grow without limits.
+Elias walked toward the main security door.
+He stopped just before the entrance.
+Then he opened his status window one last time.
+7 DEADLY SINS: GLUTTONY.
+His eyes briefly reflected the blue light of the interface.
+"Let's see how much you can eat."
+DING!
+::: sys
+## SPECIAL QUEST UNLOCKED
+## FIRST BLOOD
+Objective: Defeat your first undead enemy.
+Target: Walker Zombie
+Reward:
+Gluttony Energy
+Experience
+Possible Physical Enhancement
+Random Reward
+Bonus Objective: Consume the defeated target.
+Bonus Reward: Unknown.
+QUEST ACCEPTED
+:::
+Elias smiled.
+He opened the security door's internal observation panel.
+Outside, the zombie was still approaching.
+Behind him were thousands of supplies, a fully equipped bunker, and the beginning of a new life.
+Ahead of him was an entire world that had become a nightmare.
+And somewhere beyond that ruined world were eight monstrous kings waiting to be challenged.
+He had no intention of remaining an ordinary survivor.
+He would gather companions.
+He would recruit people with extraordinary abilities.
+He would build an army.
+He would conquer territories.
+He would devour monsters.
+He would consume their powers.
+And eventually, he would stand above every other human, mutant, and undead creature.
+Not as a survivor.
+Not as a hero.
+But as the ruler of a new world.
+The Gluttonous Emperor.
+---
+~ END OF PROLOGUE
+::: sys
+## THE GLUTTONOUS EMPEROR
+## The Age Of Survival Has Begun
+Main Character: Elias Veyron
+Unique Ability: 7 Deadly Sins – Gluttony
+Elemental Affinities: Space, Fire, Dark
+Starting Location: Hidden Forest Bunker
+Apocalypse Status: BEGUN
+Main Objective: Survive, Evolve, Conquer.
+Ultimate Objective: Defeat all Eight Mutant Zombie Kings and become the Gluttonous Emperor of the World.
+:::
+</script>
+<script type="text/plain" id="src-c1">
+## The Beginning of the End
+~ 11:52 PM · June 30
+The monitoring room was silent.
+The only sounds came from the humming servers, the ventilation system, and the occasional clicking of Elias Veyron's keyboard.
+In front of him were dozens of surveillance monitors displaying different sections of the surrounding forest.
+The main entrance.
+The secondary access road.
+The perimeter fence.
+The concealed escape passage.
+The underground vehicle docking area.
+Everything was functioning properly.
+But Elias wasn't paying attention to the facility anymore.
+His eyes were fixed on one particular screen.
+A human figure was standing outside the eastern perimeter.
+It was approximately sixty meters away from the bunker entrance.
+Its clothes were torn.
+Its skin was pale.
+Its head hung unnaturally to one side.
+It had been standing there for almost three minutes.
+Elias zoomed in.
+The figure suddenly raised its head.
+Its eyes were bloodshot.
+Its mouth opened.
+A low, distorted growl escaped its throat.
+"Grrrrr..."
+Elias narrowed his eyes.
+"So this is a Walker."
+He had seen thousands of these creatures in his previous life.
+They were the weakest classification of zombies.
+Slow.
+Relatively weak.
+Not particularly intelligent.
+But their numbers made them dangerous.
+A single Walker wasn't much of a threat.
+A hundred could overwhelm an unprepared survivor.
+A thousand could destroy an entire settlement.
+Elias leaned back in his chair.
+"Well, at least the first one arrived on schedule."
+He checked the clock.
+11:53 PM.
+Then he opened the system interface.
+DING!
+::: sys
+## HOST SYSTEM
+## STATUS WINDOW
+Name: Elias Veyron
+Race: Human
+Level: 1
+Title: The One Who Lost Everything
+Unique Ability: 7 Deadly Sins – Gluttony
+Rank: F
+Elemental Affinities: Space · Fire · Dark
+| Attribute | Value |
+| Strength | 10 |
+| Agility | 10 |
+| Vitality | 10 |
+| Intelligence | 10 |
+| Perception | 10 |
+| Endurance | 10 |
+| Mana | 100 |
+| Luck | 5 |
+## Gluttony Status
+Energy: 100/100
+Hunger: 0%
+Evolution: 0%
+Skill Consumption: Available
+Predator's Growth: Available
+:::
+::: sys
+## [SYSTEM ONLINE]
+:::
+Elias examined his attributes.
+Everything was average.
+He wasn't particularly strong.
+He wasn't particularly fast.
+His body was still that of an ordinary human.
+His abilities were powerful in theory, but their current ranks were low.
+He needed experience.
+He needed to understand his limits.
+Most importantly, he needed to test Gluttony.
+The system had mentioned that consuming defeated enemies could grant energy and potentially permanent physical improvements.
+But he didn't know exactly how much.
+He also didn't know whether consuming a Walker would grant anything useful.
+There was only one way to find out.
+"Let's start with the weakest."
+He stood up.
+## Preparing for the First Hunt
+Elias walked out of the monitoring room and entered the main corridor.
+The bunker lights automatically illuminated as he passed.
+His footsteps echoed against the reinforced flooring.
+He eventually reached the armory.
+Beep.
+The electronic lock disengaged.
+The heavy steel door opened.
+Inside was an organized collection of defensive equipment.
+Protective clothing.
+Helmets.
+Gloves.
+Body armor.
+Flashlights.
+Various tools.
+And several legally acquired weapons.
+Elias approached one of the storage cabinets.
+He opened it and retrieved a tactical flashlight, protective gloves, a reinforced jacket, and a combat knife.
+He also took a compact firearm from the secured weapons cabinet.
+He checked its condition and ammunition.
+"Not planning to waste bullets on a Walker."
+He placed the firearm in its holster.
+Then he examined the knife.
+The blade was sharp.
+Its handle was reinforced.
+It was suitable for close encounters.
+He attached a flashlight to his clothing and checked his gloves.
+After finishing his preparations, he walked toward the vehicle docking room.
+Several vehicles were parked inside.
+A heavy-duty utility truck.
+An off-road SUV.
+Two motorcycles.
+A maintenance vehicle.
+And a reinforced transport truck.
+Elias glanced at the vehicles.
+He would eventually need to use them for supply expeditions.
+But not tonight.
+He was going to test his abilities first.
+He headed toward the secondary access corridor.
+The secret exit was located in a concealed section of the facility, far from the main entrance.
+It was designed as an emergency escape route.
+He entered the access code.
+BEEP.
+The steel door unlocked.
+A narrow corridor extended into the darkness.
+Elias activated his flashlight.
+The passage eventually led to a concealed opening beneath a section of dense forest.
+He carefully checked the surrounding area through the external camera.
+The Walker was still there.
+Its body was now facing the hidden exit.
+Elias frowned.
+"How did it even notice this location?"
+He studied the camera feed.
+Perhaps it had simply wandered toward the area.
+Or perhaps the creatures possessed a primitive ability to detect living organisms.
+He made a mental note.
+This would require further investigation.
+He opened the final security lock.
+The outer hatch slowly disengaged.
+Cold air entered the passage.
+The temperature was already dropping.
+Elias adjusted his jacket.
+Then he stepped outside.
+Click.
+The hatch closed behind him.
+He was officially outside the bunker.
+For the first time in this new life, he was standing in the apocalypse.
+## The First Encounter
+The forest was unusually quiet.
+There were no insects.
+No birds.
+No distant traffic.
+Only the wind moving through the trees.
+Elias slowly approached the Walker.
+It was approximately twenty meters away.
+The creature stood motionless for a moment.
+Then its head turned.
+Its bloodshot eyes locked onto him.
+"Grrrr..."
+Its jaw opened.
+A disgusting mixture of saliva and blood dripped from its mouth.
+It began walking toward him.
+One step.
+Then another.
+Its movements were awkward.
+Its left leg dragged across the ground.
+Its right arm hung loosely.
+Elias remained still.
+He observed its behavior.
+"Interesting."
+The creature was responding to his presence.
+Its movements became increasingly aggressive as he approached.
+He opened the system interface.
+::: sys
+## [TARGET IDENTIFIED]
+Enemy: Walker Zombie
+Level: 1
+Classification: Basic Undead
+Threat Rating: Low
+Physical Strength: 7
+Agility: 3
+Vitality: 8
+Intelligence: 1
+Abilities: None detected
+Weaknesses: Severely impaired movement and limited physical coordination.
+System Recommendation: Eliminate the target.
+:::
+Elias raised an eyebrow.
+"So the system can inspect enemies too."
+That was useful.
+Very useful.
+If the system could provide information about enemy attributes, he could make better decisions during combat.
+He looked at the Walker again.
+It was now only ten meters away.
+Elias slowly pulled out his combat knife.
+"Come on, then."
+The Walker suddenly accelerated.
+Its body lurched forward.
+Its mouth opened wide.
+"GRAAAAAH!"
+Elias stepped sideways.
+The creature missed.
+Its momentum carried it forward.
+Elias immediately moved behind it.
+He raised his knife.
+Then—
+STAB!
+The blade struck the back of its head.
+The Walker twitched.
+Its arms flailed.
+Elias withdrew the weapon and stepped backward.
+The creature collapsed onto the snow.
+It attempted to move.
+Its fingers scratched the ground.
+Its mouth continued opening and closing.
+Elias watched carefully.
+"Still alive?"
+He approached cautiously.
+The creature suddenly reached toward his leg.
+Elias moved away.
+Then he delivered another precise strike to its head.
+The Walker finally stopped moving.
+Silence returned to the forest.
+Elias stared at the corpse.
+His breathing was slightly elevated.
+Not because the fight had been particularly difficult.
+But because it was his first actual encounter with an undead creature since regression.
+He slowly lowered his knife.
+"One down."
+DING!
+::: sys
+## First Blood
+## Quest Completed!
+FIRST BLOOD
+[Target eliminated: Walker Zombie]
+Rewards:
+Experience +10
+Gluttony Energy +5
+Predator's Growth Evaluation
+Random Reward Processing
+[SUCCESS]
+:::
+Elias watched the notification.
+"Experience?"
+Another window appeared.
+::: sys
+## [LEVEL PROGRESSION]
+Previous Level: 1
+Current Level: 1
+Experience: 10/100
+Next Level Requirement: 100 EXP
+:::
+He nodded.
+"So killing enemies gives experience."
+He looked at the corpse.
+Then another notification appeared.
+::: sys
+## GLUTTONY ACTIVATION AVAILABLE
+Target: Walker Zombie
+Available Actions:
+Devour
+Energy Absorption
+Predator's Growth Analysis
+Skill Consumption Analysis
+[CONSUMPTION PERMITTED]
+:::
+Elias looked at the options.
+"Here we go."
+He selected Devour.
+Nothing happened.
+He frowned.
+"...What?"
+He tried again.
+DING!
+::: sys warn
+## WARNING!
+## [GLUTTONY REQUIREMENT NOT MET]
+The target must be physically consumed or absorbed through the host's Gluttony ability.
+Current ability proficiency is insufficient for automatic corpse absorption.
+[Available Method: Manual Consumption]
+:::
+Elias stared at the message.
+Then he looked down at the corpse.
+"...You're telling me I have to eat this?"
+The system remained silent.
+He rubbed his forehead.
+"That's disgusting."
+He examined the body.
+The creature's flesh was decayed.
+Its skin was pale.
+Its mouth was covered in blood.
+There was no way he was going to eat that.
+Not without understanding what he was doing.
+He opened the Gluttony interface again.
+"Is there another way?"
+DING!
+::: sys
+## [GLUTTONY – BEGINNER INFORMATION]
+Devour does not require conventional digestion.
+The ability can gradually develop a supernatural consumption mechanism.
+At the current rank, the host must establish physical contact with the target and provide sufficient mana.
+[Recommended Action: Initiate Controlled Absorption]
+:::
+Elias looked at the notification.
+"Now that's more reasonable."
+He crouched beside the corpse.
+He placed his gloved palm against its chest.
+Then he concentrated.
+A faint black-purple glow appeared beneath his hand.
+It spread across the corpse.
+The body began trembling.
+Small particles of dark energy emerged from its flesh.
+They floated into the air.
+Then they were pulled toward Elias's palm.
+The corpse gradually disintegrated.
+Not into blood.
+Not into ordinary dust.
+But into countless black particles.
+They entered his body.
+Elias felt an unusual sensation.
+His stomach tightened.
+A warm current spread through his chest.
+His muscles briefly contracted.
+Then everything stopped.
+DING!
+::: sys
+## DEVOUR SUCCESSFUL
+Consumed Target: Walker Zombie
+Absorbed Energy: 10
+Gluttony Energy: +10
+Biological Analysis: Complete
+Physical Enhancement: Minor
+Skill Acquisition: Failed
+Mutation Trait Acquisition: None
+[TARGET COMPLETELY CONSUMED]
+:::
+Elias blinked.
+"That's it?"
+He examined his body.
+He didn't feel dramatically stronger.
+But there was something different.
+His movements felt slightly lighter.
+His breathing felt easier.
+He opened his attributes.
+::: sys
+## [STATUS UPDATE]
+| Attribute | Before | After |
+| Strength | 10 | 10 |
+| Agility | 10 | 10 |
+| Vitality | 10 | 10 |
+| Intelligence | 10 | 10 |
+| Perception | 10 | 10 |
+| Endurance | 10 | 10 |
+Gluttony Energy: 115/100
+Hunger: 0%
+[Predator's Growth: Minor progress detected]
+:::
+Elias stared at the energy value.
+"Wait."
+He looked again.
+His maximum capacity was 100, but his current energy had reached 115.
+He opened the explanation.
+::: sys warn
+## [ENERGY OVERFLOW DETECTED]
+Gluttony can temporarily store excess energy beyond its normal capacity.
+However, excessive energy accumulation may cause instability.
+Recommended: Consume energy through ability usage or controlled development.
+:::
+He nodded slowly.
+There was a lot he still needed to learn.
+But the first experiment had been successful.
+He had consumed an undead creature.
+And he had gained energy from it.
+That alone was promising.
+## The First Evolution
+Elias was about to return to the bunker when something unexpected happened.
+DING!
+The interface flashed.
+Then a new notification appeared.
+::: sys
+## HIDDEN CONDITION DISCOVERED
+## PREDATOR'S GROWTH
+The host has successfully consumed an undead creature for the first time.
+Special evolutionary pathway detected.
+New Function Unlocked: [Biological Analysis]
+Allows Gluttony to examine the physical characteristics of consumed organisms.
+Potential future developments include:
+Physical adaptation.
+Resistance acquisition.
+Biological trait integration.
+Mutation compatibility.
+Skill evolution.
+:::
+Elias's eyes widened.
+"Biological Analysis?"
+He immediately selected the new function.
+A translucent interface appeared.
+::: sys
+## BIOLOGICAL ANALYSIS
+Previously Consumed Target: Walker Zombie
+Extracted Information:
+Undead biological structure.
+Abnormal cellular preservation.
+Basic infection characteristics.
+Altered nervous system.
+Reduced pain response.
+Decreased biological sensitivity.
+Potential Traits:
+Minor pain resistance.
+Minor physical endurance improvement.
+Basic undead resistance research.
+[Integration Status: Incomplete]
+:::
+Elias read everything carefully.
+"Interesting..."
+He began to understand the true nature of Gluttony.
+It wasn't simply an ability that allowed him to consume enemies.
+It was an ability that could potentially analyze, absorb, and integrate the characteristics of whatever he consumed.
+If he killed a mutant with fire abilities, perhaps he could eventually obtain fire resistance.
+If he consumed a creature with enhanced physical strength, perhaps he could develop stronger muscles.
+If he consumed a creature capable of regeneration, perhaps he could acquire regenerative traits.
+And if he consumed an elemental mutant...
+His eyes narrowed.
+"Then I might be able to acquire another affinity."
+The possibility was extraordinary.
+His three elemental affinities were already valuable.
+But if Gluttony could expand his capabilities through consumption, then his long-term potential would be considerably greater than he initially imagined.
+He smiled.
+"You're more interesting than I expected."
+## The First Unexpected Visitor
+Just as Elias was preparing to return to the bunker, he heard something.
+CRACK.
+A branch snapped somewhere behind him.
+He immediately turned around.
+His flashlight illuminated the trees.
+Nothing.
+He slowly reached for his knife.
+Then—
+CRACK.
+Another sound.
+Closer this time.
+Elias narrowed his eyes.
+"Who's there?"
+Silence.
+He checked the surrounding area.
+The forest was still.
+Then he noticed movement between two trees.
+A human silhouette.
+At first, he assumed it was another Walker.
+But the figure moved differently.
+It was standing upright.
+Its clothing was intact.
+Its movements were cautious.
+And it appeared to be watching him.
+Elias raised his flashlight.
+"Hey!"
+The figure immediately ducked behind a tree.
+A woman's voice came from the darkness.
+"Please..."
+Elias froze.
+It was human.
+"Please don't shoot!"
+He slowly lowered his flashlight.
+"Come out where I can see you."
+A few seconds passed.
+Then a young woman stepped out from behind the tree.
+She appeared to be in her early twenties.
+Her clothes were dirty.
+Her hair was disheveled.
+She was holding a small backpack against her chest.
+Her face was pale.
+And she looked terrified.
+Elias studied her.
+She glanced at the place where the Walker had disappeared.
+Then she looked at him.
+"Did... did you kill that thing?"
+Elias remained silent for a moment.
+"Yes."
+The woman swallowed.
+"How?"
+"Does it matter?"
+She looked at the empty patch of snow.
+"That thing was following me."
+Elias's expression changed slightly.
+"How long?"
+"I don't know. Maybe twenty minutes."
+"Are you injured?"
+She shook her head.
+"No."
+"Bitten?"
+"No! I swear!"
+Elias examined her arms and neck from a distance.
+There were no obvious wounds.
+But he wasn't going to let his guard down.
+He had learned enough from his previous life to understand that desperate people could be just as dangerous as zombies.
+"What's your name?"
+The woman hesitated.
+"...Mira."
+"Mira what?"
+"Mira Solen."
+Elias nodded.
+"Elias."
+She looked toward the forest.
+"Are you alone?"
+"Yes."
+"Where's your group?"
+"I don't have one."
+She looked surprised.
+"You're alone?"
+"That's what I said."
+Mira glanced at his equipment.
+Then at the direction of the forest.
+"Do you have somewhere safe?"
+Elias didn't answer immediately.
+He studied her expression.
+She was exhausted.
+Frightened.
+But she wasn't behaving aggressively.
+Still, he wasn't going to reveal the location of his bunker.
+Not to someone he had just met.
+"Why?"
+Mira lowered her head.
+"My family... I lost them."
+Her voice trembled.
+"We were trying to reach a shelter when the roads collapsed. My father was injured. My mother and younger brother..."
+She stopped.
+She couldn't finish the sentence.
+Elias remained silent.
+He understood that expression.
+He had seen it countless times.
+The expression of someone who had just realized that the world would never be the same again.
+"Where are you heading?"
+"I don't know."
+She looked at him.
+"Can I come with you?"
+Elias stared at her.
+There it was.
+The first unexpected encounter.
+He remembered the previous apocalypse.
+He remembered how survivors formed groups.
+He remembered the betrayals.
+But he also remembered that not everyone was evil.
+Some people were simply trying to survive.
+He finally spoke.
+"I can help you get somewhere safer."
+Mira's eyes widened.
+"Really?"
+"But I have conditions."
+She nodded immediately.
+"Anything."
+"First, no lying."
+"Okay."
+"Second, don't touch my equipment or belongings without permission."
+"Understood."
+"Third, if you are bitten or show symptoms of infection, you tell me immediately."
+Mira nodded.
+"And fourth..."
+Elias looked directly at her.
+"Don't follow me if I tell you to leave."
+She hesitated.
+Then she nodded.
+"Okay."
+Elias turned toward the hidden forest path.
+"Come on."
+Mira followed.
+But as they walked, she noticed something strange.
+There were no visible roads.
+No buildings.
+No vehicles.
+Yet Elias seemed to know exactly where he was going.
+She eventually asked:
+"Where are we going?"
+Elias glanced over his shoulder.
+"Somewhere safe."
+He didn't say anything else.
+## An Unusual Discovery
+They reached the concealed entrance several minutes later.
+Elias checked the external cameras.
+The area was clear.
+He entered the access code.
+The hidden hatch unlocked.
+Mira stared.
+A section of the forest floor shifted.
+A reinforced entrance became visible.
+Her eyes widened.
+"Wait..."
+Elias opened the hatch.
+"Get inside."
+She hesitated.
+"What's this place?"
+"An underground shelter."
+Mira looked at him.
+"You have a bunker?"
+"Something like that."
+She slowly entered.
+Elias followed and closed the hatch.
+The locking mechanism activated.
+CLANG.
+The underground corridor illuminated.
+Mira stopped walking.
+Her eyes moved across the reinforced walls, industrial lighting, and heavy security doors.
+"This..."
+She looked at Elias.
+"You built this?"
+"Most of it."
+"How long?"
+"Long enough."
+She stared at him.
+Then she noticed something.
+The air was warm.
+The lighting was stable.
+There was no smell of decay.
+No leaking water.
+No signs of damage.
+For the first time since the catastrophe began, she felt something approaching safety.
+Her shoulders relaxed.
+Then her knees suddenly weakened.
+Elias noticed.
+"Hey."
+Mira stumbled.
+He caught her before she fell.
+"Are you okay?"
+She nodded weakly.
+"I... I haven't eaten since yesterday."
+Elias looked at her.
+"Come on. The kitchen is this way."
+He guided her toward the residential section.
+He would have to establish rules before allowing anyone to remain in the bunker.
+But first, he needed to make sure she was safe.
+He also needed to understand something.
+Why had the system not identified her as a threat?
+He opened his interface privately.
+DING!
+::: sys
+## [SYSTEM SCAN]
+Target: Mira Solen
+Race: Human
+Level: 1
+Status: Exhausted
+Infection: Not detected
+Ability: Unknown
+Potential: Undetermined
+Threat Assessment: Low
+:::
+Elias glanced at the information.
+"Unknown ability..."
+He looked at Mira.
+Perhaps she was just an ordinary survivor.
+Or perhaps there was something he hadn't discovered yet.
+He decided not to investigate further for now.
+There would be time.
+## The First Meal
+The kitchen was brightly illuminated.
+Elias opened one of the storage cabinets.
+He retrieved rice, canned meat, vegetables, and a few ingredients.
+Mira sat at the dining table.
+She looked around.
+The kitchen was cleaner than most ordinary houses.
+Everything was organized.
+The refrigerator was working.
+The lights were stable.
+And there was actual food.
+She watched Elias prepare the meal.
+"You're really prepared."
+Elias continued cooking.
+"I prefer being prepared."
+"How did you know this would happen?"
+He paused for a moment.
+Then continued.
+"I paid attention."
+It wasn't entirely a lie.
+Mira lowered her head.
+"Thank you."
+Elias placed a bowl of hot food in front of her.
+"Eat slowly."
+Mira stared at the food.
+For several seconds, she didn't move.
+Then she picked up the spoon.
+Her first bite was small.
+Her second was larger.
+By the third, she was struggling to hold back tears.
+Elias sat opposite her.
+He didn't ask questions.
+He simply let her eat.
+After a while, Mira spoke.
+"I thought I was going to die."
+Elias took a sip of water.
+"You're alive."
+She nodded.
+"But my family..."
+Her voice broke.
+Elias looked at her.
+He remembered his previous life.
+He remembered the people he had lost.
+He remembered the woman who had betrayed him.
+He knew that there were wounds that food and shelter couldn't heal.
+"Get some rest tonight."
+Mira wiped her eyes.
+"Thank you, Elias."
+He nodded.
+Then he stood up.
+"I'll show you your room after dinner."
+Mira looked surprised.
+"My room?"
+"There are thirteen bedrooms. You can use one."
+"Thirteen?"
+Elias paused.
+"...Long story."
+For the first time that night, Mira gave a small smile.
+## The System's New Notification
+After showing Mira to one of the residential rooms, Elias returned to the monitoring room.
+He checked the surveillance feeds.
+The forest remained quiet.
+There were no signs of additional creatures approaching the bunker.
+He sat down.
+Then he opened his status window.
+He wanted to understand his current progression.
+DING!
+But instead of his usual status interface, another notification appeared.
+::: sys warn
+## NEW DEVELOPMENT
+## GLUTTONY DETECTED ANOMALY
+An unidentified human with an undiscovered ability has entered the host's territory.
+Target: Mira Solen
+Ability: Unknown
+Potential: Undetermined
+Special Observation: Her energy signature contains an unusual characteristic.
+Further analysis requires direct contact or additional observation.
+:::
+Elias frowned.
+"Unusual energy?"
+He leaned back.
+That was interesting.
+He had assumed Mira was an ordinary survivor.
+But if the system had detected something unusual, there might be more to her than he initially thought.
+He opened her information again.
+Nothing new.
+Her ability remained unknown.
+He closed the interface.
+"Well..."
+He glanced at the surveillance screen displaying the residential corridor.
+"Looks like the first guest isn't ordinary after all."
+He smiled faintly.
+Then he turned his attention toward the larger screen.
+A global map.
+Multiple red warning indicators were appearing across different regions.
+The apocalypse was spreading.
+And this was only the beginning.
+## A New World
+~ 2:17 AM · July 1
+Elias stood in front of the main monitoring display.
+He watched a live news broadcast.
+A city was burning.
+A highway had collapsed.
+Several buildings were flooded.
+Emergency vehicles were abandoned along the roads.
+And in the middle of the footage, dozens of undead creatures were wandering through the streets.
+Humanity was losing control.
+The world was changing.
+He opened the system interface one final time.
+::: sys
+## HOST STATUS UPDATE
+Name: Elias Veyron
+Level: 1
+Experience: 10/100
+Title: The One Who Lost Everything
+Unique Ability: 7 Deadly Sins – Gluttony
+Elemental Affinities: Space / Fire / Dark
+## Gluttony
+Energy: 115
+Hunger: 0%
+Evolution: 0%
+Biological Analysis: Unlocked
+Predator's Growth: Active
+Defeated Enemies: 1
+Consumed Enemies: 1
+Current Companions: 1
+Territory: Hidden Forest Bunker
+## FIRST HUNT COMPLETED
+:::
+Elias looked toward the dark forest displayed on the monitors.
+He had defeated his first enemy.
+He had tested his ability.
+He had discovered a potential companion.
+And he had confirmed that the apocalypse was unfolding exactly as he remembered.
+But there was one thing he hadn't expected.
+The system was already detecting unusual abilities in other humans.
+Perhaps the world would produce extraordinary individuals much sooner than he remembered.
+Perhaps the future would not unfold exactly as it had before.
+He slowly clenched his fist.
+"Doesn't matter."
+He turned away from the monitor.
+"I'll adapt."
+He walked toward the corridor.
+Behind him, the monitoring screens continued displaying the destruction of civilization.
+Ahead of him were thirteen bedrooms, a fully stocked warehouse, an armory, a laboratory, and a fortress that could become the foundation of something much greater.
+He had thirty days of supplies.
+A supernatural ability.
+And an entire world of enemies to consume.
+For now, he would rest.
+Tomorrow, the real preparation would begin.
+The age of humanity was ending.
+The age of Gluttony was beginning.
+---
+~ END OF CHAPTER 01
+::: sys
+## VOLUME I – CHAPTER 01 COMPLETE
+## CHAPTER CLEARED
+## Elias Veyron's Current Progress
+| Category | Result |
+| First zombie defeated | Complete |
+| First enemy consumed | Complete |
+| Biological Analysis | Unlocked |
+| First survivor rescued | Complete |
+| Bunker security | Operational |
+| Gluttony evolution | Beginning |
+:::
+::: sys
+## New Character Introduced
+## Mira Solen
+~ FIRST COMPANION CANDIDATE
+Race: Human
+Level: 1
+Ability: Unknown
+Status: Rescued
+Affinity: Unknown
+Potential: Undetermined
+:::
+::: sys
+## Next Chapter Preview
+## CHAPTER 02: The Mysterious Survivor
+Mira's unusual energy signature catches the system's attention. Meanwhile, Elias begins testing his elemental magic, discovers the true limitations of Gluttony, and encounters his first Runner Zombie.
+:::
+</script>
 
 <script>
 /* =========================================================
@@ -322,6 +2872,11 @@ main{max-width:1180px;margin:0 auto;padding:clamp(28px,4vw,48px) var(--page-pad)
      "1-2": "https://example.com/gluttonous-emperor/v1/2",
 
    Chapters without an address do nothing when clicked.
+
+   Chapters with story text (Prologue, Chapter 01) open the
+   built-in reader. To add the next chapter, put its text in a
+   new <script type="text/plain" id="src-c2"> block (same
+   format as the others) and add an entry to READER below.
 
    To release a chapter, edit its entry in VOLUMES (title +
    date). Chapters not listed there show "Coming soon...".
@@ -355,6 +2910,231 @@ const VOLUMES = [
   { title:"Coming soon...", chapters:[] }   /* Volume XII */
 ];
 
+
+/* ---------- story text (lightweight markup) ----------
+   plain line       -> paragraph          "## x"  -> heading
+   "### x"          -> small heading      "- x"   -> list item
+   "~ x"            -> small caps tag     "---"   -> divider
+   "::: sys" / ":::" -> system window (add "warn" for red)
+   "| a | b |"      -> table row (first row = header)          */
+const BOOK_NAME = "The Gluttonous Emperor";
+const READER = {
+  "prologue":{
+    kicker:"Prologue", title:"“The Man Who Lost Everything”", date:"10/04/2026", src:"src-prologue",
+    intro:{
+      genres:"Apocalyptic Regression • System • Survival • Fantasy • Action • Kingdom Building",
+      date:"[Date Released: 10/04/2026]",
+      epigraph:[
+        "When the world ended, he lost everything.",
+        "When he was betrayed, he lost the people he trusted.",
+        "When he died, he was given another chance.",
+        "This time, he would not save the world out of kindness. He would build an empire that even the apocalypse itself would fear."
+      ]
+    },
+    next:"v1-c1", nextLabel:"Chapter 01"
+  },
+  "v1-c1":{
+    kicker:"Volume I · Chapter 01", title:"The First Hunt: A Walker Zombie", date:"10/04/2026", src:"src-c1",
+    prev:"prologue", prevLabel:"Prologue"
+  },
+  "epilogue":{ kicker:"Epilogue", title:"Coming soon...", soon:true, prev:"v1-c1", prevLabel:"Chapter 01" }
+};
+
+const ORN = (()=>{
+  const ln  = '<span class="ln"></span>', lnr = '<span class="ln r"></span>';
+  const zig = '<svg class="zig" viewBox="0 0 44 14" aria-hidden="true"><path d="M0 7 H10 L15 1 L21 13 L27 3 L32 11 L36 7 H44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+  const zigr = zig.replace('class="zig"','class="zig r"');
+  const dm = '<span class="dm"></span>', dms = '<span class="dm sm"></span>';
+  const wing = '<svg class="orn wing" viewBox="0 0 96 30" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M94 15 C74 15 54 12 30 3"/><path d="M94 15 C76 17 58 18 38 13"/><path d="M94 15 C78 20 62 23 46 21"/><path d="M94 15 C82 24 70 28 58 28"/></g><path d="M94 15 C72 14 52 10 28 2 C52 12 74 17 94 15Z" fill="currentColor" opacity=".35"/></svg>';
+  const wingr = wing.replace('class="orn wing"','class="orn wing r"');
+  const wheat = (side)=>`<svg class="orn wheat ${side}" viewBox="0 0 28 44" aria-hidden="true"><path d="M14 43 V9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/><g fill="currentColor"><ellipse cx="14" cy="5" rx="2.5" ry="4.6"/><ellipse cx="9" cy="14" rx="2.4" ry="4.8" transform="rotate(-38 9 14)"/><ellipse cx="19" cy="14" rx="2.4" ry="4.8" transform="rotate(38 19 14)"/><ellipse cx="9" cy="22" rx="2.4" ry="4.8" transform="rotate(-38 9 22)"/><ellipse cx="19" cy="22" rx="2.4" ry="4.8" transform="rotate(38 19 22)"/><ellipse cx="9" cy="30" rx="2.4" ry="4.8" transform="rotate(-38 9 30)"/><ellipse cx="19" cy="30" rx="2.4" ry="4.8" transform="rotate(38 19 30)"/></g></svg>`;
+  return {
+    head:{
+      bolt :t=>`${ln}${zig}${dm}${t}${dm}${zigr}${lnr}`,
+      wings:t=>`${ln}${zig}${wing}${t}${wingr}${zigr}${lnr}`,
+      wheat:t=>`${ln}${zig}${wheat("l")}${t}${wheat("r")}${zigr}${lnr}`
+    },
+    sec:`<div class="sec-orn">${ln}${zig}${dm}${zigr}${lnr}</div>`,
+    fleuron:`<div class="fleuron">${ln}${dm}${dms}${dm}${dms}${dm}${lnr}</div>`,
+    foot:`<div class="sys-foot">${ln}${dm}${dms}${dm}${lnr}</div>`,
+    end:(text)=>`<div class="the-end"><div class="te-top">${ln}${zig}${wing}${dm}${wingr}${zigr}${lnr}</div><div class="te-text">${text}</div><div class="te-sub">to be continued...</div><div class="te-bot">${wheat("l")}${dm}${dms}${dm}${wheat("r")}</div></div>`
+  };
+})();
+
+function boxKind(warn,titles){
+  if(warn) return {color:"red",orn:"bolt"};
+  if(/COMPLETE|CONFIRMED|ACQUIRED|CLEARED|SUCCESS|QUEST|REWARD|WELCOME|NEW TITLE|EMPEROR|SELECTION COMPLETE/i.test(titles)) return {color:"gold",orn:"wheat"};
+  if(/STATUS|HOST|OPTION|AFFINITY|PROGRESS|ANALYSIS|SCAN|IDENTIFIED|CHARACTER/i.test(titles)) return {color:"blue",orn:"wings"};
+  return {color:"blue",orn:"bolt"};
+}
+
+function renderStory(src){
+  const e = v => String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const lines = src.split("\n").map(l=>l.replace(/\s+$/,"")).filter(Boolean);
+  const SFX = /^(STAB!|CRACK\.|BEEP\.|CLANG\.|Click\.|Beep\.)$/;
+  let out = "", box = null, kv = false, list = false, table = false, dropDone = false;
+  const endKv    = () => { if(kv){ out += "</div>"; kv = false; } };
+  const endList  = () => { if(list){ out += "</ul>"; list = false; } };
+  const endTable = () => { if(table){ out += "</tbody></table></div>"; table = false; } };
+  const closeAll = () => { endKv(); endList(); endTable(); };
+
+  for(let i=0;i<lines.length;i++){
+    const line = lines[i];
+
+    if(line.startsWith("::: ")){
+      closeAll();
+      const titles = [];
+      for(let j=i+1;j<lines.length && lines[j]!==":::";j++) if(lines[j].startsWith("## ")) titles.push(lines[j].slice(3));
+      const kind = boxKind(/\bwarn\b/.test(line), titles.join(" "));
+      box = {kind, n:0, prev:""};
+      out += `<div class="sys ${kind.color}"><i class="cn tl"></i><i class="cn tr"></i><i class="cn bl"></i><i class="cn br"></i>`;
+      continue;
+    }
+    if(line === ":::"){ closeAll(); out += ORN.foot + "</div>"; box = null; continue; }
+
+    if(box && line.startsWith("## ")){
+      closeAll();
+      const t = line.slice(3);
+      if(box.n===0) out += `<div class="sys-head">${ORN.head[box.kind.orn](`<span class="sys-title">${e(t)}</span>`)}</div>`;
+      else if(box.n===1 && box.prev==="head") out += `<div class="sys-tagline">${e(t)}</div>`;
+      else out += `<div class="sys-sub">${e(t)}</div>`;
+      box.prev = box.n===0 ? "head" : "title"; box.n++;
+      continue;
+    }
+    if(box) box.prev = "other";
+
+    if(line.startsWith("| ")){
+      endKv(); endList();
+      const cells = line.replace(/^\|\s*|\s*\|$/g,"").split(/\s*\|\s*/);
+      if(!table){ table = true; out += `<div class="tbl-wrap"><table><thead><tr>${cells.map(c=>`<th>${e(c)}</th>`).join("")}</tr></thead><tbody>`; }
+      else out += `<tr>${cells.map(c=>`<td>${e(c)}</td>`).join("")}</tr>`;
+      continue;
+    }
+    endTable();
+
+    if(line.startsWith("- ")){ endKv(); if(!list){ out += "<ul>"; list = true; } out += `<li>${e(line.slice(2))}</li>`; continue; }
+    endList();
+
+    if(line === "---"){
+      endKv();
+      if((lines[i+1]||"").startsWith("~ END OF")) continue;
+      out += ORN.fleuron; continue;
+    }
+    if(line.startsWith("### ")){ endKv(); out += `<h4>${e(line.slice(4))}</h4>`; continue; }
+    if(line.startsWith("## ")){ endKv(); out += `<div class="sec">${ORN.sec}<h3>${e(line.slice(3))}</h3></div>`; continue; }
+    if(line.startsWith("~ END OF")){ endKv(); out += ORN.end(e(line.slice(2))); continue; }
+    if(line.startsWith("~ ")){ endKv(); out += `<div class="tag">${e(line.slice(2))}</div>`; continue; }
+    if(line === "DING!"){ endKv(); out += `<p class="ding">DING!</p>`; continue; }
+
+    if(box && !line.startsWith("[")){
+      let m = /^([^:–]{2,40}?):\s+(.+)$/.exec(line);
+      if(m){ if(!kv){ out += '<div class="kvs">'; kv = true; } out += `<span class="k">${e(m[1])}</span><span class="v">${e(m[2])}</span>`; continue; }
+      if(/^[^:]{2,40}:$/.test(line)){ endKv(); out += `<div class="kv-label">${e(line.slice(0,-1))}</div>`; continue; }
+      m = /^(.{2,34}?) – (.+)$/.exec(line);
+      if(m){ if(!kv){ out += '<div class="kvs">'; kv = true; } out += `<span class="k">${e(m[1])}</span><span class="v">${e(m[2])}</span>`; continue; }
+    }
+    endKv();
+    let cls = "";
+    if(!box){
+      if(/^["“]/.test(line)) cls = "say";
+      else if(SFX.test(line)) cls = "sfx";
+      else if(!dropDone && line.length>90){ cls = "dropcap"; dropDone = true; }
+    }
+    out += `<p${cls?` class="${cls}"`:""}>${e(line)}</p>`;
+  }
+  closeAll();
+  return out;
+}
+
+/* ---------- reader ---------- */
+const $r = id => document.getElementById(id);
+let currentRead = null;
+
+function setHash(h){
+  try{
+    const url = h ? "#"+h : location.pathname + location.search;
+    if(h ? location.hash !== "#"+h : location.hash) history.pushState(null,"",url);
+  }catch(err){ try{ location.hash = h; }catch(e2){} }
+}
+
+function openReader(key,push=true){
+  const ent = READER[key]; if(!ent) return false;
+  currentRead = key;
+  document.body.classList.add("reading");
+
+  let head = "";
+  if(ent.intro){
+    head += `<div class="r-book">
+      <div class="r-name">${esc(BOOK_NAME)}</div>
+      <div class="r-genres">${esc(ent.intro.genres)}</div>
+      <div class="r-date">${esc(ent.intro.date)}</div>
+      <div class="r-epigraph">${ent.intro.epigraph.map(t=>`<p>${esc(t)}</p>`).join("")}</div>
+    </div>`;
+  }
+  head += `<div class="r-title-wrap">
+    <div class="r-kicker">${esc(ent.kicker)}</div>
+    <h2 class="r-title">${esc(ent.title)}</h2>
+    ${ORN.sec}
+    ${ent.date ? `<div class="r-meta">${esc(BOOK_NAME)} · Released ${esc(ent.date)}</div>` : ""}
+  </div>`;
+  $r("rHead").innerHTML = head;
+
+  $r("rBody").innerHTML = ent.soon
+    ? `<div class="r-soon"><strong>Coming soon...</strong>The Epilogue will be released once the story reaches its end.</div>`
+    : renderStory($r(ent.src).textContent);
+
+  const prev = ent.prev ? READER[ent.prev] : null, next = ent.next ? READER[ent.next] : null;
+  const go = (k,label,dir) => k
+    ? `<button class="rbtn" type="button" data-read="${k}">${dir<0?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>':""}${esc(label)}${dir>0?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>':""}</button>`
+    : `<span></span>`;
+  $r("rNav").innerHTML = go(ent.prev,ent.prevLabel||"Previous",-1)
+    + `<button class="rbtn" type="button" data-reader-close>Back to Volumes</button>`
+    + (next ? go(ent.next,ent.nextLabel||"Next",1) : `<button class="rbtn" type="button" disabled>Next chapter · Coming soon</button>`);
+
+  $r("rPrev").disabled = !prev; $r("rNext").disabled = !next;
+  $r("rPrev").dataset.read = ent.prev || ""; $r("rNext").dataset.read = ent.next || "";
+
+  document.title = ent.kicker.replace(/ · /," – ") + " — " + BOOK_NAME;
+  window.scrollTo(0,0);
+  updateProgress();
+  if(push) setHash(key);
+  return true;
+}
+
+function closeReader(push=true){
+  if(!document.body.classList.contains("reading")) return;
+  const last = currentRead;
+  document.body.classList.remove("reading");
+  currentRead = null;
+  document.title = "The Gluttonous Emperor — KARAKU Manhua";
+  $r("progress").style.width = "0";
+  if(push) setHash("");
+  const row = last && document.getElementById(last);
+  if(row){ const d = row.closest("details"); if(d) d.open = true; row.scrollIntoView({block:"center"}); }
+  else window.scrollTo(0,0);
+}
+
+function updateProgress(){
+  if(!document.body.classList.contains("reading")){ return; }
+  const h = document.documentElement.scrollHeight - innerHeight;
+  $r("progress").style.width = (h>0 ? Math.min(100, scrollY/h*100) : 0) + "%";
+}
+window.addEventListener("scroll",updateProgress,{passive:true});
+
+document.addEventListener("click",e=>{
+  const r = e.target.closest("[data-read]");
+  if(r){ if(!r.dataset.read) return; e.preventDefault(); openReader(r.dataset.read); return; }
+  if(e.target.closest("#rBack,[data-reader-close]")){ e.preventDefault(); closeReader(); }
+});
+
+/* text size (saved in this browser) */
+let readSize = 18;
+try{ const v = parseInt(localStorage.getItem("karaku-read-size"),10); if(v>=14 && v<=26) readSize = v; }catch(e){}
+function applySize(){ $r("reader").style.setProperty("--read-size",readSize+"px"); try{ localStorage.setItem("karaku-read-size",readSize); }catch(e){} }
+$r("fMinus").addEventListener("click",()=>{ readSize = Math.max(14,readSize-1); applySize(); });
+$r("fPlus").addEventListener("click",()=>{ readSize = Math.min(26,readSize+1); applySize(); });
+applySize();
+
 /* ---------- rendering ---------- */
 const ROMAN = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
 const pad = n => String(n).padStart(2,"0");
@@ -362,9 +3142,11 @@ const esc = v => String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 
 function chapterMarkup(v,c,data){
   const key = (v+1)+"-"+(c+1);
-  const url = CHAPTER_LINKS[key] || "";
+  const rkey = "v"+(v+1)+"-c"+(c+1);
+  const readable = !!READER[rkey];
+  const url = readable ? "#"+rkey : (CHAPTER_LINKS[key] || "");
   const soon = !data;
-  return `<a class="chapter ${soon?"soon":""}" id="v${v+1}-c${c+1}" href="${esc(url||"#")}" data-key="${key}"${url?"":' data-empty="1"'}>
+  return `<a class="chapter ${soon?"soon":""}${readable?" readable":""}" id="${rkey}" href="${esc(url||"#")}" data-key="${key}"${readable?` data-read="${rkey}"`:""}${url?"":' data-empty="1"'}>
     <span class="c-no">Chapter ${pad(c+1)}</span>
     <span class="c-title">${soon ? "Coming soon..." : esc(data.title)}</span>
     <span class="c-date">${soon ? "" : esc(data.date)}</span>
@@ -386,6 +3168,18 @@ function volumeMarkup(vol,v){
   </details>`;
 }
 
+function specialRow(key,label,title,date){
+  const ent = READER[key];
+  const soon = !!ent.soon;
+  return `<a class="chapter special readable ${soon?"soon":""}" href="#${key}" data-read="${key}">
+    <span class="c-no">${label}</span>
+    <span class="c-title">${esc(title)}</span>
+    <span class="c-date">${esc(date||"")}</span>
+  </a>`;
+}
+document.getElementById("specTop").innerHTML = specialRow("prologue","Prologue","The Man Who Lost Everything","10/04/2026");
+document.getElementById("specBottom").innerHTML = specialRow("epilogue","Epilogue","Coming soon...","");
+
 const total = VOLUMES.reduce((n,v)=>n+v.chapters.length,0);
 document.getElementById("releasedCount").textContent = total+" Chapter"+(total===1?"":"s");
 document.getElementById("volumes").innerHTML = VOLUMES.map(volumeMarkup).join("");
@@ -402,15 +3196,22 @@ document.getElementById("collapseAll").addEventListener("click",()=>document.que
 /* open + highlight a chapter linked from the library (#v1-c3) */
 function focusHash(){
   const m = /^#v(\d+)-c(\d+)$/.exec(location.hash);
-  if(!m) return;
+  if(!m || READER[location.hash.slice(1)]) return;
   const el = document.getElementById(location.hash.slice(1));
   if(!el) return;
   const d = el.closest("details"); if(d) d.open = true;
   el.scrollIntoView({block:"center"});
   el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
 }
-window.addEventListener("hashchange",focusHash);
-focusHash();
+function syncFromHash(){
+  const key = location.hash.slice(1);
+  if(READER[key]){ openReader(key,false); return; }
+  if(document.body.classList.contains("reading")) closeReader(false);
+  focusHash();
+}
+window.addEventListener("hashchange",syncFromHash);
+window.addEventListener("popstate",syncFromHash);
+syncFromHash();
 
 /* theme toggle (shared with the main site) */
 document.getElementById("themeBtn").addEventListener("click",()=>{
