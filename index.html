@@ -5352,6 +5352,7 @@ function initManhua(host,root){
      chapters    number of chapters you have
      volumes / perVolume / releasedByVolume / volumeTitles
                  optional: lists every volume (fold/unfold) with its chapter buttons
+     extras      optional: ["prologue","epilogue"] adds those buttons (they open on the book page)
      bookUrl     optional: the title's own book page (e.g. "manhua/MY_BOOK.html").
                  When set, "Start Reading" and every chapter button open that page.
      chapterUrl  link pattern for chapters, {n} = chapter number
@@ -5373,6 +5374,7 @@ const catalog = [
     genres:["Apocalypse","Regressed","Survival","Fantasy","Action","Kingdom Building","Horror"],
     status:"In Progress", author:"", year:"2026", chapters:7, chapterUrl:"",
     bookUrl:"manhua/THE_GLUTTONOUS_EMPEROR.html",
+    extras:["prologue","epilogue"],           /* adds Prologue / Epilogue buttons to the details panel */
     series:"12-Volume Series (12 Chapters per Volume)", released:"10/04/2026",
     volumes:12, perVolume:12,                 /* shows every volume as a fold/unfold list */
     releasedByVolume:[7],                     /* chapters released in Volume I, II, III... */
@@ -5776,6 +5778,9 @@ function volumesMarkup(item){
 function detailsMarkup(item){
   const first = chapterLink(item,1);
   const last  = item.chapters ? chapterLink(item,item.chapters) : "";
+  const extras = item.extras || [];
+  const hasPrologue = !!item.bookUrl && extras.includes("prologue");
+  const hasEpilogue = !!item.bookUrl && extras.includes("epilogue");
 
   const chapters = item.chapters
     ? Array.from({length:item.chapters},(_,i)=>{
@@ -5811,12 +5816,14 @@ function detailsMarkup(item){
         ${item.series ? `<p class="series-line">${esc(item.series)}</p>` : ""}
 
         <div class="book-actions">
+          ${hasPrologue ? `<a class="action-btn primary" href="${esc(item.bookUrl)}#prologue">Prologue</a>` : ""}
           ${first
-            ? `<a class="action-btn primary" href="${esc(first)}"${linkTarget(item)}>Start Reading</a>`
+            ? `<a class="action-btn ${hasPrologue?"secondary":"primary"}" href="${esc(first)}"${linkTarget(item)}>Start Reading</a>`
             : `<span class="action-btn primary disabled">Reading Soon</span>`}
           ${last && item.chapters>1
             ? `<a class="action-btn secondary" href="${esc(last)}"${linkTarget(item)}>Latest Chapter</a>`
             : ""}
+          ${hasEpilogue ? `<a class="action-btn secondary" href="${esc(item.bookUrl)}#epilogue">Epilogue</a>` : ""}
         </div>
       </div>
     </div>
