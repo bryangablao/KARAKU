@@ -5374,6 +5374,7 @@ const catalog = [
     genres:["Apocalypse","Regressed","Survival","Fantasy","Action","Kingdom Building","Horror"],
     status:"In Progress", author:"", year:"2026", chapters:7, chapterUrl:"",
     bookUrl:"manhua/THE_GLUTTONOUS_EMPEROR.html",
+    bookmarkKey:"karaku-bookmarks:the-gluttonous-emperor",   /* lets the panel offer "Continue Reading" */
     extras:["prologue","epilogue"],           /* adds Prologue / Epilogue buttons to the details panel */
     series:"12-Volume Series (12 Chapters per Volume)", released:"10/04/2026",
     volumes:12, perVolume:12,                 /* shows every volume as a fold/unfold list */
@@ -5781,6 +5782,10 @@ function detailsMarkup(item){
   const extras = item.extras || [];
   const hasPrologue = !!item.bookUrl && extras.includes("prologue");
   const hasEpilogue = !!item.bookUrl && extras.includes("epilogue");
+  let resume = null;   /* saved reading position from the book page (same browser) */
+  if(item.bookUrl && item.bookmarkKey){
+    try{ const d = JSON.parse(safeStorage.getItem(item.bookmarkKey) || "null"); if(d && d.last) resume = d.last; }catch(e){}
+  }
 
   const chapters = item.chapters
     ? Array.from({length:item.chapters},(_,i)=>{
@@ -5816,9 +5821,10 @@ function detailsMarkup(item){
         ${item.series ? `<p class="series-line">${esc(item.series)}</p>` : ""}
 
         <div class="book-actions">
-          ${hasPrologue ? `<a class="action-btn primary" href="${esc(item.bookUrl)}#prologue">Prologue</a>` : ""}
+          ${resume ? `<a class="action-btn primary" href="${esc(item.bookUrl)}#continue">Continue · ${Number(resume.pct)||0}%</a>` : ""}
+          ${hasPrologue ? `<a class="action-btn ${resume?"secondary":"primary"}" href="${esc(item.bookUrl)}#prologue">Prologue</a>` : ""}
           ${first
-            ? `<a class="action-btn ${hasPrologue?"secondary":"primary"}" href="${esc(first)}"${linkTarget(item)}>Start Reading</a>`
+            ? `<a class="action-btn ${(hasPrologue||resume)?"secondary":"primary"}" href="${esc(first)}"${linkTarget(item)}>Start Reading</a>`
             : `<span class="action-btn primary disabled">Reading Soon</span>`}
           ${last && item.chapters>1
             ? `<a class="action-btn secondary" href="${esc(last)}"${linkTarget(item)}>Latest Chapter</a>`
