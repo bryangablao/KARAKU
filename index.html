@@ -1135,7 +1135,8 @@ main{min-height:50vh;padding-bottom:64px}
 .native-video{width:100%;height:100%;max-width:100vw;max-height:100dvh;object-fit:contain;background:#000}
 
 /* Google Drive player: fills the whole screen in full screen so no extra black bars are added around it */
-.player-frame.drive{width:100vw;height:100dvh;max-width:100vw;max-height:100dvh;background:#000}
+.drive-wrap{position:relative;width:100vw;height:100dvh;max-width:100vw;max-height:100dvh;overflow:hidden;background:#000;--crop:52px}
+.drive-wrap iframe{position:absolute;left:0;top:calc(var(--crop) * -1);width:100%;height:calc(100% + var(--crop));border:0;background:#000}
 
 /* Default "theater" mode: a framed player on the page. Fullscreen is opt-in. */
 .player-overlay:not(.is-fullscreen){
@@ -1160,7 +1161,7 @@ main{min-height:50vh;padding-bottom:64px}
   box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.09);
 }
 
-.player-overlay:not(.is-fullscreen) .player-frame.drive{
+.player-overlay:not(.is-fullscreen) .drive-wrap{
   --ar:1.7778;
   width:min(100%,1400px,calc((100dvh - 100px) * var(--ar)));
   height:auto;
@@ -4882,17 +4883,26 @@ function playerMarkup(source,title){
       );
     }
 
+    /*
+      Google Drive draws its own dark title bar across the top of /preview.
+      The iframe is pushed up inside a clipped wrapper so that bar is cropped
+      away. Per-episode overrides: source.crop (px) and source.aspect.
+    */
+    const wrapStyle = [
+      source.aspect ? `--ar:${Number(source.aspect) || 1.7778}` : "",
+      source.crop !== undefined ? `--crop:${Number(source.crop) || 0}px` : ""
+    ].filter(Boolean).join(";");
+
     return `
-      <iframe
-        id="socialPlayer"
-        class="player-frame drive"
-        style="${source.aspect ? `--ar:${Number(source.aspect) || 1.7778}` : ""}"
-        src="https://drive.google.com/file/d/${encodeURIComponent(id)}/preview"
-        title="${esc(title)}"
-        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-        allowfullscreen
-        loading="eager"
-      ></iframe>
+      <div class="drive-wrap" id="socialPlayer" style="${wrapStyle}">
+        <iframe
+          src="https://drive.google.com/file/d/${encodeURIComponent(id)}/preview"
+          title="${esc(title)}"
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+          allowfullscreen
+          loading="eager"
+        ></iframe>
+      </div>
     `;
   }
 
