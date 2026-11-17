@@ -3311,7 +3311,26 @@ const catalog = [
     hue:285,
     summary:"Ichirou Suzuki is an exhausted programmer who spends most of his time working on games. One day, after falling asleep, he suddenly finds himself transported into a fantasy world that resembles the games he has been developing. Using the name Satou, he discovers that he possesses extremely high-level abilities after activating a powerful attack that defeats an entire group of enemies. With his overwhelming strength, he begins traveling across the world, exploring different kingdoms, discovering ancient secrets, and meeting various companions. Although he has enough power to defeat almost anything, Satou prefers a peaceful journey filled with adventure, sightseeing, and helping the people he encounters.",
     poster:"image/anime/death-march.jpg",
-    seasons:makeAnimeSeasons([12])
+    seasons:[
+      {
+        season:1,
+        label:"Season 1",
+        episodes:[
+          { episode:1, title:"Episode 1", source:{ provider:"drive", url:"https://drive.google.com/file/d/1NXDyeru3OOijAWqktctpD6Le-kh1Cciu/view?usp=drive_link", orientation:"landscape" } },
+          { episode:2, title:"Episode 2", source:{ provider:"drive", url:"https://drive.google.com/file/d/19-yYXwGuMtQRpvXHHvI4DtXfElThpP2S/view?usp=drive_link", orientation:"landscape" } },
+          { episode:3, title:"Episode 3", source:{ provider:"drive", url:"https://drive.google.com/file/d/1f4V-BthePhSWVXYra5WCOkF91Ix460jF/view?usp=drive_link", orientation:"landscape" } },
+          { episode:4, title:"Episode 4", source:{ provider:"drive", url:"https://drive.google.com/file/d/1Glj0nxjl1GoXhHF5pnokL3K987gMlnIu/view?usp=drive_link", orientation:"landscape" } },
+          { episode:5, title:"Episode 5", source:{ provider:"drive", url:"https://drive.google.com/file/d/1061eO9DPgRLHIGhPk-hFoRf9hZ9WL79V/view?usp=drive_link", orientation:"landscape" } },
+          { episode:6, title:"Episode 6", source:{ provider:"drive", url:"https://drive.google.com/file/d/10nj9EA8zAa6wEPCjwMUjCoicxL7H-wvX/view?usp=drive_link", orientation:"landscape" } },
+          { episode:7, title:"Episode 7", source:{ provider:"drive", url:"https://drive.google.com/file/d/1NBHXbKVjs7Q-SskfSV6y-5L6XQEV5kxs/view?usp=drive_link", orientation:"landscape" } },
+          { episode:8, title:"Episode 8", source:{ provider:"drive", url:"https://drive.google.com/file/d/1WgiZWPDvBsGNhVHuhYdGjMa5n54-turE/view?usp=drive_link", orientation:"landscape" } },
+          { episode:9, title:"Episode 9", source:{ provider:"drive", url:"https://drive.google.com/file/d/18jaBbV28FhaP178Y7akkJcBT_oEP3ALj/view?usp=drive_link", orientation:"landscape" } },
+          { episode:10, title:"Episode 10", source:{ provider:"drive", url:"https://drive.google.com/file/d/1MJcQIbUKjjhXAVAW6WQsQlMxycxgudj-/view?usp=drive_link", orientation:"landscape" } },
+          { episode:11, title:"Episode 11", source:{ provider:"drive", url:"https://drive.google.com/file/d/1aFgl12-Pro0pZv6VS-OK08_4r8LQCtKp/view?usp=drive_link", orientation:"landscape" } },
+          { episode:12, title:"Episode 12", source:{ provider:"drive", url:"https://drive.google.com/file/d/1c3Jx_xtOCgNMh8jYbi5D-otQjFV82WWE/view?usp=drive_link", orientation:"landscape" } }
+        ]
+      }
+    ]
   },
   {
     id:"a4",
@@ -4740,6 +4759,17 @@ function closeDetails(){
    VIDEO PROVIDER HELPERS
 ========================================================= */
 
+function driveId(url){
+  const value = String(url || "").trim();
+
+  if(/^[\w-]{20,}$/.test(value)){
+    return value;
+  }
+
+  const match = value.match(/\/file\/d\/([\w-]+)/) || value.match(/[?&]id=([\w-]+)/);
+  return match ? match[1] : "";
+}
+
 function youtubeId(url){
   const value = String(url || "").trim();
 
@@ -4819,6 +4849,30 @@ function playerMarkup(source,title){
         id="socialPlayer"
         class="player-frame ${orientation}"
         src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&controls=1&fs=1&playsinline=1&rel=0"
+        title="${esc(title)}"
+        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+        allowfullscreen
+        loading="eager"
+      ></iframe>
+    `;
+  }
+
+  if(provider === "drive"){
+    const id = driveId(source.url);
+
+    if(!id){
+      return playerErrorMarkup(
+        title,
+        "This Google Drive source is not a valid shared file link.",
+        source.url
+      );
+    }
+
+    return `
+      <iframe
+        id="socialPlayer"
+        class="player-frame ${orientation}"
+        src="https://drive.google.com/file/d/${encodeURIComponent(id)}/preview"
         title="${esc(title)}"
         allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
         allowfullscreen
