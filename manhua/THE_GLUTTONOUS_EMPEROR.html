@@ -269,8 +269,8 @@ body.reading .book-hero,body.reading main{display:none}
 .r-meta{margin-top:12px;font-size:.78rem;color:var(--muted)}
 
 /* ================= story typography ================= */
-#reader{--gold:#ffcf7a;--gold-grad:linear-gradient(180deg,#fff1c9 0%,#ffc86b 55%,#ff9f43 100%);--say:#ffe2b4}
-html[data-theme="light"] #reader{--gold:#a8690a;--gold-grad:linear-gradient(180deg,#c9820f 0%,#9a560a 55%,#7a3a05 100%);--say:#7a3d00}
+:root{--gold:#ffcf7a;--gold-grad:linear-gradient(180deg,#fff1c9 0%,#ffc86b 55%,#ff9f43 100%);--say:#ffe2b4}
+html[data-theme="light"]{--gold:#a8690a;--gold-grad:linear-gradient(180deg,#c9820f 0%,#9a560a 55%,#7a3a05 100%);--say:#7a3d00}
 .prose{font-family:"Lora",Georgia,"Times New Roman",serif;font-size:var(--read-size);line-height:1.95;color:var(--text);letter-spacing:.005em}
 .prose p{margin:.55em 0}
 .prose p.say{color:var(--say)}
@@ -378,6 +378,88 @@ html[data-theme="light"] .sys-title{text-shadow:none}
   .reader-bar{padding:8px 12px;gap:6px}
   .rbtn{padding:0 11px}.rbtn .lbl{display:none}
 }
+
+/* ================= cover zoom ================= */
+.cover{cursor:zoom-in}
+.cover:focus-visible{outline:2px solid var(--accent-2);outline-offset:4px}
+.cover-zoom{position:absolute;right:10px;bottom:10px;z-index:2;display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;font-size:.66rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:0;transform:translateY(4px);transition:opacity .2s ease,transform .2s ease}
+.cover-zoom svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.cover:hover .cover-zoom,.cover:focus-visible .cover-zoom{opacity:1;transform:none}
+@media (hover:none){.cover-zoom{opacity:1;transform:none}}
+body.lock{overflow:hidden}
+.cm{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:20px}
+.cm[hidden]{display:none}
+.cm-scrim{position:absolute;inset:0;background:rgba(5,4,10,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.cm-box{position:relative;margin:0;max-width:94vw;max-height:94vh;display:grid;gap:14px;justify-items:center;animation:cmIn .28s var(--ease)}
+@keyframes cmIn{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:none}}
+.cm-box img{max-width:92vw;max-height:82vh;width:auto;height:auto;border-radius:16px;border:1px solid rgba(255,255,255,.18);box-shadow:0 30px 90px rgba(0,0,0,.65)}
+.cm-box figcaption{font-family:"Cinzel",serif;font-size:.82rem;letter-spacing:.24em;text-transform:uppercase;color:#fff;opacity:.85;text-align:center}
+.cm-close{position:absolute;top:-16px;right:-16px;z-index:3;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#16141c;color:#fff;border:1px solid rgba(255,255,255,.25);font-size:1.3rem;line-height:1;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.cm-close:hover{border-color:var(--accent)}
+.cm-fb{position:relative;width:min(420px,84vw);aspect-ratio:2/3;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.18);box-shadow:0 30px 90px rgba(0,0,0,.65);background:radial-gradient(circle at 75% 18%,hsla(47,85%,62%,.55),transparent 45%),linear-gradient(160deg,hsl(352,62%,34%),hsl(12,45%,12%) 80%);color:#fff}
+.cm-fb[hidden]{display:none}
+.cm-fb .glyph{position:absolute;top:12px;right:16px;font-family:"Ma Shan Zheng",serif;font-size:4.4rem;color:rgba(255,255,255,.2);line-height:1}
+.cm-fb .t{position:absolute;left:0;right:0;bottom:0;padding:22px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.7))}
+.cm-fb small{display:block;font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;opacity:.7}
+.cm-fb strong{font-family:var(--font-display);font-size:1.6rem;line-height:1.15}
+
+/* ================= bookmarks ================= */
+.ribbon{display:inline-block;flex:none;width:14px;height:20px;background:var(--gradient);clip-path:polygon(0 0,100% 0,100% 100%,50% 74%,0 100%)}
+.rib{flex:none;width:15px;height:15px;fill:currentColor}
+.rbtn.on{color:#fff;border-color:transparent;background:var(--gradient);box-shadow:0 8px 22px rgba(255,77,109,.35)}
+.rbtn .badge,.read-btn .count{min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--gradient);color:#fff;font-size:.66rem;font-weight:800;display:inline-grid;place-items:center}
+.rbtn .badge:empty{display:none}
+.read-btn .count{margin-left:2px}
+
+.bm-rib{position:absolute;left:-30px;top:2px;width:17px;height:30px;background:var(--gradient);clip-path:polygon(0 0,100% 0,100% 100%,50% 76%,0 100%);pointer-events:none}
+.bm-mark{position:relative}
+.bm-flash{animation:bmFlash 2.2s ease}
+@keyframes bmFlash{0%,45%{background:rgba(255,180,84,.22);box-shadow:0 0 0 8px rgba(255,180,84,.22);border-radius:8px}100%{background:transparent;box-shadow:none}}
+@media (max-width:760px){.bm-rib{left:-14px;width:11px;height:20px}}
+
+#bmScrim{position:fixed;inset:0;z-index:140;background:rgba(5,4,10,.58);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .25s ease}
+#bmScrim.open{opacity:1;pointer-events:auto}
+#bmPanel{position:fixed;top:0;right:0;bottom:0;z-index:150;width:min(410px,100vw);display:flex;flex-direction:column;background:var(--bg-soft);border-left:1px solid var(--line-strong);box-shadow:-24px 0 60px rgba(0,0,0,.42);transform:translateX(106%);visibility:hidden;transition:transform .32s var(--ease),visibility 0s .32s}
+#bmPanel.open{transform:none;visibility:visible;transition:transform .32s var(--ease),visibility 0s}
+.bm-head{display:flex;align-items:center;gap:14px;padding:22px 20px 16px;border-bottom:1px solid var(--line)}
+.bm-head .ribbon{width:20px;height:30px}
+.bm-head h2{flex:1;font-family:"Cinzel",serif;font-weight:800;font-size:1.3rem;letter-spacing:.06em;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bm-x{width:38px;height:38px;border-radius:50%;border:1px solid var(--line-strong);background:var(--surface);font-size:1.2rem;line-height:1}
+.bm-x:hover{border-color:var(--accent)}
+.bm-body{flex:1;overflow:auto;padding:16px 16px 20px}
+.bm-sec{margin:4px 4px 10px;font-size:.68rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.bm-last{display:flex;gap:14px;width:100%;text-align:left;padding:16px;border-radius:16px;border:1px solid rgba(255,180,84,.45);background:linear-gradient(160deg,rgba(255,180,84,.16),rgba(255,77,109,.06));margin-bottom:22px;transition:transform .2s var(--ease)}
+.bm-last:hover{transform:translateY(-2px)}
+.bm-last b,.bm-item b{display:block;font-family:var(--font-display);font-size:.95rem}
+.bm-last i,.bm-item i{display:block;margin:4px 0;color:var(--muted);font-style:italic;font-size:.82rem;line-height:1.5}
+.bm-last small,.bm-item small{color:var(--muted);font-size:.72rem;font-weight:700;letter-spacing:.04em}
+.bm-bar{height:4px;border-radius:99px;background:var(--line-strong);overflow:hidden;margin-top:9px}
+.bm-bar span{display:block;height:100%;background:var(--gradient);border-radius:inherit}
+.bm-item{display:flex;align-items:stretch;gap:8px;margin-bottom:10px}
+.bm-go{flex:1;min-width:0;display:flex;gap:13px;text-align:left;padding:14px;border-radius:14px;border:1px solid var(--line);background:var(--surface);transition:border-color .2s ease,transform .2s var(--ease)}
+.bm-go:hover{border-color:var(--accent);transform:translateX(-2px)}
+.bm-del{flex:none;width:38px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--muted);font-size:1.1rem}
+.bm-del:hover{color:#fff;background:var(--accent);border-color:transparent}
+.bm-empty,.bm-none{padding:26px 18px;text-align:center;color:var(--muted);font-size:.86rem;line-height:1.75;border:1px dashed var(--line-strong);border-radius:16px}
+.bm-none{margin-bottom:22px}
+.bm-foot{padding:14px 20px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:.74rem;color:var(--muted)}
+.bm-clear{font-size:.74rem;font-weight:700;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.bm-clear:hover{color:var(--accent)}
+
+.resume{display:flex;align-items:center;gap:16px;margin-bottom:14px;padding:16px 18px;border-radius:16px;border:1px solid rgba(255,180,84,.45);background:linear-gradient(160deg,rgba(255,180,84,.14),rgba(255,77,109,.06))}
+.resume .ribbon{width:20px;height:32px}
+.resume-txt{flex:1;min-width:0}
+.resume-txt small{display:block;font-size:.66rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.resume-txt strong{display:block;font-family:var(--font-display);font-size:1.02rem;margin-top:3px}
+.resume-snip{display:block;margin-top:3px;color:var(--muted);font-style:italic;font-size:.82rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.resume .read-btn{height:42px;flex:none}
+@media (max-width:560px){.resume{flex-wrap:wrap}.resume .read-btn{width:100%;justify-content:center}}
+.chapter.has-bm .c-no::after{content:"";display:inline-block;width:9px;height:14px;margin-left:9px;vertical-align:-3px;background:var(--gradient);clip-path:polygon(0 0,100% 0,100% 100%,50% 74%,0 100%)}
+.chapter.is-last{background:rgba(255,180,84,.08)}
+
+#toast{position:fixed;left:50%;bottom:28px;z-index:220;display:flex;align-items:center;gap:10px;padding:12px 20px;border-radius:999px;background:#16141c;color:#fff;border:1px solid rgba(255,255,255,.2);box-shadow:0 18px 40px rgba(0,0,0,.45);font-size:.84rem;font-weight:600;opacity:0;pointer-events:none;transform:translate(-50%,16px);transition:opacity .25s ease,transform .25s var(--ease)}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#toast .rib{color:var(--accent-2)}
 </style>
 </head>
 <body>
@@ -402,10 +484,11 @@ html[data-theme="light"] .sys-title{text-shadow:none}
 <section class="book-hero">
   <div class="book-hero-bg" style="background-image:url('../image/manhua/The Gluttonous Emperor.png')"></div>
   <div class="book-hero-inner">
-    <div class="cover">
+    <div class="cover" id="coverBtn" role="button" tabindex="0" aria-label="View full cover" title="View full cover">
       <span class="glyph" aria-hidden="true">漫</span>
       <div class="fallback"><small>Manhua</small><strong>The Gluttonous Emperor</strong></div>
       <img src="../image/manhua/The Gluttonous Emperor.png" alt="The Gluttonous Emperor cover" onerror="this.remove()">
+      <span class="cover-zoom"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4M11 8v6M8 11h6"></path></svg>View</span>
     </div>
 
     <div class="info">
@@ -418,12 +501,16 @@ html[data-theme="light"] .sys-title{text-shadow:none}
       </div>
 
       <div class="read-actions">
+        <a class="read-btn primary" id="heroContinue" href="#continue" data-continue hidden>
+          <span class="ribbon" aria-hidden="true"></span><span class="lbl">Continue</span>
+        </a>
         <a class="read-btn primary" href="#prologue" data-read="prologue">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 012-2h12v16H6a2 2 0 00-2 2V5z"></path><path d="M18 19v2H6"></path></svg>
           Prologue
         </a>
         <a class="read-btn" href="#v1-c1" data-read="v1-c1">Start Reading</a>
         <a class="read-btn" href="#epilogue" data-read="epilogue">Epilogue <span class="soon-tag">Soon</span></a>
+        <button class="read-btn" id="heroBm" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z"></path></svg>Bookmarks <span class="count" id="bmCount">0</span></button>
       </div>
 
       <div class="facts">
@@ -458,6 +545,7 @@ html[data-theme="light"] .sys-title{text-shadow:none}
     </div>
   </div>
 
+  <div id="resumeCard"></div>
   <div class="specials" id="specTop"></div>
   <div id="volumes"></div>
   <div class="specials bottom" id="specBottom"></div>
@@ -471,6 +559,8 @@ html[data-theme="light"] .sys-title{text-shadow:none}
     <span class="grow"></span>
     <button class="rbtn" id="rPrev" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg><span class="lbl">Previous</span></button>
     <button class="rbtn" id="rNext" type="button"><span class="lbl">Next</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+    <button class="rbtn" id="rMark" type="button" aria-label="Bookmark this spot" title="Bookmark this spot"><svg class="rib" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h12v20l-6-5-6 5z"></path></svg><span class="lbl">Bookmark</span></button>
+    <button class="rbtn" id="rList" type="button" aria-label="Open bookmarks" title="My bookmarks"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"></path></svg><span class="badge" id="rListCount"></span></button>
     <button class="rbtn" id="fMinus" type="button" aria-label="Smaller text">A−</button>
     <button class="rbtn" id="fPlus" type="button" aria-label="Larger text">A+</button>
   </div>
@@ -489,6 +579,29 @@ html[data-theme="light"] .sys-title{text-shadow:none}
     <a href="../index.html#/terms">Terms of Service</a>
   </div>
 </footer>
+
+<div id="bmScrim"></div>
+<aside id="bmPanel" aria-label="Bookmarks" aria-hidden="true">
+  <div class="bm-head"><span class="ribbon" aria-hidden="true"></span><h2>Bookmarks</h2><button class="bm-x" id="bmClose" type="button" aria-label="Close">×</button></div>
+  <div class="bm-body">
+    <div class="bm-sec">Where you stopped</div>
+    <div id="bmResume"></div>
+    <div class="bm-sec">Saved bookmarks</div>
+    <div id="bmList"></div>
+  </div>
+  <div class="bm-foot"><span>Saved in this browser</span><button class="bm-clear" id="bmClear" type="button">Clear all</button></div>
+</aside>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<div class="cm" id="coverModal" hidden>
+  <div class="cm-scrim" id="cmScrim"></div>
+  <figure class="cm-box" role="dialog" aria-label="Full cover">
+    <button class="cm-close" id="cmClose" type="button" aria-label="Close">×</button>
+    <img id="cmImg" alt="The Gluttonous Emperor, full cover">
+    <div class="cm-fb" id="cmFb" hidden><span class="glyph" aria-hidden="true">漫</span><div class="t"><small>Manhua</small><strong>The Gluttonous Emperor</strong></div></div>
+    <figcaption>The Gluttonous Emperor</figcaption>
+  </figure>
+</div>
 
 <script type="text/plain" id="src-prologue">
 ## The End of a Miserable World
@@ -3057,8 +3170,9 @@ function setHash(h){
   }catch(err){ try{ location.hash = h; }catch(e2){} }
 }
 
-function openReader(key,push=true){
+function openReader(key,push=true,opts={}){
   const ent = READER[key]; if(!ent) return false;
+  if(currentRead && document.body.classList.contains("reading")){ clearTimeout(saveTimer); saveLast(topBlock()); }
   currentRead = key;
   document.body.classList.add("reading");
 
@@ -3095,7 +3209,9 @@ function openReader(key,push=true){
   $r("rPrev").dataset.read = ent.prev || ""; $r("rNext").dataset.read = ent.next || "";
 
   document.title = ent.kicker.replace(/ · /," – ") + " — " + BOOK_NAME;
+  tagBlocks(); applyMarks();
   window.scrollTo(0,0);
+  if(opts.idx>0) jumpToBlock(opts.idx);
   updateProgress();
   if(push) setHash(key);
   return true;
@@ -3103,11 +3219,13 @@ function openReader(key,push=true){
 
 function closeReader(push=true){
   if(!document.body.classList.contains("reading")) return;
+  clearTimeout(saveTimer); if(currentRead) saveLast(topBlock());
   const last = currentRead;
   document.body.classList.remove("reading");
   currentRead = null;
   document.title = "The Gluttonous Emperor — KARAKU Manhua";
   $r("progress").style.width = "0";
+  refreshResume();
   if(push) setHash("");
   const row = last && document.getElementById(last);
   if(row){ const d = row.closest("details"); if(d) d.open = true; row.scrollIntoView({block:"center"}); }
@@ -3118,6 +3236,7 @@ function updateProgress(){
   if(!document.body.classList.contains("reading")){ return; }
   const h = document.documentElement.scrollHeight - innerHeight;
   $r("progress").style.width = (h>0 ? Math.min(100, scrollY/h*100) : 0) + "%";
+  trackPosition();
 }
 window.addEventListener("scroll",updateProgress,{passive:true});
 
@@ -3126,6 +3245,152 @@ document.addEventListener("click",e=>{
   if(r){ if(!r.dataset.read) return; e.preventDefault(); openReader(r.dataset.read); return; }
   if(e.target.closest("#rBack,[data-reader-close]")){ e.preventDefault(); closeReader(); }
 });
+
+
+/* ---------- bookmarks: where you stopped + saved spots ---------- */
+const BM_KEY = "karaku-bookmarks:the-gluttonous-emperor";
+const SHORT = {"prologue":"Prologue","v1-c1":"Chapter 01","epilogue":"Epilogue"};
+const RIBBON = '<svg class="rib" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h12v20l-6-5-6 5z"></path></svg>';
+let bm = {last:null, marks:[]};
+try{
+  const d = JSON.parse(localStorage.getItem(BM_KEY)||"null");
+  if(d){ bm.last = d.last || null; bm.marks = Array.isArray(d.marks) ? d.marks : []; }
+}catch(e){}
+const saveBm = () => { try{ localStorage.setItem(BM_KEY,JSON.stringify(bm)); }catch(e){} };
+const shortOf = k => SHORT[k] || (READER[k] && READER[k].kicker) || k;
+const dateOf = t => new Date(t).toLocaleDateString(undefined,{month:"short",day:"numeric"});
+const blocks = () => $r("rBody").children;
+let saveTimer = null;
+
+function tagBlocks(){ Array.from(blocks()).forEach((el,i)=>{ el.dataset.i = i; }); }
+function barBottom(){ return document.querySelector(".reader-bar").getBoundingClientRect().bottom; }
+function topBlock(){
+  const list = blocks(); if(!list.length) return 0;
+  const off = barBottom() + 8;
+  let lo = 0, hi = list.length-1;
+  while(lo<hi){ const mid = (lo+hi)>>1; if(list[mid].getBoundingClientRect().bottom > off) hi = mid; else lo = mid+1; }
+  return lo;
+}
+function pctNow(){ const h = document.documentElement.scrollHeight - innerHeight; return h>0 ? Math.round(Math.min(100,scrollY/h*100)) : 0; }
+function snippetOf(el){
+  const t = ((el.querySelector && el.querySelector(".sys-title,h3")) || el).textContent.replace(/\s+/g," ").trim();
+  return t.length>90 ? t.slice(0,88)+"…" : t;
+}
+const hasMark = (key,idx) => bm.marks.some(m=>m.key===key && m.idx===idx);
+
+function trackPosition(){
+  if(!currentRead || READER[currentRead].soon) return;
+  $r("rMark").classList.toggle("on", hasMark(currentRead,topBlock()));
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>saveLast(topBlock()),350);
+}
+function saveLast(idx){
+  if(!currentRead || READER[currentRead].soon || scrollY<300) return;
+  const el = blocks()[idx];
+  bm.last = {key:currentRead, idx, pct:pctNow(), snip: el ? snippetOf(el) : "", t:Date.now()};
+  saveBm();
+}
+function jumpToBlock(idx){
+  const el = blocks()[idx]; if(!el) return;
+  window.scrollTo({top: el.getBoundingClientRect().top + scrollY - barBottom() - 16, behavior:"instant"});
+  el.classList.remove("bm-flash"); void el.offsetWidth; el.classList.add("bm-flash");
+}
+function applyMarks(){
+  Array.from(blocks()).forEach(el=>{ el.classList.remove("bm-mark"); const r = el.querySelector(":scope > .bm-rib"); if(r) r.remove(); });
+  bm.marks.filter(m=>m.key===currentRead).forEach(m=>{
+    const el = blocks()[m.idx]; if(!el) return;
+    el.classList.add("bm-mark");
+    const r = document.createElement("i"); r.className = "bm-rib"; el.prepend(r);
+  });
+}
+function toast(msg,ribbon){
+  const t = $r("toast");
+  t.innerHTML = (ribbon?RIBBON:"") + esc(msg);
+  t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(()=>t.classList.remove("show"),2300);
+}
+function toggleMark(){
+  if(!currentRead || READER[currentRead].soon) return;
+  const idx = topBlock(), el = blocks()[idx]; if(!el) return;
+  const i = bm.marks.findIndex(m=>m.key===currentRead && m.idx===idx);
+  if(i>=0){ bm.marks.splice(i,1); toast("Bookmark removed"); }
+  else{ bm.marks.push({id:Date.now(), key:currentRead, idx, pct:pctNow(), snip:snippetOf(el), t:Date.now()}); toast("Bookmarked · "+shortOf(currentRead)+" · "+pctNow()+"%",true); }
+  saveBm(); applyMarks(); renderBm();
+  $r("rMark").classList.toggle("on", hasMark(currentRead,idx));
+}
+function continueReading(){
+  const l = bm.last;
+  if(l && READER[l.key]) openReader(l.key,true,{idx:l.idx}); else openReader("prologue");
+}
+function goMark(id){
+  closeBm();
+  if(id==="last"){ continueReading(); return; }
+  const m = bm.marks.find(x=>String(x.id)===String(id)); if(m) openReader(m.key,true,{idx:m.idx});
+}
+
+function renderBm(){
+  const n = bm.marks.length, l = bm.last;
+  $r("bmCount").textContent = n; $r("rListCount").textContent = n || "";
+  $r("bmResume").innerHTML = (l && READER[l.key])
+    ? `<button class="bm-last" type="button" data-bm-go="last"><span class="ribbon" aria-hidden="true"></span><span class="bm-txt"><b>${esc(shortOf(l.key))} · ${l.pct}%</b>${l.snip?`<i>“${esc(l.snip)}”</i>`:""}<small>Last read ${esc(dateOf(l.t))} · tap to continue</small><div class="bm-bar"><span style="width:${l.pct}%"></span></div></span></button>`
+    : `<div class="bm-none">Start reading and your place is saved automatically.</div>`;
+  $r("bmList").innerHTML = n
+    ? [...bm.marks].sort((a,b)=>b.t-a.t).map(m=>`<div class="bm-item"><button class="bm-go" type="button" data-bm-go="${m.id}"><span class="ribbon" aria-hidden="true"></span><span class="bm-txt"><b>${esc(shortOf(m.key))}</b><i>“${esc(m.snip)}”</i><small>${m.pct}% · ${esc(dateOf(m.t))}</small></span></button><button class="bm-del" type="button" data-bm-del="${m.id}" aria-label="Remove bookmark">×</button></div>`).join("")
+    : `<p class="bm-empty">No bookmarks yet.<br>While reading, tap the ribbon button to save a spot, and it will appear here.</p>`;
+}
+function refreshResume(){
+  const l = bm.last, ok = l && READER[l.key];
+  $r("resumeCard").innerHTML = ok
+    ? `<div class="resume"><span class="ribbon" aria-hidden="true"></span><div class="resume-txt"><small>Where you stopped</small><strong>${esc(shortOf(l.key))} · ${l.pct}%</strong>${l.snip?`<span class="resume-snip">“${esc(l.snip)}”</span>`:""}<div class="bm-bar"><span style="width:${l.pct}%"></span></div></div><button class="read-btn primary" type="button" data-continue>Continue</button></div>`
+    : "";
+  const hc = $r("heroContinue");
+  hc.hidden = !ok;
+  if(ok) hc.querySelector(".lbl").textContent = "Continue · "+shortOf(l.key)+" · "+l.pct+"%";
+  document.querySelector('.read-btn[data-read="prologue"]').classList.toggle("primary",!ok);
+  document.querySelectorAll("a.chapter").forEach(a=>{
+    const k = a.dataset.read;
+    a.classList.toggle("has-bm", !!k && bm.marks.some(m=>m.key===k));
+    a.classList.toggle("is-last", !!ok && k===l.key);
+  });
+  renderBm();
+}
+
+function openBm(){ renderBm(); $r("bmPanel").classList.add("open"); $r("bmScrim").classList.add("open"); $r("bmPanel").setAttribute("aria-hidden","false"); document.body.classList.add("lock"); }
+function closeBm(){ $r("bmPanel").classList.remove("open"); $r("bmScrim").classList.remove("open"); $r("bmPanel").setAttribute("aria-hidden","true"); document.body.classList.remove("lock"); }
+
+/* ---------- cover viewer ---------- */
+const COVER_SRC = "../image/manhua/The Gluttonous Emperor.png";
+function openCover(){
+  const img = $r("cmImg"), fb = $r("cmFb");
+  img.hidden = false; fb.hidden = true;
+  img.onerror = () => { img.hidden = true; fb.hidden = false; };
+  img.src = COVER_SRC;
+  $r("coverModal").hidden = false; document.body.classList.add("lock");
+  $r("cmClose").focus();
+}
+function closeCover(){ $r("coverModal").hidden = true; document.body.classList.remove("lock"); $r("coverBtn").focus(); }
+
+document.addEventListener("click",e=>{
+  if(e.target.closest("[data-continue]")){ e.preventDefault(); continueReading(); return; }
+  if(e.target.closest("#heroBm,#rList")){ openBm(); return; }
+  if(e.target.closest("#rMark")){ toggleMark(); return; }
+  if(e.target.closest("#bmClose,#bmScrim")){ closeBm(); return; }
+  const go = e.target.closest("[data-bm-go]"); if(go){ goMark(go.dataset.bmGo); return; }
+  const del = e.target.closest("[data-bm-del]");
+  if(del){ bm.marks = bm.marks.filter(m=>String(m.id)!==del.dataset.bmDel); saveBm(); applyMarks(); renderBm(); refreshResume(); if(currentRead) trackPosition(); return; }
+  if(e.target.closest("#bmClear")){
+    if(!bm.marks.length && !bm.last) return;
+    if(confirm("Remove all bookmarks and your saved reading position?")){ bm = {last:null,marks:[]}; saveBm(); applyMarks(); refreshResume(); if(currentRead) $r("rMark").classList.remove("on"); }
+    return;
+  }
+  if(e.target.closest("#coverBtn")){ openCover(); return; }
+  if(e.target.closest("#cmClose,#cmScrim")){ closeCover(); }
+});
+$r("coverBtn").addEventListener("keydown",e=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); openCover(); } });
+document.addEventListener("keydown",e=>{
+  if(e.key!=="Escape") return;
+  if(!$r("coverModal").hidden) closeCover(); else if($r("bmPanel").classList.contains("open")) closeBm();
+});
+
 
 /* text size (saved in this browser) */
 let readSize = 18;
@@ -3205,13 +3470,18 @@ function focusHash(){
 }
 function syncFromHash(){
   const key = location.hash.slice(1);
-  if(READER[key]){ openReader(key,false); return; }
+  if(key==="continue"){ continueReading(); return; }
+  if(READER[key]){
+    if(currentRead===key && document.body.classList.contains("reading")) return;   /* hashchange + popstate both fire */
+    openReader(key,false); return;
+  }
   if(document.body.classList.contains("reading")) closeReader(false);
   focusHash();
 }
 window.addEventListener("hashchange",syncFromHash);
 window.addEventListener("popstate",syncFromHash);
 syncFromHash();
+refreshResume();
 
 /* theme toggle (shared with the main site) */
 document.getElementById("themeBtn").addEventListener("click",()=>{
