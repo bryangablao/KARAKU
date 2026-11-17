@@ -1134,6 +1134,9 @@ main{min-height:50vh;padding-bottom:64px}
 .player-frame.portrait{width:min(100vw,56.25vh);height:min(100vh,177.78vw);max-width:100vw;max-height:100dvh}
 .native-video{width:100%;height:100%;max-width:100vw;max-height:100dvh;object-fit:contain;background:#000}
 
+/* Google Drive player: fills the whole screen in full screen so no extra black bars are added around it */
+.player-frame.drive{width:100vw;height:100dvh;max-width:100vw;max-height:100dvh;background:#000}
+
 /* Default "theater" mode: a framed player on the page. Fullscreen is opt-in. */
 .player-overlay:not(.is-fullscreen){
   background:
@@ -1151,6 +1154,17 @@ main{min-height:50vh;padding-bottom:64px}
   width:min(100%,1180px,calc((100dvh - 110px) * 1.7778));
   height:auto;
   aspect-ratio:16/9;
+  max-width:100%;
+  max-height:none;
+  border-radius:18px;
+  box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.09);
+}
+
+.player-overlay:not(.is-fullscreen) .player-frame.drive{
+  --ar:1.7778;
+  width:min(100%,1400px,calc((100dvh - 100px) * var(--ar)));
+  height:auto;
+  aspect-ratio:var(--ar);
   max-width:100%;
   max-height:none;
   border-radius:18px;
@@ -4871,7 +4885,8 @@ function playerMarkup(source,title){
     return `
       <iframe
         id="socialPlayer"
-        class="player-frame ${orientation}"
+        class="player-frame drive"
+        style="${source.aspect ? `--ar:${Number(source.aspect) || 1.7778}` : ""}"
         src="https://drive.google.com/file/d/${encodeURIComponent(id)}/preview"
         title="${esc(title)}"
         allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
