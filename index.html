@@ -1143,11 +1143,30 @@ main{min-height:50vh;padding-bottom:64px}
 .drive-tune[hidden]{display:none}
 .drive-tune + .player-fullscreen{margin-left:0}
 .drive-tune .dt-group{display:inline-flex;align-items:center;gap:4px}
+.drive-tune .dt-body{display:inline-flex;align-items:center;gap:10px}
+.drive-tune .dt-toggle{display:none}
 .drive-tune button{width:24px;height:24px;border:1px solid rgba(255,255,255,.25);border-radius:50%;background:transparent;color:#fff;font-size:.9rem;line-height:1;cursor:pointer}
 .drive-tune button:hover{background:var(--accent)}
 .drive-tune .dt-reset{width:auto;padding:0 9px;border-radius:999px;font-size:.68rem}
 .drive-tune output{min-width:2.2em;text-align:center;font-variant-numeric:tabular-nums}
-@media (max-width:640px){.drive-tune .dt-label{display:none}.drive-tune{gap:6px;padding:3px 6px}}
+/* Phones and short landscape screens: smaller on-video buttons, tuner folds behind a "Fit" button */
+@media (max-width:640px),(max-height:520px){
+  .player-topbar{min-height:0;gap:8px;padding:max(6px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) 14px max(8px,env(safe-area-inset-left))}
+  .player-back{width:32px;height:32px}
+  .player-back svg{width:16px;height:16px}
+  .player-title strong{font-size:.8rem}
+  .player-title span{margin-top:0;font-size:.64rem}
+  .player-fullscreen{min-height:32px;width:32px;padding:0;justify-content:center}
+  .player-fullscreen span{display:none}
+  .player-fullscreen svg{width:15px;height:15px}
+
+  .drive-tune{position:relative;gap:0;padding:0;border:0;background:transparent;backdrop-filter:none}
+  .drive-tune .dt-toggle{display:inline-grid;place-items:center;width:auto;height:32px;padding:0 11px;border-radius:999px;background:rgba(10,9,14,.62);font-size:.7rem;font-weight:700}
+  .drive-tune .dt-body{display:none;position:absolute;top:calc(100% + 6px);right:0;z-index:2;flex-wrap:wrap;justify-content:center;gap:8px 10px;width:max-content;max-width:calc(100vw - 16px);padding:8px 10px;border:1px solid rgba(255,255,255,.2);border-radius:14px;background:rgba(10,9,14,.9);backdrop-filter:blur(8px)}
+  .drive-tune.open .dt-body{display:inline-flex}
+  .drive-tune button{width:28px;height:28px}
+  .drive-tune .dt-toggle,.drive-tune .dt-reset{width:auto}
+}
 
 /* Default "theater" mode: a framed player on the page. Fullscreen is opt-in. */
 .player-overlay:not(.is-fullscreen){
@@ -2227,9 +2246,12 @@ html[data-theme="light"] .brand-tag.cinema .brand-word{color:#5a4bd6}
     </div>
 
     <div class="drive-tune" id="driveTune" hidden aria-label="Trim black bars">
+      <button type="button" class="dt-toggle" data-drive-toggle aria-label="Adjust black bars" aria-expanded="false">Fit</button>
+      <span class="dt-body">
       <span class="dt-group"><span class="dt-label">Top</span><button type="button" data-drive-crop="top-" aria-label="Trim less from top">&minus;</button><output id="dtTop">0</output><button type="button" data-drive-crop="top+" aria-label="Trim more from top">+</button></span>
       <span class="dt-group"><span class="dt-label">Bottom</span><button type="button" data-drive-crop="bottom-" aria-label="Trim less from bottom">&minus;</button><output id="dtBottom">0</output><button type="button" data-drive-crop="bottom+" aria-label="Trim more from bottom">+</button></span>
       <button type="button" class="dt-reset" data-drive-crop="reset">Reset</button>
+      </span>
     </div>
 
     <button class="player-fullscreen" id="playerFullscreen" type="button" aria-label="Toggle full screen">
@@ -4847,6 +4869,14 @@ function syncDriveTune(){
 }
 
 document.addEventListener("click",event=>{
+  const toggle = event.target.closest?.("[data-drive-toggle]");
+  if(toggle){
+    const tune = toggle.closest(".drive-tune");
+    const open = tune.classList.toggle("open");
+    toggle.setAttribute("aria-expanded",String(open));
+    return;
+  }
+
   const button = event.target.closest?.("[data-drive-crop]");
   if(!button) return;
 
