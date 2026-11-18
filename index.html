@@ -1136,7 +1136,9 @@ main{min-height:50vh;padding-bottom:64px}
 
 /* Google Drive player: fills the whole screen in full screen so no extra black bars are added around it */
 .drive-wrap{position:relative;width:100vw;height:100dvh;max-width:100vw;max-height:100dvh;overflow:hidden;background:#000;--crop-top:52px;--crop-bottom:24px}
-.drive-wrap iframe{position:absolute;left:0;top:calc(var(--crop-top) * -1);width:100%;height:calc(100% + var(--crop-top) + var(--crop-bottom));border:0;background:#000}
+.drive-wrap{--s:1}
+.drive-wrap iframe{position:absolute;left:0;top:calc(var(--crop-top) * var(--s) * -1);width:calc(100% / var(--s));height:calc((100% + (var(--crop-top) + var(--crop-bottom)) * var(--s)) / var(--s));transform:scale(var(--s));transform-origin:0 0;border:0;background:#000}
+@media (max-width:640px),(max-height:520px){.drive-wrap{--s:.6}}
 
 /* Fit tuner: trims Google Drive's top and bottom bars live */
 .drive-tune{flex:0 0 auto;margin-left:auto;display:inline-flex;align-items:center;gap:10px;padding:4px 10px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(10,9,14,.62);color:#fff;font-size:.72rem;font-weight:700;pointer-events:auto;backdrop-filter:blur(8px)}
@@ -1248,6 +1250,20 @@ main{min-height:50vh;padding-bottom:64px}
 @media (max-width:480px){
   .player-fullscreen span{display:none}
   .player-fullscreen{padding:0;width:42px;justify-content:center}
+}
+
+@media (max-width:640px),(max-height:520px){
+  .player-overlay .player-topbar{gap:6px;padding:max(4px,env(safe-area-inset-top)) max(6px,env(safe-area-inset-right)) 10px max(6px,env(safe-area-inset-left))}
+  .player-overlay .player-back{width:26px;height:26px}
+  .player-overlay .player-back svg{width:13px;height:13px}
+  .player-overlay .player-title strong{font-size:.72rem}
+  .player-overlay .player-title span{font-size:.58rem}
+  .player-overlay .player-fullscreen{min-height:26px;height:26px;width:26px;padding:0;gap:0;justify-content:center}
+  .player-overlay .player-fullscreen svg{width:13px;height:13px}
+  .player-overlay .drive-tune .dt-toggle{height:26px;padding:0 9px;font-size:.62rem}
+  .player-overlay .drive-tune button{width:24px;height:24px;font-size:.8rem}
+  .player-overlay .drive-tune .dt-toggle,.player-overlay .drive-tune .dt-reset{width:auto}
+  .player-overlay .drive-tune output{font-size:.65rem}
 }
 
 .player-error{
@@ -3460,7 +3476,27 @@ const catalog = [
     hue:225,
     summary:"Tsubasa Kurata is a talented programmer and passionate mecha enthusiast who dies in an accident and is reincarnated as Ernesti Echevalier in a world where giant magical robots called Silhouette Knights protect humanity from dangerous monsters. Retaining his memories and knowledge from his previous life, Ernesti becomes fascinated by the technology behind these enormous machines. Despite being young, he possesses extraordinary magical abilities and a brilliant understanding of engineering, allowing him to improve existing machines and develop entirely new designs. His dream is to create and pilot the ultimate giant robot, but achieving that goal requires him to overcome military challenges, dangerous enemies, and the limitations of the technology in his new world.",
     poster:"image/anime/knights-and-magic.jpg",
-    seasons:makeAnimeSeasons([13])
+    seasons:[
+      {
+        season:1,
+        label:"Season 1",
+        episodes:[
+          { episode:1, title:"Episode 1", source:{ provider:"drive", url:"https://drive.google.com/file/d/1yk1WCY-BaFFhP_uZFvgjT3tSwhJs3ihk/view?usp=drive_link", orientation:"landscape" } },
+          { episode:2, title:"Episode 2", source:{ provider:"drive", url:"https://drive.google.com/file/d/1-w6A49i8NVJ57JZdv_0iyHaPgUG1jRWY/view?usp=drive_link", orientation:"landscape" } },
+          { episode:3, title:"Episode 3", source:{ provider:"drive", url:"https://drive.google.com/file/d/1Gj66cHwoAqO5fdlRyWU7jhtBrTcnaYMl/view?usp=drive_link", orientation:"landscape" } },
+          { episode:4, title:"Episode 4", source:{ provider:"drive", url:"https://drive.google.com/file/d/1XKi-0FBf3hpHFk35dbghfZUPoCXJzLUw/view?usp=drive_link", orientation:"landscape" } },
+          { episode:5, title:"Episode 5", source:{ provider:"drive", url:"https://drive.google.com/file/d/1WY9hINoBsLuOI1Ia2Nv_XVuUyV52rLlk/view?usp=drive_link", orientation:"landscape" } },
+          { episode:6, title:"Episode 6", source:{ provider:"drive", url:"https://drive.google.com/file/d/15LKvZhvvxMnluBD6LVCZiU4nETbHC39N/view?usp=drive_link", orientation:"landscape" } },
+          { episode:7, title:"Episode 7", source:{ provider:"drive", url:"https://drive.google.com/file/d/1zUGMM7pf7ASJV0Pu344HxeCDXD2lidnh/view?usp=drive_link", orientation:"landscape" } },
+          { episode:8, title:"Episode 8", source:{ provider:"drive", url:"https://drive.google.com/file/d/1SU2pl4i1vyHQ7oqSOPCprAgBmL1IZiPd/view?usp=drive_link", orientation:"landscape" } },
+          { episode:9, title:"Episode 9", source:{ provider:"drive", url:"https://drive.google.com/file/d/1kSpfQXMAUv0zXF0z_v1o4lQSB7nXtQHD/view?usp=drive_link", orientation:"landscape" } },
+          { episode:10, title:"Episode 10", source:{ provider:"drive", url:"https://drive.google.com/file/d/1kn9cYRgmsGEe2E6oroyVQEBOxb7WMiio/view?usp=drive_link", orientation:"landscape" } },
+          { episode:11, title:"Episode 11", source:{ provider:"drive", url:"https://drive.google.com/file/d/1BFH8Z2f6KILoZFFxVoNCQqOIDljCkENv/view?usp=drive_link", orientation:"landscape" } },
+          { episode:12, title:"Episode 12", source:{ provider:"drive", url:"https://drive.google.com/file/d/1fumEZs4SEfwxLAme9wqG_nY4pQB1JcV5/view?usp=drive_link", orientation:"landscape" } },
+          { episode:13, title:"Episode 13", source:{ provider:"drive", url:"https://drive.google.com/file/d/1w3xChqsMI6IrUnKzpceUTu9AU3TLw23n/view?usp=drive_link", orientation:"landscape" } }
+        ]
+      }
+    ]
   },
   {
     id:"a8",
@@ -3551,7 +3587,26 @@ const catalog = [
     hue:45,
     summary:"Shingo Ichinomiya is an ordinary Japanese office worker who falls asleep after a long day and wakes up in the body of Wendelin von Benno Baumeister, an eight-year-old boy living in a fantasy world. He discovers that he belongs to a poor noble family where being the eighth son gives him very little chance of inheriting land or wealth. However, Wendelin possesses an extraordinary talent for magic, which allows him to become a powerful mage despite his difficult circumstances. Determined to escape poverty and build a better future, he begins training, exploring the world, and forming relationships with influential individuals. His magical abilities eventually bring him fame, fortune, and responsibilities that go far beyond his original expectations.",
     poster:"image/anime/8th-son.jpg",
-    seasons:makeAnimeSeasons([12])
+    seasons:[
+      {
+        season:1,
+        label:"Season 1",
+        episodes:[
+          { episode:1, title:"Episode 1", source:{ provider:"drive", url:"https://drive.google.com/file/d/1nnTGC9nOGGrBlIm_pqpQt5hs48uGnsEV/view?usp=drive_link", orientation:"landscape" } },
+          { episode:2, title:"Episode 2", source:{ provider:"drive", url:"https://drive.google.com/file/d/1auFJiyGMJsOxZwrPkYOukkx4zC9V0oNP/view?usp=drive_link", orientation:"landscape" } },
+          { episode:3, title:"Episode 3", source:{ provider:"drive", url:"https://drive.google.com/file/d/1iT-0uuqHuRAXCWn53aU4WcoqJJdZC2Zv/view?usp=drive_link", orientation:"landscape" } },
+          { episode:4, title:"Episode 4", source:{ provider:"drive", url:"https://drive.google.com/file/d/1CGMieILlxh4KePrfjhVvIA-PrjrQgHIg/view?usp=drive_link", orientation:"landscape" } },
+          { episode:5, title:"Episode 5", source:{ provider:"drive", url:"https://drive.google.com/file/d/1eEWUoyEgmZmgF3gcBnE_Pgw793ypAFKm/view?usp=drive_link", orientation:"landscape" } },
+          { episode:6, title:"Episode 6", source:{ provider:"drive", url:"https://drive.google.com/file/d/1oEbzpDQG7GtkvRUUa99jfOF232xetw2K/view?usp=drive_link", orientation:"landscape" } },
+          { episode:7, title:"Episode 7", source:{ provider:"drive", url:"https://drive.google.com/file/d/1qF0D0nMg8Ls1cYTxkD4xAxLi8BqB82Ll/view?usp=drive_link", orientation:"landscape" } },
+          { episode:8, title:"Episode 8", source:{ provider:"drive", url:"https://drive.google.com/file/d/1980GRwDYslfgZ_V4upsGSkAr6YsgU-Jo/view?usp=drive_link", orientation:"landscape" } },
+          { episode:9, title:"Episode 9", source:{ provider:"drive", url:"https://drive.google.com/file/d/1gFjhUU8NYKojpAiBJ4_sC3snyyhcyYJP/view?usp=drive_link", orientation:"landscape" } },
+          { episode:10, title:"Episode 10", source:{ provider:"drive", url:"https://drive.google.com/file/d/1svDGzDWKMp0JWGJUec0xeHBNHXOZkjkj/view?usp=drive_link", orientation:"landscape" } },
+          { episode:11, title:"Episode 11", source:{ provider:"drive", url:"https://drive.google.com/file/d/1O2-mPYPoEF75bDeL2lKtX3T6Jo359zV9/view?usp=drive_link", orientation:"landscape" } },
+          { episode:12, title:"Episode 12", source:{ provider:"drive", url:"https://drive.google.com/file/d/1mFijbn8Uw7BakfEK5DBthqgayUz_SjD0/view?usp=drive_link", orientation:"landscape" } }
+        ]
+      }
+    ]
   },
   {
     id:"a14",
